@@ -1,0 +1,66 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# --- Generated bot output ---
+# QR images, draft payloads/responses, the local ticket ledger, sample QR
+qr_codes/
+drafts/
+tickets_log.json
+voucher.png
+
+# --- API caches (regenerated with --refresh / games.py) ---
+tournaments.json
+tournaments_games_with_bet.json
+
+# --- Browser (Playwright MCP) artifacts ---
+.playwright-mcp/
+*-snapshot.md
+
+# --- Scratch / exploration files ---
+_*.py
+_*.json
+
+# --- Local Claude settings (machine-specific permissions) ---
+.claude/settings.local.json
+
+# --- PyInstaller build artifacts ---
+build/
+dist/
+*.spec
+
+# --- IDE / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.xlsm
+archieve
+logs
+create-bet_response.txt
+tournaments_full.json
+
+# ==============grpahify===========
+graphify-out/cache/ast/v0.9.49-s2
+graphify-out/cache/
+graphify-out/.*
+graphify-out/manifest.json
+graphify-out/[0-9]*/
+Turn on 2-Step Verification.txt
+tournaments/tounament.txt
+Estimation.xlsx
+optimize.txt
+tournaments/tournament_finder.txt
+tournaments/tournament_match_EP.txt
+tournaments/data/Scraped_Matches.xlsx
+tournaments/data/Tournament_Link.xlsx
+tournaments/data/Scraped_Matches_tickets.xlsx
+tournaments/scraper.py
+Delivery/InbetComboTicketBot.exe
+Delivery/InbetScraperBot.exe
+tournaments/data/Tournament_Link - Copy.xlsx
+Delivery4.zip
