@@ -36,6 +36,23 @@ FOLD_SYSTEM = {
     14: "fourteen_folds", 15: "fifteen_folds",
 }
 TICKET_SHEETS = [str(i) for i in range(1, 11)]  # sheets "1".."10"
+
+# Ticket types: how many matches each ticket sheet holds. The client picks ONE
+# type per run in the dashboard. Rows are fixed: type N always uses A2:I(N+1)
+# (5 -> A2:I6, 10 -> A2:I11), and the ticket's total odds ("Product") is always
+# in PRODUCT_CELL, whatever the type.
+MATCH_TYPES = (5, 6, 7, 8, 9, 10)
+DEFAULT_MATCH_TYPE = 10
+LAST_TICKET_ROW = 11          # rows below a type's last row, up to here, must be empty
+PRODUCT_CELL = "I12"
+
+# Stake rule per type, editable in the dashboard and saved in SETTINGS_FILE:
+#   fixed stake   -> the amount typed, used as is
+#   formula       -> e.g. 20000/(I12-1); I12 = the sheet's Product cell,
+#                    ODDS = live total odds; result rounded up to the next 5
+SETTINGS_FILE = "settings.json"
+DEFAULT_STAKE_FORMULA = "20000/(I12-1)"
+DEFAULT_FIXED_STAKE = 100
 MIN_INTERVAL_SECONDS = 40     # wait between tickets (anti-fingerprinting)
 MAX_INTERVAL_SECONDS = 60
 

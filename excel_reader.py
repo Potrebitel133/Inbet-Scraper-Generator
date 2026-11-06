@@ -1,8 +1,10 @@
 """
 Read + validate the Excel ticket workbook.
 
-One numbered sheet (any integer name — "1", "2", ... "19", ...) = one 10-fold
-ticket. `load_all_tickets` opens the workbook once, validates every numbered
+One numbered sheet (any integer name — "1", "2", ... "19", ...) = one N-fold
+ticket, where N is the ticket type picked for the run (5..10, see
+config.MATCH_TYPES). Type N always uses the fixed rows A2:I(N+1); the ticket's
+total odds ("Product") is always in config.PRODUCT_CELL (I12). `load_all_tickets` opens the workbook once, validates every numbered
 sheet actually present, and returns only the sheets that are usable. Bad
 sheets are reported and skipped so the rest of the batch still runs.
 """
@@ -11,6 +13,8 @@ import logging
 import re
 
 import openpyxl
+
+import config
 
 log = logging.getLogger("bot.excel")
 
@@ -121,8 +125,8 @@ def build_tournament_id_lookup(wb):
     return lookup
 
 
-def _read_sheet(ws, tournament_id_lookup=None):
-    """Read the ten ticket rows (rows 2..11), including incomplete rows.
+def _read_sheet(ws, tournament_id_lookup=None, match_count=10):
+    """Read the ticket rows 2..match_count+1 (2..11 for 10), including incomplete rows.
 
     Columns are matched by their header text (row 1), not fixed position, so
     this works for both the original 9-column hand-built workbook (Min Odd
@@ -145,7 +149,7 @@ def _read_sheet(ws, tournament_id_lookup=None):
         return row[idx - 1] if idx and idx <= len(row) else None
 
     picks = []
-    for row in ws.iter_rows(min_row=2, max_row=11, max_col=max_col, values_only=True):
+    for row in ws.iter_rows(min_row=2, max_row=1 + match_count, max_col=max_col, values_only=True):
         match_id = cell(row, "match_id")
         match = cell(row, "match")
         home, draw, away = cell(row, "home_odd"), cell(row, "draw_odd"), cell(row, "away_odd")
@@ -170,7 +174,34 @@ def _read_sheet(ws, tournament_id_lookup=None):
     return picks
 
 
-def _validate(picks, has_tournament_id_column=False):
+def _extra_rows(ws, match_count):
+    """Row numbers BELOW a type's fixed range (up to LAST_TICKET_ROW) that hold a match.
+
+    Type N uses rows 2..N+1 only. A match further down means the sheet was built
+    for a bigger ticket type than the one selected, so it must not run as N.
+    """
+    first = match_count + 2
+    if first > config.LAST_TICKET_ROW:
+        return []
+    columns = _header_columns(ws)
+    keys = [k for k in ("match_id", "match") if k in columns]
+    if not keys:
+        return []
+    max_col = max(columns.values())
+    rows = []
+    for row_no, row in enumerate(ws.iter_rows(min_row=first, max_row=config.LAST_TICKET_ROW,
+                                              max_col=max_col, values_only=True), start=first):
+        if any(str(row[columns[k] - 1] or "").strip() for k in keys if columns[k] <= len(row)):
+            rows.append(row_no)
+    return rows
+
+
+def read_product(ws):
+    """The ticket's total odds from the fixed Product cell (I12), or None if not numeric."""
+    return _num(ws[config.PRODUCT_CELL].value)
+
+
+def _validate(picks, has_tournament_id_column=False, match_count=10):
     """Return a list of human-readable problems; empty list == sheet is good.
 
     has_tournament_id_column: True when the sheet's header row has a
@@ -180,9 +211,9 @@ def _validate(picks, has_tournament_id_column=False):
     original hand-built workbook) are unaffected and keep resolving by name.
     """
     errors = []
-    match_count = sum(1 for p in picks if str(p.get("match") or "").strip())
-    if match_count != 10:
-        errors.append(f"Sheet must contain exactly 10 matches; found {match_count}.")
+    found = sum(1 for p in picks if str(p.get("match") or "").strip())
+    if found != match_count:
+        errors.append(f"Sheet must contain exactly {match_count} matches; found {found}.")
     for row_no, p in enumerate(picks, start=2):
         where = f"row {row_no}"
         match_id = str(p["match_id"] or "").strip()
@@ -215,8 +246,11 @@ def _validate(picks, has_tournament_id_column=False):
     return errors
 
 
-def load_all_tickets(excel_path, sheets=None):
+def load_all_tickets(excel_path, sheets=None, match_count=10):
     """Open the workbook once, validate each sheet.
+
+    match_count is the ticket type for this run (5..10): each sheet must hold
+    exactly that many matches in rows 2..match_count+1 and nothing below them.
 
     sheets=None (the default) picks up every numbered sheet actually present
     in the workbook (available_ticket_sheets) — 1..10, 1..19, whatever the
@@ -226,6 +260,14 @@ def load_all_tickets(excel_path, sheets=None):
       tickets  = {sheet: [picks]} for sheets that passed validation
       skipped  = [(sheet, [reasons])] for sheets that were dropped
     """
+    tickets, skipped, _ = load_tickets_and_products(excel_path, sheets, match_count)
+    return tickets, skipped
+
+
+def load_tickets_and_products(excel_path, sheets=None, match_count=10):
+    """load_all_tickets plus {sheet: Product (I12) as float or None} for every sheet read."""
+    if match_count not in config.MATCH_TYPES:
+        raise ValueError(f"Ticket type must be one of {list(config.MATCH_TYPES)} matches; got {match_count}")
     wb = openpyxl.load_workbook(excel_path, data_only=True, keep_vba=False)
     if sheets is None:
         sheets = available_ticket_sheets(wb)
@@ -233,8 +275,9 @@ def load_all_tickets(excel_path, sheets=None):
     if tournament_id_lookup:
         log.info("tournament id lookup: %d match id(s) from '%s'",
                   len(tournament_id_lookup), FORMATTED_MATCHES_SHEET)
-    tickets, skipped = {}, []
-    log.info("validating %d sheets from %s", len(sheets), excel_path)
+    tickets, skipped, products = {}, [], {}
+    log.info("validating %d sheets from %s (%d-match tickets)", len(sheets), excel_path, match_count,
+             extra={"ctx": {"match_type": match_count}})
     for sheet in sheets:
         if sheet not in wb.sheetnames:
             skipped.append((sheet, ["sheet missing from workbook"]))
@@ -242,20 +285,25 @@ def load_all_tickets(excel_path, sheets=None):
                         extra={"ctx": {"sheet": sheet, "valid": False, "reasons": ["missing from workbook"]}})
             continue
         ws = wb[sheet]
-        picks = _read_sheet(ws, tournament_id_lookup)
+        picks = _read_sheet(ws, tournament_id_lookup, match_count)
+        products[sheet] = read_product(ws)
         has_tournament_id_column = "tournament_id" in _header_columns(ws)
-        errors = _validate(picks, has_tournament_id_column)
+        errors = _validate(picks, has_tournament_id_column, match_count)
+        extra = _extra_rows(ws, match_count)
+        if extra:
+            errors.append(f"row {extra[0]}: there are matches below row {match_count + 1}, so this "
+                          f"sheet has more than {match_count} matches. Is the right ticket type selected?")
         if errors:
             skipped.append((sheet, errors))
             log.warning("sheet %s INVALID (%d problems): %s", sheet, len(errors), "; ".join(errors),
                         extra={"ctx": {"sheet": sheet, "valid": False, "reasons": errors}})
         else:
             tickets[sheet] = picks
-            log.info("sheet %s valid: 10 legs, all cells present", sheet,
+            log.info("sheet %s valid: %d legs, all cells present", sheet, len(picks),
                      extra={"ctx": {"sheet": sheet, "valid": True, "legs": len(picks)}})
     log.info("validation done: %d valid, %d skipped", len(tickets), len(skipped),
              extra={"ctx": {"valid_count": len(tickets), "skipped_count": len(skipped)}})
-    return tickets, skipped
+    return tickets, skipped, products
 
 
 if __name__ == "__main__":
@@ -278,5 +326,12 @@ if __name__ == "__main__":
     errs = _validate(missing_tid, has_tournament_id_column=True)
     assert any("Tournament ID" in e for e in errs), errs
     assert _validate(missing_tid, has_tournament_id_column=False) == []  # column absent -> no check
+
+    # Ticket types: a 5-match sheet validates as type 5, never as type 10.
+    assert _validate(good[:5], match_count=5) == []
+    errs = _validate(good[:5], match_count=10)
+    assert any("exactly 10 matches; found 5" in e for e in errs), errs
+    errs = _validate(good[:8], match_count=8)
+    assert errs == [], errs
 
     print("excel_reader self-check ok")

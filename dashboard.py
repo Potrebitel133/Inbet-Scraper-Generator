@@ -12,8 +12,12 @@ Run it on the same machine as the bot:
 
     python dashboard.py
 
-"Generate" launches `bot.py` (after a confirm dialog) against the chosen
-workbook. Live output streams into the Activity console, and everything
+Before a run the client picks the ticket type (5..10 matches per ticket) and,
+per type, either a fixed stake or a stake formula (e.g. 20000/(I12-1)). Both are
+saved in settings.json next to the app and come back on the next start.
+
+"Generate" launches `bot.py` (after a confirm dialog that lists every ticket's
+stake) against the chosen workbook. Live output streams into the Activity console, and everything
 auto-refreshes from the files as the run writes them.
 """
 
@@ -29,6 +33,7 @@ import bot
 import config
 import excel_reader
 import logsetup
+import stake_rules
 
 
 def app_dir():
@@ -48,6 +53,8 @@ def _file_size(path):
 HERE = app_dir()
 TICKETS = os.path.join(HERE, config.TICKETS_LOG)
 LOG_FILE = os.path.join(HERE, "logs", "bot.jsonl")
+SETTINGS = os.path.join(HERE, config.SETTINGS_FILE)
+PREVIEW_LINES = 25   # max per-ticket stake lines in the confirm dialog
 
 # palette
 BG = "#f4f6f8"
@@ -70,6 +77,11 @@ def fmt_ts(iso):
         return f"{int(d):02d} {MONTHS[int(m) - 1]} {y}  {tm}"
     except (ValueError, IndexError, TypeError):
         return iso or "-"
+
+
+def _ticket_name(t):
+    """'5-22' for tickets made since ticket types were added, the bare sheet before."""
+    return t.get("label") or str(t.get("sheet"))
 
 
 def _read_tickets():
@@ -166,8 +178,10 @@ class Dashboard:
         self._resume_excel = None      # workbook used in that run
         self._current_run_done_sheets = []  # filled by on_ticket_done callback
 
+        self.settings = stake_rules.load_settings(SETTINGS)
         self._init_style()
         self._build_header()
+        self._build_ticket_setup()
         self._build_toolbar()
         self._build_banner()
         self._build_stats()
@@ -212,14 +226,6 @@ class Dashboard:
                                font=("Segoe UI", 11, "bold"), padx=10, pady=4)
         self.status.pack(side="right")
 
-        # Stake budget — editable before each run. stake = ceil(budget / odds)
-        self.stake_var = tk.StringVar(value=str(config.STAKE_BUDGET))
-        tk.Entry(head, textvariable=self.stake_var, width=10, justify="right",
-                 font=("Segoe UI", 11, "bold"), relief="flat",
-                 highlightthickness=1, highlightbackground="#d2d9e0").pack(side="right", padx=(6, 16))
-        tk.Label(head, text="Target payout:", bg=BG, fg=MUTE,
-                 font=("Segoe UI", 10)).pack(side="right")
-
         # Seconds between tickets — min/max editable before each run
         self.max_interval_var = tk.StringVar(value=str(config.MAX_INTERVAL_SECONDS))
         tk.Entry(head, textvariable=self.max_interval_var, width=5, justify="right",
@@ -234,6 +240,94 @@ class Dashboard:
         tk.Label(head, text="Seconds between tickets:", bg=BG, fg=MUTE,
                  font=("Segoe UI", 10)).pack(side="right", padx=(16, 4))
         self._set_wb_label()
+
+    # --- ticket type + stake rule (one row under the header) -----------------
+    def _build_ticket_setup(self):
+        row = tk.Frame(self.root, bg=CARD, highlightthickness=1, highlightbackground="#e1e6eb")
+        row.pack(fill="x", padx=14, pady=(4, 4))
+        lbl = dict(bg=CARD, fg=MUTE, font=("Segoe UI", 10))
+        entry = dict(font=("Segoe UI", 11, "bold"), relief="flat",
+                     highlightthickness=1, highlightbackground="#d2d9e0")
+
+        tk.Label(row, text="Matches per ticket:", **lbl).pack(side="left", padx=(12, 6), pady=8)
+        self.type_var = tk.IntVar(value=self.settings["match_type"])
+        self._shown_type = self.type_var.get()
+        self.type_buttons = []
+        for n in config.MATCH_TYPES:
+            b = tk.Radiobutton(row, text=str(n), value=n, variable=self.type_var,
+                               command=self._type_changed, bg=CARD, fg=INK,
+                               activebackground=CARD, selectcolor=CARD,
+                               font=("Segoe UI", 11, "bold"), cursor="hand2")
+            b.pack(side="left", padx=(0, 4))
+            self.type_buttons.append(b)
+
+        rule = self.settings["rules"][str(self._shown_type)]
+        self.fixed_on = tk.BooleanVar(value=rule["mode"] == "fixed")
+        self.fixed_cb = tk.Checkbutton(row, text="Fixed stake", variable=self.fixed_on,
+                                       command=self._stake_mode_changed, bg=CARD, fg=INK,
+                                       activebackground=CARD, selectcolor=CARD,
+                                       font=("Segoe UI", 10, "bold"), cursor="hand2")
+        self.fixed_cb.pack(side="left", padx=(28, 4))
+        self.fixed_var = tk.StringVar(value=str(rule["fixed"]))
+        self.fixed_entry = tk.Entry(row, textvariable=self.fixed_var, width=8, justify="right", **entry)
+        self.fixed_entry.pack(side="left")
+
+        tk.Label(row, text="Formula:", **lbl).pack(side="left", padx=(24, 4))
+        self.formula_var = tk.StringVar(value=rule["formula"])
+        self.formula_entry = tk.Entry(row, textvariable=self.formula_var, width=20, **entry)
+        self.formula_entry.pack(side="left")
+        self.formula_check = tk.Label(row, text="", bg=CARD, font=("Segoe UI", 10, "bold"))
+        self.formula_check.pack(side="left", padx=(6, 0))
+        self.formula_var.trace_add("write", lambda *_: self._check_formula())
+        tk.Label(row, text="I12 = Product cell,  ODDS = live odds,  rounded up to 5",
+                 **lbl).pack(side="left", padx=(12, 12))
+        self._stake_mode_changed()
+
+    def _type_changed(self):
+        """Keep what was typed for the old type, then show the new type's own stake rule."""
+        self._store_rule(self._shown_type)
+        self._shown_type = self.type_var.get()
+        rule = self.settings["rules"][str(self._shown_type)]
+        self.fixed_on.set(rule["mode"] == "fixed")
+        self.fixed_var.set(str(rule["fixed"]))
+        self.formula_var.set(rule["formula"])
+        self._stake_mode_changed()
+
+    def _stake_mode_changed(self):
+        fixed = self.fixed_on.get()
+        self.fixed_entry.config(state="normal" if fixed else "disabled")
+        self.formula_entry.config(state="disabled" if fixed else "normal")
+        self._check_formula()
+
+    def _check_formula(self):
+        if self.fixed_on.get():
+            self.formula_check.config(text="")
+            return
+        try:
+            stake_rules.formula_variables(self.formula_var.get())
+            self.formula_check.config(text="✓", fg=GREEN)
+        except stake_rules.StakeError:
+            self.formula_check.config(text="✗ not valid", fg=RED)
+
+    def _rule_from_fields(self):
+        return {"mode": "fixed" if self.fixed_on.get() else "formula",
+                "fixed": self.fixed_var.get().strip(),
+                "formula": self.formula_var.get().strip()}
+
+    def _store_rule(self, match_type):
+        rule = self._rule_from_fields()
+        saved = self.settings["rules"][str(match_type)]
+        saved["mode"] = rule["mode"]
+        saved["fixed"] = rule["fixed"] or saved["fixed"]
+        saved["formula"] = rule["formula"] or saved["formula"]
+
+    def _save_settings(self):
+        self._store_rule(self.type_var.get())
+        self.settings["match_type"] = self.type_var.get()
+        try:
+            stake_rules.save_settings(SETTINGS, self.settings)
+        except OSError as e:
+            self._log_console(f"[could not save settings: {e}]\n")
 
     def _set_status(self, running, what=""):
         if running:
@@ -346,7 +440,7 @@ class Dashboard:
         wrap.pack(fill="both", expand=True, padx=6, pady=(0, 6))
         cols = ("sheet", "voucher", "stake", "odds", "time")
         self.tickets = ttk.Treeview(wrap, columns=cols, show="headings", height=12)
-        for c, t, w in [("sheet", "#", 44), ("voucher", "Voucher", 180), ("stake", "Stake", 64),
+        for c, t, w in [("sheet", "#", 64), ("voucher", "Voucher", 180), ("stake", "Stake", 64),
                         ("odds", "Odds", 90), ("time", "Generated", 190)]:
             self.tickets.heading(c, text=t)
             self.tickets.column(c, width=w, anchor="w")
@@ -456,7 +550,7 @@ class Dashboard:
             page = Image.new("RGB", A4, "white")
             d = ImageDraw.Draw(page)
             y = 90
-            d.text((90, y), f"Ticket #{t.get('sheet')}", fill="black", font=font_big)
+            d.text((90, y), f"Ticket #{_ticket_name(t)}", fill="black", font=font_big)
             y += 90
             for label, key in [("Voucher", "voucher"), ("Stake", "stake"),
                                ("Combined Odds", "combined_odds")]:
@@ -564,14 +658,12 @@ class Dashboard:
         if not os.path.exists(self.excel_path):
             messagebox.showerror("No workbook", f"Excel file not found:\n{self.excel_path}")
             return
+        match_type = self.type_var.get()
+        rule = self._rule_from_fields()
         try:
-            budget = float(str(self.stake_var.get()).strip())
-            if budget <= 0 or budget > config.MAX_STAKE_BUDGET:
-                raise ValueError
-        except ValueError:
-            messagebox.showerror("Invalid stake budget",
-                                 f"Stake budget must be between 1 and {config.MAX_STAKE_BUDGET:,}.\n\n"
-                                 "stake = round up (budget / combined odds)")
+            stake_rules.check_rule(rule)
+        except stake_rules.StakeError as e:
+            messagebox.showerror("Stake not valid", f"{match_type}-match tickets:\n\n{e}")
             return
         try:
             lo = int(str(self.min_interval_var.get()).strip())
@@ -588,12 +680,16 @@ class Dashboard:
         # Validate every requested sheet synchronously so the user sees one
         # grouped popup and no API call can start with an invalid workbook.
         try:
-            _, validation_errors = excel_reader.load_all_tickets(self.excel_path, sheets=None)
+            tickets, validation_errors, products = excel_reader.load_tickets_and_products(
+                self.excel_path, sheets=None, match_count=match_type)
+            stakes, stake_errors = stake_rules.preview_stakes(rule, products, list(tickets))
         except Exception as e:
             messagebox.showerror("Workbook validation failed", str(e))
             return
+        validation_errors = list(validation_errors) + [(s, [e]) for s, e in stake_errors.items()]
         if validation_errors:
-            lines = ["Fix all of the following before running:\n"]
+            lines = [f"Ticket type selected: {match_type} matches per ticket.",
+                     "Fix all of the following before running:\n"]
             for sheet, errors in validation_errors:
                 lines.append(f"Sheet {sheet}:")
                 lines.extend(f"  • {error}" for error in errors)
@@ -611,15 +707,26 @@ class Dashboard:
         self._update_stats(None)
         self._clear_ticket_detail()
         self._set_status(True, "LIVE" if live else "preview")
+        self._save_settings()
+        preview = []
+        for sheet, stake in list(stakes.items())[:PREVIEW_LINES]:
+            shown = stake if stake is not None else "from the live odds"
+            preview.append(f"   Ticket {bot.ticket_label(match_type, sheet)}:  stake {shown}")
+        if len(stakes) > PREVIEW_LINES:
+            preview.append(f"   … and {len(stakes) - PREVIEW_LINES} more")
         if live and not messagebox.askyesno(
             "Confirm LIVE run",
             f"This will place REAL bet drafts from:\n{os.path.basename(self.excel_path)}\n\n"
-            f"Stake budget: {budget:g}\n\nContinue?"):
+            f"Ticket type: {match_type} matches  ({len(stakes)} tickets)\n"
+            f"Stake: {stake_rules.describe(rule)}\n\n" + "\n".join(preview) +
+            "\n\nContinue?"):
+            self._set_status(False)   # cancelled: don't leave the pill on "Running LIVE…"
             self._current_run_view = False
             self._current_run_id = None
             self._refresh(force=True)
             return
-        self._stake_budget = budget
+        self._match_type = match_type
+        self._stake_rule = rule
         if not self.console_open:
             self._toggle_console()
         self._log_pos = _file_size(LOG_FILE)  # console shows only this run's log lines
@@ -646,7 +753,8 @@ class Dashboard:
                 excel=self.excel_path,
                 dry_run=not live,
                 cancel=self._stop_event.is_set,
-                stake_budget=getattr(self, "_stake_budget", None),
+                match_type=getattr(self, "_match_type", None),
+                stake_rule=getattr(self, "_stake_rule", None),
                 min_interval=getattr(self, "_min_interval", None),
                 max_interval=getattr(self, "_max_interval", None),
                 on_ticket_done=self._current_run_done_sheets.append,
@@ -765,7 +873,8 @@ class Dashboard:
                 dry_run=False,
                 sheets=list(self._pending_sheets),
                 cancel=self._stop_event.is_set,
-                stake_budget=getattr(self, "_stake_budget", None),
+                match_type=getattr(self, "_match_type", None),   # same type + stake as the paused run
+                stake_rule=getattr(self, "_stake_rule", None),
                 min_interval=getattr(self, "_min_interval", None),
                 max_interval=getattr(self, "_max_interval", None),
                 on_ticket_done=self._current_run_done_sheets.append,
@@ -845,7 +954,7 @@ class Dashboard:
         self.tickets.delete(*self.tickets.get_children())
         for i, t in enumerate(self._ticket_rows):
             self.tickets.insert("", "end", iid=str(i), values=(
-                t.get("sheet"), t.get("voucher"), t.get("stake"),
+                _ticket_name(t), t.get("voucher"), t.get("stake"),
                 t.get("combined_odds"), fmt_ts(t.get("timestamp", ""))))
         self._update_stats(None if show_empty else sel_rid)
         if show_empty:
@@ -890,7 +999,7 @@ class Dashboard:
         if not s:
             return
         t = self._ticket_rows[int(s[0])]
-        self.detail_title.config(text=f"Ticket #{t.get('sheet')}")
+        self.detail_title.config(text=f"Ticket #{_ticket_name(t)}")
         self.kv["voucher"].config(text=str(t.get("voucher", "—")))
         self.kv["stake"].config(text=str(t.get("stake", "—")))
         self.kv["odds"].config(text=str(t.get("combined_odds", "—")))
@@ -911,7 +1020,28 @@ class Dashboard:
             self.sel.insert("", "end", values=(x.get("match"), x.get("side"), x.get("odds")))
 
 
+def _selftest():
+    """`InbetComboTicketBot.exe --selftest` (used by the Windows build): open the
+    window, check the bundled pieces work, close, and write the result to
+    selftest.txt next to the exe. Exit code 0 = ok."""
+    try:
+        root = tk.Tk()
+        Dashboard(root)
+        root.update()
+        root.destroy()
+        assert stake_rules.compute_stake(stake_rules.default_rule(), i12=74.95670826) == 275
+        bot.generate_qr("SELFTEST", os.path.join(HERE, "logs", "selftest_qr.png"))
+        result, code = "selftest ok", 0
+    except Exception as e:  # noqa: BLE001 - report anything
+        result, code = f"selftest FAILED: {e!r}", 1
+    with open(os.path.join(HERE, "selftest.txt"), "w", encoding="utf-8") as f:
+        f.write(result + "\n")
+    sys.exit(code)
+
+
 if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        _selftest()
     root = tk.Tk()
     Dashboard(root)
     root.mainloop()

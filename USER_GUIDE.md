@@ -15,9 +15,35 @@ Click **Choose File** and select the workbook to use.
 
 The bot checks every existing sheet whose name is numeric, such as `1`, `2`, `4`, or `15`. Missing sheet numbers are ignored. An existing empty sheet is still checked and will produce validation errors.
 
-## 3. Excel sheet format
+## 3. Choose the ticket type
 
-Each ticket sheet must contain exactly 10 matches in rows 2–11. The expected columns are:
+Above the buttons, tick how many matches each ticket has: **5, 6, 7, 8, 9 or 10**.
+Use one type per run. To switch type, let the run finish, tick the new type and
+click **Generate** again.
+
+Keep one workbook per type. A run stops before anything is placed if any sheet in
+the workbook does not match the ticked type.
+
+## 4. Excel sheet format
+
+Matches always start in row 2, and the rows are fixed per type:
+
+| Type | Match rows |
+|---|---|
+| 5 matches | A2 to I6 |
+| 6 matches | A2 to I7 |
+| 7 matches | A2 to I8 |
+| 8 matches | A2 to I9 |
+| 9 matches | A2 to I10 |
+| 10 matches | A2 to I11 |
+
+The ticket's total odds (**Product**) is always in cell **I12**, for every type.
+
+If a sheet has more or fewer matches than the ticked type, it is flagged before the
+run starts, for example: `there are matches below row 6, so this sheet has more than
+5 matches. Is the right ticket type selected?`
+
+The expected columns are:
 
 | Column | Required value |
 |---|---|
@@ -37,7 +63,7 @@ Example Match value:
 Arsenal - Chelsea
 ```
 
-## 4. Validation before running
+## 5. Validation before running
 
 Validation runs across all available numeric sheets before any API call is made.
 
@@ -45,45 +71,52 @@ If there are errors, one popup groups them by sheet. Correct every listed issue 
 
 Typical messages include:
 
-- `Sheet must contain exactly 10 matches; found 9.`
+- `Sheet must contain exactly 8 matches; found 7.`
 - `Match ID is empty; enter it like #3887`
 - `Match Name is empty.`
 - `Match must contain both teams, separated by ' - '`
 - `Home Odds is required and must be numeric`
 - `Min Odd must equal Home, Away, or Draw`
 
-## 5. Target payout and actual stake
+## 6. Stake: fixed or formula
 
-The dashboard field is a **target payout**, currently labelled **Stake budget**.
+Each ticket type has its own stake setting. It is saved automatically and comes back
+the next time you open the program.
 
-The bot calculates the actual stake using:
-
-```text
-Actual stake = Target payout / Combined odds
-```
-
-For example:
+- **Fixed stake ticked:** every ticket uses the amount in the box, exactly as typed
+  (for example `100`).
+- **Fixed stake not ticked:** the stake comes from the **Formula** box, for example:
 
 ```text
-Target payout: 50,000
-Combined odds: 250
-Actual stake: 200
+20000/(I12-1)
 ```
 
-The allowed target payout is from `1` to `10,000,000`. The default value is `50,000`.
+`I12` is the sheet's Product cell. Change `20000` (or the whole formula) as you like.
+You can also use `ODDS`, the live total odds the site confirms just before the ticket
+is made, for example `20000/ODDS`. The formula result is rounded up to the next 5.
 
-## 6. Generate tickets
+Example with `20000/(I12-1)`:
 
-1. Enter the target payout.
+```text
+I12 = 74.96   ->  20000 / 73.96 = 270.4  ->  stake 275
+```
+
+A green tick next to the formula means it is valid. A red `not valid` means it has a
+typo; only numbers, `I12`, `ODDS`, `+ - * /` and brackets are allowed.
+
+## 7. Generate tickets
+
+1. Tick the ticket type and set the stake.
 2. Click **Generate**.
-3. Confirm the live run when prompted.
+3. The confirm window lists every ticket with its stake (for example
+   `Ticket 5-22: stake 275`). Check it, then confirm the live run.
 4. The ticket list clears for the new run.
 5. Newly created tickets appear one by one as they are generated.
 6. A failed sheet does not create a partial ticket.
 
 Historical tickets remain available through the **Run** dropdown after the run finishes.
 
-## 7. Dashboard information
+## 8. Dashboard information
 
 - **Tickets**: tickets created in the selected run
 - **Average Odds**: average combined odds of displayed tickets
@@ -93,13 +126,15 @@ Historical tickets remain available through the **Run** dropdown after the run f
 
 Select a ticket to view its voucher, actual stake, combined odds, QR code, and matches.
 
-## 8. QR codes and records
+## 9. QR codes and records
 
-Created tickets and QR codes are saved in the application folder. Do not delete these folders while the dashboard is running.
+Created tickets and QR codes are saved in the application folder. Each QR file is
+named **type-sheet**: sheet 22 of a 5-match run is `5-22.png`, sheet 9 of a 10-match
+run is `10-9.png`. The same name is shown in the ticket list and on the PDF pages. Do not delete these folders while the dashboard is running.
 
 Use **QR to PDF** to export the displayed ticket QR codes to a PDF.
 
-## 9. Common issues
+## 10. Common issues
 
 ### The old tickets are showing
 
@@ -109,9 +144,10 @@ Click **Refresh**, select the current run from the **Run** dropdown, or restart 
 
 Close all running copies of the bot, including the process in Task Manager. The executable cannot be replaced while it is running.
 
-### Invalid stake budget
+### Stake not valid
 
-Enter a number between `1` and `10,000,000`.
+Fixed stake: enter a number above 0. Formula: fix the typo shown in red, for example
+a missing bracket.
 
 ### Event not found
 
@@ -121,12 +157,13 @@ Check that the Match ID, Match Name, tournament, and team spelling correspond to
 
 Check the internet connection and the API environment. Review the **Activity** panel and the log files for details.
 
-## 10. Safe operating checklist
+## 11. Safe operating checklist
 
 Before clicking **Generate**:
 
 - Confirm the correct workbook is selected.
-- Confirm each available numeric sheet has exactly 10 matches.
-- Confirm the target payout is correct.
+- Confirm the ticked ticket type matches the workbook.
+- Confirm the stake setting (fixed or formula) for that type.
+- Check the stakes listed in the confirm window.
 - Confirm the live-run prompt before proceeding.
 - Review the Activity panel and final run summary.

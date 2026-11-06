@@ -1,12 +1,13 @@
 """
 Combo-ticket bot orchestrator — connects every step end to end.
 
-For each numbered Excel sheet (one 10-fold accumulator):
-  1. read the 10 picks + chosen side (Min Odd)          [resolver.read_ticket]
+For each numbered Excel sheet (one N-fold accumulator, N = ticket type 5..10):
+  1. read the N picks + chosen side (Min Odd)           [excel_reader]
   2. resolve tournament ids                              [tournaments.json]
   3. fetch games and resolve each pick -> outcome id     [games API / cache]
   4. create-bets to validate the slip                    [common.create_bets]
-  5. stake = ceil(50000 / combined_odds)                 [resolver.stake_for]
+  5. stake: fixed amount, or the type's formula (e.g.   [stake_rules]
+     20000/(I12-1)) rounded up to the next 5
   6. create-draft to build the ticket                    [common.create_draft]
   7. save the QR code                                    [generate_qr]
   8. wait 60-70s, next ticket                            [anti-fingerprinting]
@@ -16,6 +17,8 @@ Run modes:
   python bot.py --dry-run       # resolve + build payloads from cached games,
                                 #   write them to ./drafts, no network POSTs
   python bot.py --sheets 1 2    # only these ticket sheets
+  python bot.py --type 5 --formula "20000/(I12-1)"   # 5-match tickets, stake formula
+  python bot.py --type 8 --fixed-stake 100           # 8-match tickets, fixed stake
 """
 
 import argparse
@@ -32,6 +35,7 @@ import config
 import excel_reader
 import logsetup
 import resolver
+import stake_rules
 
 log = logging.getLogger("bot")
 
@@ -67,10 +71,18 @@ def generate_qr(voucher, out_path):
     return out_path
 
 
-def save_ticket_record(voucher, sheet, stake, odds, picks, selections, qr_path, run_id=None):
+def ticket_label(match_type, sheet):
+    """'5-22' = sheet 22 of a 5-match run. Names the QR file and the ticket everywhere."""
+    return f"{match_type}-{sheet}"
+
+
+def save_ticket_record(voucher, sheet, stake, odds, picks, selections, qr_path, run_id=None,
+                       match_type=None):
     """Append a readable record of the ticket's bets to the local ledger."""
     record = {
         "voucher": str(voucher), "sheet": sheet, "stake": stake,
+        "match_type": match_type,
+        "label": ticket_label(match_type, sheet) if match_type else str(sheet),
         "combined_odds": round(float(odds), 4), "qr": qr_path,
         "run_id": run_id,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -94,7 +106,7 @@ def save_ticket_record(voucher, sheet, stake, odds, picks, selections, qr_path, 
 
 # --- draft payload -----------------------------------------------------------
 def build_draft_payload(selections, stake):
-    """Assemble the create-draft body: 10 selections combined into one bet."""
+    """Assemble the create-draft body: all N selections combined into one N-fold bet."""
     system = config.FOLD_SYSTEM.get(len(selections))
     if not system:
         raise ValueError(f"no accumulator system name for {len(selections)} selections")
@@ -231,8 +243,15 @@ def resolve_unresolved_tournaments(tickets, tournament_index, games_provider):
 
 # --- one ticket --------------------------------------------------------------
 def process_ticket(sheet, picks, tournament_index, games_provider, dry_run, run_id=None,
-                   tournament_overrides=None):
-    ctx = {"sheet": sheet}
+                   tournament_overrides=None, match_type=10, stake_rule=None, product=None):
+    ctx = {"sheet": sheet, "match_type": match_type}
+
+    def stake_for(odds):
+        # No rule = the original behaviour: ceil(STAKE_BUDGET / odds) to the next 5.
+        if stake_rule is None:
+            return resolver.stake_for(odds)
+        return stake_rules.compute_stake(stake_rule, i12=product, odds=odds)
+
     log.info("ticket sheet %s: %d picks", sheet, len(picks), extra={"ctx": ctx})
     overrides = tournament_overrides or {}
 
@@ -316,8 +335,8 @@ def process_ticket(sheet, picks, tournament_index, games_provider, dry_run, run_
         return None
 
     total_odds = resolver.combined_odds(selections)
-    stake = resolver.stake_for(total_odds)
-    log.info("combined odds = %.4f -> stake = %d", total_odds, stake,
+    stake = stake_for(total_odds)
+    log.info("combined odds = %.4f -> stake = %s", total_odds, stake,
              extra={"ctx": {**ctx, "odds": round(total_odds, 4), "stake": stake}})
 
     payload = build_draft_payload(selections, stake)
@@ -340,8 +359,8 @@ def process_ticket(sheet, picks, tournament_index, games_provider, dry_run, run_
                     extra={"ctx": {**ctx, "got": len(enriched), "expected": len(selections)}})
         return None
     live_odds = resolver.nfold_odds(cb, len(enriched)) or total_odds
-    stake = resolver.stake_for(live_odds)
-    log.info("live combined odds = %.4f -> stake = %d", live_odds, stake,
+    stake = stake_for(live_odds)
+    log.info("live combined odds = %.4f -> stake = %s", live_odds, stake,
              extra={"ctx": {**ctx, "odds": round(live_odds, 4), "stake": stake}})
     draft = common.create_draft(build_draft_payload(enriched, stake))
     voucher = extract_voucher(draft)
@@ -356,9 +375,10 @@ def process_ticket(sheet, picks, tournament_index, games_provider, dry_run, run_
     # Per-run subfolder so each run keeps its own 10 QRs instead of overwriting
     # the last run's. run_id has colons (invalid in Windows paths) — strip them.
     run_folder = (run_id or "misc").replace(":", "").replace("T", "_").replace("Z", "")
-    qr_path = os.path.join(config.QR_OUTPUT_DIR, run_folder, f"ticket_sheet_{sheet}.png")
+    qr_path = os.path.join(config.QR_OUTPUT_DIR, run_folder, f"{ticket_label(match_type, sheet)}.png")
     generate_qr(voucher, qr_path)
-    save_ticket_record(voucher, sheet, stake, live_odds, picks, selections, qr_path, run_id)
+    save_ticket_record(voucher, sheet, stake, live_odds, picks, selections, qr_path, run_id,
+                       match_type=match_type)
     os.makedirs("drafts", exist_ok=True)
     with open(f"drafts/ticket_{voucher}.json", "w", encoding="utf-8") as f:
         json.dump(draft, f, ensure_ascii=False, indent=2)
@@ -370,12 +390,18 @@ def process_ticket(sheet, picks, tournament_index, games_provider, dry_run, run_
 # --- run loop ----------------------------------------------------------------
 def run(excel=None, dry_run=False, sheets=None, offline_games=None, dump_api=False,
         cancel=None, stake_budget=None, min_interval=None, max_interval=None,
-        on_ticket_done=None, run_id=None, wait_before_first=False):
+        on_ticket_done=None, run_id=None, wait_before_first=False,
+        match_type=None, stake_rule=None):
     """Generate tickets for one workbook. Safe to call in-process (the GUI does).
 
     Logs everything via `logsetup`; the caller sets logging up once.
     `cancel`          optional callable -> bool; True stops cleanly before the next ticket.
     `stake_budget`    overrides config.STAKE_BUDGET for this run (stake = ceil(budget/odds)).
+                      Ignored when `stake_rule` is given.
+    `match_type`      matches per ticket for this run (5..10, default 10). Every sheet
+                      must hold exactly that many, in rows 2..match_type+1.
+    `stake_rule`      {"mode": "fixed"|"formula", "fixed": .., "formula": ..} — see
+                      stake_rules. None keeps the original budget/odds stake.
     `min_interval`    seconds (int/float) — lower bound of the wait between tickets.
                       Overrides config.MIN_INTERVAL_SECONDS for this run only.
     `max_interval`    seconds (int/float) — upper bound. Overrides config.MAX_INTERVAL_SECONDS.
@@ -393,17 +419,30 @@ def run(excel=None, dry_run=False, sheets=None, offline_games=None, dump_api=Fal
     excel = excel or config.EXCEL_FILE
     sheets = sheets if sheets is not None else None
     stop = cancel or (lambda: False)
-    if stake_budget is not None:
+    match_type = int(match_type or config.DEFAULT_MATCH_TYPE)
+    if stake_rule is not None:
+        stake_rules.check_rule(stake_rule)  # raises before anything else happens
+        log.info("ticket type: %d matches | stake: %s", match_type, stake_rules.describe(stake_rule),
+                 extra={"ctx": {"match_type": match_type, "stake_rule": stake_rule}})
+    elif stake_budget is not None:
         if float(stake_budget) <= 0 or float(stake_budget) > config.MAX_STAKE_BUDGET:
             raise ValueError(f"Stake budget must be between 1 and {config.MAX_STAKE_BUDGET:,}")
         config.STAKE_BUDGET = float(stake_budget)
-    log.info("stake budget: %s (stake = ceil(budget / combined odds))", config.STAKE_BUDGET,
-             extra={"ctx": {"stake_budget": config.STAKE_BUDGET}})
+    if stake_rule is None:
+        log.info("ticket type: %d matches | stake budget: %s (stake = ceil(budget / combined odds))",
+                 match_type, config.STAKE_BUDGET,
+                 extra={"ctx": {"match_type": match_type, "stake_budget": config.STAKE_BUDGET}})
     run_id = run_id or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())  # groups this run's tickets
 
     # Workbook validation must happen before any live API request.
     log.info("using workbook: %s", excel, extra={"ctx": {"excel": excel}})
-    tickets, bad = excel_reader.load_all_tickets(excel, sheets)
+    tickets, bad, products = excel_reader.load_tickets_and_products(excel, sheets, match_type)
+    if stake_rule is not None:
+        # A stake that can be worked out now (it doesn't need the live odds) is
+        # checked now, so a bad I12 or formula stops the run before any API call.
+        for sheet, problem in stake_rules.stake_problems(stake_rule, products, list(tickets)).items():
+            tickets.pop(sheet, None)
+            bad.append((sheet, [problem]))
     if bad:
         log.error("workbook validation failed for %d sheet(s)", len(bad),
                   extra={"ctx": {"validation_errors": {str(s): e for s, e in bad}}})
@@ -449,7 +488,8 @@ def run(excel=None, dry_run=False, sheets=None, offline_games=None, dump_api=Fal
         try:
             out = process_ticket(sheet, tickets[sheet], tournament_index, games_provider,
                                   dry_run=dry_run, run_id=run_id,
-                                  tournament_overrides=overrides)
+                                  tournament_overrides=overrides, match_type=match_type,
+                                  stake_rule=stake_rule, product=products.get(sheet))
             (done if out else skipped).append(sheet)
             if out and on_ticket_done:
                 on_ticket_done(sheet)  # notify dashboard so it can track resume state
@@ -481,10 +521,24 @@ def main():
                     help="save each fetched games response to logs/api/ (for verifying markets)")
     ap.add_argument("--excel", default=config.EXCEL_FILE,
                     help="path to the ticket workbook (default: config.EXCEL_FILE)")
+    ap.add_argument("--type", type=int, choices=config.MATCH_TYPES, default=config.DEFAULT_MATCH_TYPE,
+                    help="matches per ticket for this run (default: %(default)s)")
+    stake = ap.add_mutually_exclusive_group()
+    stake.add_argument("--fixed-stake", type=float, metavar="AMOUNT",
+                       help="use this exact stake for every ticket")
+    stake.add_argument("--formula", metavar="FORMULA",
+                       help='stake formula, e.g. "20000/(I12-1)" (I12 = Product cell, '
+                            'ODDS = live total odds), rounded up to the next 5')
     args = ap.parse_args()
+    rule = None
+    if args.fixed_stake is not None:
+        rule = {"mode": "fixed", "fixed": args.fixed_stake}
+    elif args.formula:
+        rule = {"mode": "formula", "formula": args.formula}
     logsetup.setup_logging()
     run(excel=args.excel, dry_run=args.dry_run, sheets=args.sheets,
-        offline_games=args.offline_games, dump_api=args.dump_api)
+        offline_games=args.offline_games, dump_api=args.dump_api,
+        match_type=args.type, stake_rule=rule)
 
 
 if __name__ == "__main__":

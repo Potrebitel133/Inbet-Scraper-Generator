@@ -11,6 +11,8 @@ env/
 qr_codes/
 drafts/
 tickets_log.json
+settings.json
+selftest.txt
 voucher.png
 
 # --- API caches (regenerated with --refresh / games.py) ---
