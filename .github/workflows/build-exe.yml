@@ -1,0 +1,50 @@
+# Builds InbetComboTicketBot.exe on a Windows machine, after the tests pass,
+# then starts the exe once (--selftest) to prove it opens. Download the exe from
+# the run's "Artifacts" section (Actions tab -> latest run).
+name: Build Windows exe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, match-types]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install -r requirements.txt pyinstaller pillow pytest
+
+      - name: Tests
+        run: |
+          python -m pytest -q tests
+          python excel_reader.py
+          python stake_rules.py
+          python utils.py
+
+      - name: Build exe (same options as build_exe.bat)
+        run: >
+          pyinstaller --noconfirm --clean --onefile --windowed
+          --name InbetComboTicketBot
+          --collect-submodules qrcode
+          --hidden-import PIL._tkinter_finder
+          dashboard.py
+
+      - name: Start the exe once (self-test)
+        shell: pwsh
+        run: |
+          $p = Start-Process -FilePath "dist\InbetComboTicketBot.exe" -ArgumentList "--selftest" -Wait -PassThru
+          Get-Content "dist\selftest.txt"
+          if ($p.ExitCode -ne 0) { exit 1 }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: InbetComboTicketBot
+          path: dist/InbetComboTicketBot.exe
+          retention-days: 30
