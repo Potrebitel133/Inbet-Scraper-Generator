@@ -1,8 +1,8 @@
 # Combo Ticket Bot
 
-Generates 5 to 10-fold accumulator betting tickets for inbetsport.com from an
+Generates 4 to 10-fold accumulator betting tickets for inbetsport.com from an
 Excel workbook, and saves a QR code per ticket for placing at a kiosk. The ticket
-type (5..10 matches) is picked per run; each type has its own stake rule.
+type (4..10 matches) is picked per run; each type has its own stake rule.
 
 ## Flow
 
@@ -10,7 +10,7 @@ type (5..10 matches) is picked per run; each type has its own stake rule.
 Excel sheet (1..10)  ->  resolve each pick  ->  build slip  ->  draft  ->  QR
 ```
 
-1. **Read ticket** — each numbered sheet is one N-fold ticket (N = ticket type,
+1. **Read ticket** — each numbered sheet is one N-fold ticket (N = ticket type 4..10,
    rows A2:I(N+1), Product in I12). Columns:
    Match, Home/Draw/Away odds, Tournament, and **Min Odd** (col I) = the chosen
    outcome (whichever of Home/Draw/Away equals it).            `resolver.read_ticket`

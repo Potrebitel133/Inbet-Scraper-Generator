@@ -88,7 +88,7 @@ def test_unknown_type_is_refused(tmp_path):
     path = tmp_path / "wb.xlsx"
     build_workbook(path, {"1": 5})
     with pytest.raises(ValueError):
-        excel_reader.load_all_tickets(str(path), match_count=4)
+        excel_reader.load_all_tickets(str(path), match_count=3)
 
 
 # --- stake rules -------------------------------------------------------------
@@ -188,7 +188,7 @@ class FakeSite:
         return {"code": f"V{len(self.drafts):04d}"}
 
 
-@pytest.mark.parametrize("n", [5, 8, 10])
+@pytest.mark.parametrize("n", [4, 5, 8, 10])
 def test_live_run_end_to_end(tmp_path, monkeypatch, n):
     monkeypatch.chdir(tmp_path)
     rows = build_workbook(tmp_path / "wb.xlsx", {"3": n, "22": n})
@@ -213,16 +213,16 @@ def test_live_run_end_to_end(tmp_path, monkeypatch, n):
 
 def test_live_odds_formula_and_fixed_stake(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
-    rows = build_workbook(tmp_path / "wb.xlsx", {"1": 6})
+    rows = build_workbook(tmp_path / "wb.xlsx", {"1": 6, "2": 6})
     site = FakeSite(rows, drift=1.05)
     site.install(monkeypatch)
     bot.run(excel=str(tmp_path / "wb.xlsx"), match_type=6, stake_rule={"mode": "formula", "formula": "20000/ODDS"},
-            min_interval=0, max_interval=0)
+            min_interval=0, max_interval=0, sheets=["1"])
     live = site.create_bets([s["outcomeId"] for s in site.drafts[0]["selections"]])["bets"][0]["totalOdds"]
     assert site.drafts[0]["bets"][0]["stake"]["value"] == math.ceil(20000 / live / 5) * 5
 
     bot.run(excel=str(tmp_path / "wb.xlsx"), match_type=6, stake_rule={"mode": "fixed", "fixed": 100},
-            min_interval=0, max_interval=0)
+            min_interval=0, max_interval=0, sheets=["2"])
     assert site.drafts[1]["bets"][0]["stake"]["value"] == 100
 
 

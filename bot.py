@@ -36,6 +36,7 @@ import excel_reader
 import logsetup
 import resolver
 import stake_rules
+import ticket_ledger
 
 log = logging.getLogger("bot")
 
@@ -76,10 +77,10 @@ def ticket_label(match_type, sheet):
     return f"{match_type}-{sheet}"
 
 
-def save_ticket_record(voucher, sheet, stake, odds, picks, selections, qr_path, run_id=None,
-                       match_type=None):
-    """Append a readable record of the ticket's bets to the local ledger."""
-    record = {
+def build_ticket_record(voucher, sheet, stake, odds, picks, selections, qr_path, run_id=None,
+                        match_type=None):
+    """The readable record of one ticket, as stored in tickets_log.json."""
+    return {
         "voucher": str(voucher), "sheet": sheet, "stake": stake,
         "match_type": match_type,
         "label": ticket_label(match_type, sheet) if match_type else str(sheet),
@@ -87,21 +88,45 @@ def save_ticket_record(voucher, sheet, stake, odds, picks, selections, qr_path, 
         "run_id": run_id,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "selections": [
-            {"match": p["match"], "side": p["side"], "odds": s["odds"], "outcomeId": s["outcomeId"]}
+            {"match": p["match"], "match_id": p.get("match_id"), "side": p["side"],
+             "odds": s["odds"], "outcomeId": s["outcomeId"]}
             for p, s in zip(picks, selections)
         ],
     }
-    log = []
-    if os.path.exists(config.TICKETS_LOG):
-        try:
-            with open(config.TICKETS_LOG, encoding="utf-8") as f:
-                log = json.load(f)
-        except (ValueError, OSError):
-            log = []
-    log.append(record)
-    with open(config.TICKETS_LOG, "w", encoding="utf-8") as f:
-        json.dump(log, f, ensure_ascii=False, indent=2)
+
+
+def save_ticket_record(voucher, sheet, stake, odds, picks, selections, qr_path, run_id=None,
+                       match_type=None):
+    """Append a readable record of the ticket's bets to the local ledger (atomic write)."""
+    record = build_ticket_record(voucher, sheet, stake, odds, picks, selections, qr_path, run_id,
+                                 match_type)
+    ticket_ledger.append_ticket_record(record)
     return record
+
+
+def recover_interrupted():
+    """Finish tickets whose voucher arrived but whose QR/log entry was cut off.
+
+    A ticket is noted in tickets_in_progress.json the moment its voucher comes
+    back. If the robot was closed or crashed before the QR and log entry were
+    written, the ticket exists on the site: write its QR and log entry now so
+    it counts as made and is never made again. Returns the recovered records.
+    """
+    recovered = []
+    logged = {str(t.get("voucher")) for t in ticket_ledger.read_tickets_log()}
+    for record in ticket_ledger.read_in_progress():
+        voucher = str(record.get("voucher"))
+        if voucher not in logged:
+            if not os.path.exists(record.get("qr") or ""):
+                generate_qr(voucher, record["qr"])
+            ticket_ledger.append_ticket_record(record)
+            recovered.append(record)
+            log.warning("ticket %s (voucher %s) was cut off before it was saved — finished now, "
+                        "it will not be made again", record.get("label"), voucher,
+                        extra={"ctx": {"sheet": record.get("sheet"), "voucher": voucher,
+                                       "recovered": True}})
+        ticket_ledger.clear_in_progress(record.get("voucher"))
+    return recovered
 
 
 # --- draft payload -----------------------------------------------------------
@@ -358,6 +383,10 @@ def process_ticket(sheet, picks, tournament_index, games_provider, dry_run, run_
         log.warning("create-bets returned %d outcomes, expected %d — skipping", len(enriched), len(selections),
                     extra={"ctx": {**ctx, "got": len(enriched), "expected": len(selections)}})
         return None
+    # Last check before anything is created: the exact outcomes the site resolved.
+    previous = ticket_ledger.find_created(outcome_ids=[s["outcomeId"] for s in enriched])
+    if previous:
+        raise ticket_ledger.AlreadyCreated(sheet, previous)
     live_odds = resolver.nfold_odds(cb, len(enriched)) or total_odds
     stake = stake_for(live_odds)
     log.info("live combined odds = %.4f -> stake = %s", live_odds, stake,
@@ -376,9 +405,14 @@ def process_ticket(sheet, picks, tournament_index, games_provider, dry_run, run_
     # the last run's. run_id has colons (invalid in Windows paths) — strip them.
     run_folder = (run_id or "misc").replace(":", "").replace("T", "_").replace("Z", "")
     qr_path = os.path.join(config.QR_OUTPUT_DIR, run_folder, f"{ticket_label(match_type, sheet)}.png")
+    record = build_ticket_record(voucher, sheet, stake, live_odds, picks, selections, qr_path, run_id,
+                                 match_type=match_type)
+    # The ticket exists from this moment: note it before the QR and log are written,
+    # so a crash or close right now is finished on the next run, never made again.
+    ticket_ledger.note_in_progress(record)
     generate_qr(voucher, qr_path)
-    save_ticket_record(voucher, sheet, stake, live_odds, picks, selections, qr_path, run_id,
-                       match_type=match_type)
+    ticket_ledger.append_ticket_record(record)
+    ticket_ledger.clear_in_progress(voucher)
     os.makedirs("drafts", exist_ok=True)
     with open(f"drafts/ticket_{voucher}.json", "w", encoding="utf-8") as f:
         json.dump(draft, f, ensure_ascii=False, indent=2)
@@ -448,6 +482,30 @@ def run(excel=None, dry_run=False, sheets=None, offline_games=None, dump_api=Fal
                   extra={"ctx": {"validation_errors": {str(s): e for s, e in bad}}})
         return {"tickets": tickets, "validation_errors": bad}
 
+    # Live runs never make a ticket twice: finish any ticket cut off last time,
+    # then skip every sheet whose combination was already made (see ticket_ledger).
+    already = []
+    if not dry_run:
+        recover_interrupted()
+        index = ticket_ledger.created_index()
+        for sheet in list(tickets):
+            previous = ticket_ledger.find_created(picks=tickets[sheet], index=index)
+            if previous:
+                already.append(sheet)
+                log.warning("sheet %s: already created as ticket %s (voucher %s, %s) — skipped, "
+                            "never made twice", sheet, previous.get("label") or previous.get("sheet"),
+                            previous.get("voucher"), previous.get("timestamp"),
+                            extra={"ctx": {"sheet": sheet, "already_created": True,
+                                           "voucher": previous.get("voucher")}})
+                tickets.pop(sheet)
+                if on_ticket_done:
+                    on_ticket_done(sheet)   # counts as done for Stop/Resume tracking
+        if not tickets:
+            log.info("summary — nothing to do: all %d sheet(s) were already created", len(already),
+                     extra={"ctx": {"done": [], "skipped": [], "errored": [], "already_done": already}})
+            return {"tickets": {}, "validation_errors": bad, "done": [], "skipped": [],
+                    "errored": [], "already_done": already}
+
     if dry_run:
         offline_file = offline_games or "tournaments_games_with_bet.json"
         with open(config.TOURNAMENTS_FILE, encoding="utf-8") as f:
@@ -493,6 +551,15 @@ def run(excel=None, dry_run=False, sheets=None, offline_games=None, dump_api=Fal
             (done if out else skipped).append(sheet)
             if out and on_ticket_done:
                 on_ticket_done(sheet)  # notify dashboard so it can track resume state
+        except ticket_ledger.AlreadyCreated as e:
+            already.append(sheet)
+            log.warning("sheet %s: the site's outcomes match ticket %s (voucher %s) — skipped, "
+                        "never made twice", sheet, e.record.get("label") or e.record.get("sheet"),
+                        e.record.get("voucher"),
+                        extra={"ctx": {"sheet": sheet, "already_created": True,
+                                       "voucher": e.record.get("voucher")}})
+            if on_ticket_done:
+                on_ticket_done(sheet)
         except Exception as e:
             # Isolate failures so one bad ticket doesn't abort the whole batch.
             log.error("ticket sheet %s failed: %s", sheet, e, exc_info=True,
@@ -501,11 +568,12 @@ def run(excel=None, dry_run=False, sheets=None, offline_games=None, dump_api=Fal
         if not dry_run and i < len(valid_sheets) - 1:
             anti_fingerprint_wait()
 
-    log.info("summary — done: %s | skipped: %s | errored: %s",
-             done or "-", skipped or "-", errored or "-",
-             extra={"ctx": {"done": done, "skipped": skipped, "errored": errored}})
+    log.info("summary — done: %s | skipped: %s | errored: %s | already created: %s",
+             done or "-", skipped or "-", errored or "-", already or "-",
+             extra={"ctx": {"done": done, "skipped": skipped, "errored": errored,
+                            "already_done": already}})
     return {"tickets": tickets, "validation_errors": bad, "done": done,
-            "skipped": skipped, "errored": errored}
+            "skipped": skipped, "errored": errored, "already_done": already}
 
 
 def main():

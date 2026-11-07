@@ -17,7 +17,7 @@ The bot checks every existing sheet whose name is numeric, such as `1`, `2`, `4`
 
 ## 3. Choose the ticket type
 
-Above the buttons, tick how many matches each ticket has: **5, 6, 7, 8, 9 or 10**.
+Above the buttons, tick how many matches each ticket has: **4, 5, 6, 7, 8, 9 or 10**.
 Use one type per run. To switch type, let the run finish, tick the new type and
 click **Generate** again.
 
@@ -30,6 +30,7 @@ Matches always start in row 2, and the rows are fixed per type:
 
 | Type | Match rows |
 |---|---|
+| 4 matches | A2 to I5 |
 | 5 matches | A2 to I6 |
 | 6 matches | A2 to I7 |
 | 7 matches | A2 to I8 |
@@ -116,7 +117,28 @@ typo; only numbers, `I12`, `ODDS`, `+ - * /` and brackets are allowed.
 
 Historical tickets remain available through the **Run** dropdown after the run finishes.
 
-## 8. Dashboard information
+## 8. Stopping, closing and continuing: no ticket is ever made twice
+
+The robot remembers every ticket it has made (the list in `tickets_log.json`).
+Before making a ticket it checks that list, so the same combination is never
+made twice, even if:
+
+- you press **Stop**, close the robot and open it again later,
+- the robot or the PC shuts down in the middle of a run,
+- you open the same workbook again, or a copy of it under another name.
+
+To continue after a stop, open the robot, choose the same workbook and click
+**Generate**. The confirm window shows which tickets were **already created and
+will be skipped** (for example `6-1 to 6-6`) and which will be created now (from
+`6-7`). If every ticket is already made, it tells you there is nothing left to do.
+
+If the robot is closed at the exact moment a ticket is being made, it finishes that
+ticket (QR code and list entry) the next time it starts, instead of making it again.
+
+Keep `tickets_log.json` in the robot's folder: it is this memory. Deleting it
+would let old combinations be made again.
+
+## 9. Dashboard information
 
 - **Tickets**: tickets created in the selected run
 - **Average Odds**: average combined odds of displayed tickets
@@ -126,7 +148,7 @@ Historical tickets remain available through the **Run** dropdown after the run f
 
 Select a ticket to view its voucher, actual stake, combined odds, QR code, and matches.
 
-## 9. QR codes and records
+## 10. QR codes and records
 
 Created tickets and QR codes are saved in the application folder. Each QR file is
 named **type-sheet**: sheet 22 of a 5-match run is `5-22.png`, sheet 9 of a 10-match
@@ -134,7 +156,7 @@ run is `10-9.png`. The same name is shown in the ticket list and on the PDF page
 
 Use **QR to PDF** to export the displayed ticket QR codes to a PDF.
 
-## 10. Common issues
+## 11. Common issues
 
 ### The old tickets are showing
 
@@ -157,7 +179,7 @@ Check that the Match ID, Match Name, tournament, and team spelling correspond to
 
 Check the internet connection and the API environment. Review the **Activity** panel and the log files for details.
 
-## 11. Safe operating checklist
+## 12. Safe operating checklist
 
 Before clicking **Generate**:
 

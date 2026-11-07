@@ -34,6 +34,7 @@ import config
 import excel_reader
 import logsetup
 import stake_rules
+import ticket_ledger
 
 
 def app_dir():
@@ -137,7 +138,8 @@ def _summarize_last_run(events):
             })
     done = ev.get("done") or []
     failed = (ev.get("skipped") or []) + (ev.get("errored") or [])
-    return {"created": done, "failed": failed, "reasons": reasons, "unresolved": unresolved}
+    return {"created": done, "failed": failed, "reasons": reasons, "unresolved": unresolved,
+            "already": ev.get("already_done") or []}
 
 
 class Dashboard:
@@ -188,6 +190,7 @@ class Dashboard:
         self._build_main()
         self._build_console()
 
+        root.protocol("WM_DELETE_WINDOW", self._on_close)
         self.run_var.trace_add("write", lambda *_: self._reload_tickets())
         self._refresh(force=True)
         self.root.after(1000, self._tick)
@@ -279,7 +282,7 @@ class Dashboard:
         self.formula_check = tk.Label(row, text="", bg=CARD, font=("Segoe UI", 10, "bold"))
         self.formula_check.pack(side="left", padx=(6, 0))
         self.formula_var.trace_add("write", lambda *_: self._check_formula())
-        tk.Label(row, text="I12 = Product cell,  ODDS = live odds,  rounded up to 5",
+        tk.Label(row, text="I12 = Product,  ODDS = live odds,  rounded up to 5",
                  **lbl).pack(side="left", padx=(12, 12))
         self._stake_mode_changed()
 
@@ -381,7 +384,10 @@ class Dashboard:
         failed     = s["failed"]     if s else []
         reasons    = s["reasons"]    if s else {}
         unresolved = s["unresolved"] if s else []
+        already    = s["already"]    if s else []
         why = "  •  ".join(f"{r} ({n})" for r, n in reasons.most_common(3))
+        skipped_note = (f"\n\nAlready created earlier, skipped (never made twice): {len(already)}"
+                        f"\n   sheets {', '.join(map(str, already))}" if already else "")
 
         if failed:
             self.banner.config(
@@ -403,11 +409,12 @@ class Dashboard:
                     msg += f"\n   … and {extra} more (see 📋 Logs for the full list)."
             else:
                 msg += "\n\nOpen 📋 Logs for the full detail."
-            messagebox.showwarning("Run finished — some tickets not created", msg)
+            messagebox.showwarning("Run finished — some tickets not created", msg + skipped_note)
         else:
             self.banner.config(text=f"✅  Last run: all {created_count} tickets created",
                                bg="#e3f4e6", fg=GREEN)
-            messagebox.showinfo("Run finished", f"All {created_count} tickets created successfully.")
+            messagebox.showinfo("Run finished",
+                                f"All {created_count} tickets created successfully.{skipped_note}")
         self.banner.pack(fill="x", before=self._stats_row, pady=(0, 4))
 
     # --- stats row ------------------------------------------------------------
@@ -696,6 +703,27 @@ class Dashboard:
                 lines.append("")
             messagebox.showerror("Excel validation failed", "\n".join(lines))
             return
+        # Never make a ticket twice: finish any ticket cut off last time, then
+        # leave out every sheet whose combination was already made (any run,
+        # any day, even after closing the robot). The bot checks again itself.
+        already = []
+        if live:
+            try:
+                bot.recover_interrupted()
+                index = ticket_ledger.created_index()
+                already = [s for s in tickets if ticket_ledger.find_created(picks=tickets[s], index=index)]
+            except ticket_ledger.LedgerError as e:
+                messagebox.showerror("Ticket history problem", str(e))
+                return
+            if already and len(already) == len(tickets):
+                messagebox.showinfo(
+                    "Nothing to create",
+                    f"All {len(tickets)} tickets in this workbook were already created:\n"
+                    f"{ticket_ledger.compress_labels(match_type, already)}\n\n"
+                    "They are never made twice, so there is nothing left to do.")
+                return
+            for s in already:
+                stakes.pop(s, None)
         # Start with a clean current-run view. Historical records remain on disk
         # and are still available through the Run selector after completion.
         self._previous_latest_run_id = (_read_tickets()[0].get("run_id")
@@ -709,6 +737,10 @@ class Dashboard:
         self._set_status(True, "LIVE" if live else "preview")
         self._save_settings()
         preview = []
+        if already:
+            preview.append(f"Already created, will be SKIPPED ({len(already)}):\n"
+                           f"   {ticket_ledger.compress_labels(match_type, already)}\n")
+            preview.append(f"To create now ({len(stakes)}):")
         for sheet, stake in list(stakes.items())[:PREVIEW_LINES]:
             shown = stake if stake is not None else "from the live odds"
             preview.append(f"   Ticket {bot.ticket_label(match_type, sheet)}:  stake {shown}")
@@ -888,6 +920,17 @@ class Dashboard:
             import logging
             logging.getLogger("bot").error("resume failed: %s", e, exc_info=True)
             self._worker_error = str(e)
+
+    def _on_close(self):
+        """Closing during a run is safe (nothing is ever made twice), but say so first."""
+        if self.worker and self.worker.is_alive() and not messagebox.askyesno(
+                "Tickets are being created",
+                "A run is in progress. Close the robot anyway?\n\n"
+                "Nothing will be repeated: next time, Generate skips every ticket "
+                "already made and continues with the rest."):
+            return
+        self._stop_event.set()
+        self.root.destroy()
 
     def _changed(self, path):
         try:

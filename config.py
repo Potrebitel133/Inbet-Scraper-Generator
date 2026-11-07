@@ -39,9 +39,9 @@ TICKET_SHEETS = [str(i) for i in range(1, 11)]  # sheets "1".."10"
 
 # Ticket types: how many matches each ticket sheet holds. The client picks ONE
 # type per run in the dashboard. Rows are fixed: type N always uses A2:I(N+1)
-# (5 -> A2:I6, 10 -> A2:I11), and the ticket's total odds ("Product") is always
+# (4 -> A2:I5, 10 -> A2:I11), and the ticket's total odds ("Product") is always
 # in PRODUCT_CELL, whatever the type.
-MATCH_TYPES = (5, 6, 7, 8, 9, 10)
+MATCH_TYPES = (4, 5, 6, 7, 8, 9, 10)
 DEFAULT_MATCH_TYPE = 10
 LAST_TICKET_ROW = 11          # rows below a type's last row, up to here, must be empty
 PRODUCT_CELL = "I12"
@@ -60,7 +60,8 @@ MAX_INTERVAL_SECONDS = 60
 EXCEL_FILE = "PreFOrmattingOdds Goals MoreMatchesMainFOrtestOriginal - Copy.xlsm"
 TOURNAMENTS_FILE = "tournaments.json"
 QR_OUTPUT_DIR = "qr_codes"
-TICKETS_LOG = "tickets_log.json"   # local ledger: voucher -> the bets on it
+TICKETS_LOG = "tickets_log.json"   # local ledger: voucher -> the bets on it (also stops duplicates)
+IN_PROGRESS_FILE = "tickets_in_progress.json"  # voucher received, QR/log not yet written
 
 # --- Platform auth tokens -----------------------------------------------------
 # The site signs each request (reversed from main.js, verified against live

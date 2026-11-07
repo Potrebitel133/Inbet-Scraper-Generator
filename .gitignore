@@ -12,6 +12,8 @@ qr_codes/
 drafts/
 tickets_log.json
 settings.json
+tickets_in_progress.json
+*.json.tmp
 selftest.txt
 voucher.png
 
