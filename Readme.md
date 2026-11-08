@@ -65,3 +65,23 @@ python -m pytest -q tests
 - **Two payload details need one real capture to confirm:**
   `config.COMBO_SYSTEM` (accumulator system name) and the voucher field name in
   the create-draft response (`bot.extract_voucher`).
+
+## Step 1 for 8888 (scraper_8888/)
+
+`scraper_8888/` scrapes 8888punkt.bg (SportInnovation API, brand 1049641141) for the
+tournaments in a links file and writes the Formatted Matches layout (columns A..I,
+Draw = 10 for basketball and tennis). One request per tournament; prematch only.
+Needs a normal Bulgarian connection (the site blocks VPNs). See
+`scraper_8888/SCRAPER_8888_GUIDE.md`.
+
+```bash
+python scraper_8888/scraper_8888_ui.py          # window
+python scraper_8888/run_scraper_8888.py --input links.xlsx --output out.xlsx
+```
+
+## Windows builds
+
+`ci/build.ps1` installs, runs every test, builds `InbetComboTicketBot.exe` and
+`Scraper8888.exe`, and starts each once with `--selftest`. GitHub Actions
+(`.github/workflows/build-exe.yml`) runs it on every push; the exes are under the
+run's Artifacts. Change the build in `ci/build.ps1`, not in the workflow.

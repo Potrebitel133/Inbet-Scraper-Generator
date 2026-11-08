@@ -1,0 +1,356 @@
+{
+ "tournaments": [
+  {
+   "id": 3163,
+   "name": "Първа Лига",
+   "hasLiveEvents": true,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "football"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "BG"
+   },
+   "sportId": 66,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": true,
+   "customPageUrlIdentifier": "bulgaria-first-league-2026"
+  },
+  {
+   "id": 2936,
+   "name": "Висша Лига",
+   "hasLiveEvents": true,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "football"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "GB-ENG"
+   },
+   "sportId": 66,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": true,
+   "customPageUrlIdentifier": "england-premier-league-2026"
+  },
+  {
+   "id": 2941,
+   "name": "Ла Лига",
+   "hasLiveEvents": false,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "football"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "ES"
+   },
+   "sportId": 66,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": true,
+   "customPageUrlIdentifier": "spain-la-liga-2026"
+  },
+  {
+   "id": 2942,
+   "name": "Серия А",
+   "hasLiveEvents": true,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "football"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "IT"
+   },
+   "sportId": 66,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": true,
+   "customPageUrlIdentifier": "italy-seria-a-2026"
+  },
+  {
+   "id": 2950,
+   "name": "Бундеслига",
+   "hasLiveEvents": true,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "football"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "DE"
+   },
+   "sportId": 66,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": true,
+   "customPageUrlIdentifier": "germany-bundesliga-2026"
+  },
+  {
+   "id": 2943,
+   "name": "Лига 1",
+   "hasLiveEvents": true,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "football"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "FR"
+   },
+   "sportId": 66,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": true,
+   "customPageUrlIdentifier": "france-liga-1-2026"
+  },
+  {
+   "id": 3152,
+   "name": "Примейра Лига",
+   "hasLiveEvents": false,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "football"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "PT"
+   },
+   "sportId": 66,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": false
+  },
+  {
+   "id": 11318,
+   "name": "Серия А",
+   "hasLiveEvents": false,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "football"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "BR"
+   },
+   "sportId": 66,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": false
+  },
+  {
+   "id": 2980,
+   "name": "НБА",
+   "hasLiveEvents": false,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "basketball"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "US"
+   },
+   "sportId": 67,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": true,
+   "customPageUrlIdentifier": "usa-nba"
+  },
+  {
+   "id": 3009,
+   "name": "Лига ACB",
+   "hasLiveEvents": false,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "basketball"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "ES"
+   },
+   "sportId": 67,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": false
+  },
+  {
+   "id": 2982,
+   "name": "А1",
+   "hasLiveEvents": false,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "basketball"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "GR"
+   },
+   "sportId": 67,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": false
+  },
+  {
+   "id": 3004,
+   "name": "ББЛ",
+   "hasLiveEvents": true,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "basketball"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "DE"
+   },
+   "sportId": 67,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": false
+  },
+  {
+   "id": 18320,
+   "name": "АТП Париж",
+   "hasLiveEvents": true,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "tennis"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false
+   },
+   "sportId": 68,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": false
+  },
+  {
+   "id": 38007,
+   "name": "УТА Ченай",
+   "hasLiveEvents": false,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "tennis"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false
+   },
+   "sportId": 68,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": false
+  },
+  {
+   "id": 3281,
+   "name": "НФЛ",
+   "hasLiveEvents": true,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "american_football"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "US"
+   },
+   "sportId": 75,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": false
+  },
+  {
+   "id": 3232,
+   "name": "НХЛ",
+   "hasLiveEvents": false,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "ice_hockey"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "US"
+   },
+   "sportId": 70,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": false
+  },
+  {
+   "id": 3286,
+   "name": "МЛБ",
+   "hasLiveEvents": false,
+   "sportIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "baseball"
+   },
+   "countryIcon": {
+    "entityId": 0,
+    "entityType": 0,
+    "isForMobile": false,
+    "predefinedId": "US"
+   },
+   "sportId": 76,
+   "hasMegaAccaBoost": false,
+   "hasCustomPage": false
+  }
+ ],
+ "title": "widgets.top-tournaments",
+ "icon": {
+  "entityId": 0,
+  "entityType": 0,
+  "isForMobile": false,
+  "predefinedId": "top-tournaments"
+ }
+}

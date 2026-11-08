@@ -1,0 +1,586 @@
+{
+ "sports": [
+  {
+   "id": 68,
+   "name": "Тенис",
+   "identifier": "tennis",
+   "eventsCount": 10,
+   "categories": [
+    {
+     "id": 742,
+     "name": "Чалънджър",
+     "identifier": null,
+     "tournaments": [
+      {
+       "id": 38924,
+       "name": "Чалънджър Мацуйяма, Япония, Сингъл",
+       "orderNumber": 1,
+       "sportEvents": [
+        {
+         "id": 4334141,
+         "externalId": "",
+         "name": "Били Харис vs Лиъм Броди",
+         "startTime": "2026-11-09T03:20:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 10252,
+           "name": "Били Харис",
+           "score": 0
+          },
+          {
+           "id": 11005,
+           "name": "Лиъм Броди",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 16,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 511815698,
+             "typeId": 16,
+             "status": 1,
+             "selections": [
+              {
+               "id": "1376543642419420305",
+               "typeId": 166,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.55,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "4891088084542323814",
+               "typeId": 167,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.08,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "uId": 16
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4334137,
+         "externalId": "",
+         "name": "Джей Френд vs Юсуке Кусухара",
+         "startTime": "2026-11-09T04:10:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 32672,
+           "name": "Джей Френд",
+           "score": 0
+          },
+          {
+           "id": 4705,
+           "name": "Юсуке Кусухара",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 16,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 511816192,
+             "typeId": 16,
+             "status": 1,
+             "selections": [
+              {
+               "id": "827263258947169611",
+               "typeId": 166,
+               "isActive": false,
+               "status": -1,
+               "odds": 1.01,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "6593782336967806398",
+               "typeId": 167,
+               "isActive": true,
+               "status": 1,
+               "odds": 7.8,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "uId": 16
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4334142,
+         "externalId": "",
+         "name": "Джоел Шварцлер vs Мицуки Вей Канг Леонг",
+         "startTime": "2026-11-09T02:10:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 12825,
+           "name": "Джоел Шварцлер",
+           "score": 0
+          },
+          {
+           "id": 34143,
+           "name": "Мицуки Вей Канг Леонг",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 16,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 511815992,
+             "typeId": 16,
+             "status": 1,
+             "selections": [
+              {
+               "id": "1086889817866549674",
+               "typeId": 166,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.19,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "6912951844278737245",
+               "typeId": 167,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.55,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "uId": 16
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4334138,
+         "externalId": "",
+         "name": "Кийгън Смит vs Ю Хсиоу Хсу",
+         "startTime": "2026-11-09T03:10:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 18839,
+           "name": "Кийгън Смит",
+           "score": 0
+          },
+          {
+           "id": 24085,
+           "name": "Ю Хсиоу Хсу",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 16,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 511819984,
+             "typeId": 16,
+             "status": 1,
+             "selections": [
+              {
+               "id": "3646970496729730754",
+               "typeId": 166,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.68,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "7090479786737724981",
+               "typeId": 167,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.89,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "uId": 16
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4342230,
+         "externalId": "",
+         "name": "Лука Щехели vs Такуя Кумасака",
+         "startTime": "2026-11-09T02:00:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 337136,
+           "name": "Лука Щехели",
+           "score": 0
+          },
+          {
+           "id": 11007,
+           "name": "Такуя Кумасака",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 16,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 512963658,
+             "typeId": 16,
+             "status": 1,
+             "selections": [
+              {
+               "id": "8591490299796969562",
+               "typeId": 166,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.81,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "2864798973207378093",
+               "typeId": 167,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.75,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "uId": 16
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4341749,
+         "externalId": "",
+         "name": "Масамичи Имамура vs Рюки Мацуда",
+         "startTime": "2026-11-09T01:00:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 5400,
+           "name": "Масамичи Имамура",
+           "score": 0
+          },
+          {
+           "id": 18597,
+           "name": "Рюки Мацуда",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 16,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 512963848,
+             "typeId": 16,
+             "status": 1,
+             "selections": [
+              {
+               "id": "4394917746432659996",
+               "typeId": 166,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.37,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "7784251998175294187",
+               "typeId": 167,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.5,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "uId": 16
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4341399,
+         "externalId": "",
+         "name": "Косукe Огура vs Хикару Шираиши",
+         "startTime": "2026-11-09T01:00:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 14186,
+           "name": "Косукe Огура",
+           "score": 0
+          },
+          {
+           "id": 4906,
+           "name": "Хикару Шираиши",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 16,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 512964527,
+             "typeId": 16,
+             "status": 1,
+             "selections": [
+              {
+               "id": "3392797475860054898",
+               "typeId": 166,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.1,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "9218717532394496903",
+               "typeId": 167,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.24,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "uId": 16
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4342267,
+         "externalId": "",
+         "name": "Кейсукe Сайтох vs Рента Токуда",
+         "startTime": "2026-11-09T02:10:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 21527,
+           "name": "Кейсукe Сайтох",
+           "score": 0
+          },
+          {
+           "id": 22019,
+           "name": "Рента Токуда",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 16,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 512966008,
+             "typeId": 16,
+             "status": 1,
+             "selections": [
+              {
+               "id": "4456315797541862317",
+               "typeId": 166,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.55,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "7864083262929410908",
+               "typeId": 167,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.1,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "uId": 16
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4342232,
+         "externalId": "",
+         "name": "Шо Катаяма vs Шинтаро Имай",
+         "startTime": "2026-11-09T03:00:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 11864,
+           "name": "Шо Катаяма",
+           "score": 0
+          },
+          {
+           "id": 11009,
+           "name": "Шинтаро Имай",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 16,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 512966025,
+             "typeId": 16,
+             "status": 1,
+             "selections": [
+              {
+               "id": "3879433995745723278",
+               "typeId": 166,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.65,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "7290291225977856891",
+               "typeId": 167,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.34,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "uId": 16
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4341491,
+         "externalId": "",
+         "name": "Коки Матсуда vs С. Д. Праджвал Дев",
+         "startTime": "2026-11-09T01:00:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 4707,
+           "name": "Коки Матсуда",
+           "score": 0
+          },
+          {
+           "id": 14759,
+           "name": "С. Д. Праджвал Дев",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 16,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 512968951,
+             "typeId": 16,
+             "status": 1,
+             "selections": [
+              {
+               "id": "83466333684215282",
+               "typeId": 166,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.29,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "5895877823779998983",
+               "typeId": 167,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.85,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "uId": 16
+          }
+         ],
+         "bonusTypes": []
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

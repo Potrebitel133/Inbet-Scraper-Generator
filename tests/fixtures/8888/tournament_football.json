@@ -1,0 +1,626 @@
+{
+ "sports": [
+  {
+   "id": 66,
+   "name": "Футбол",
+   "identifier": "football",
+   "eventsCount": 6,
+   "categories": [
+    {
+     "id": 501,
+     "name": "Испания",
+     "identifier": "ES",
+     "tournaments": [
+      {
+       "id": 39894,
+       "name": "Терсера Федерасион",
+       "orderNumber": 1,
+       "sportEvents": [
+        {
+         "id": 4306221,
+         "externalId": "sr:match:73586648",
+         "name": "Сантомерa vs Мазарон",
+         "startTime": "2026-11-08T15:00:00Z",
+         "status": "bookedLive",
+         "isLive": true,
+         "teams": [
+          {
+           "id": 11584,
+           "name": "Сантомерa",
+           "score": 0
+          },
+          {
+           "id": 131316,
+           "name": "Мазарон",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 23,
+           "name": "Краен Резултат",
+           "markets": [
+            {
+             "id": 509573678,
+             "typeId": 23,
+             "status": -1,
+             "selections": [
+              {
+               "id": "4593549683804353881",
+               "typeId": 49,
+               "isActive": true,
+               "status": -1,
+               "odds": 1.35,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "8340650773864160559",
+               "typeId": 50,
+               "isActive": true,
+               "status": -1,
+               "odds": 4.0,
+               "name": "X",
+               "typeName": "X"
+              },
+              {
+               "id": "2541477304034639320",
+               "typeId": 51,
+               "isActive": true,
+               "status": -1,
+               "odds": 7.2,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Краен Резултат"
+            }
+           ],
+           "uId": 23
+          },
+          {
+           "id": 24,
+           "name": "Брой Голове",
+           "markets": [
+            {
+             "id": 509576108,
+             "typeId": 24,
+             "status": -1,
+             "selections": [
+              {
+               "id": "5585961893560399440",
+               "typeId": 52,
+               "isActive": true,
+               "status": -1,
+               "odds": 1.98,
+               "name": "Над 2.5",
+               "typeName": "Над"
+              },
+              {
+               "id": "2125566170965218983",
+               "typeId": 53,
+               "isActive": true,
+               "status": -1,
+               "odds": 1.66,
+               "name": "Под 2.5",
+               "typeName": "Под"
+              }
+             ],
+             "name": "Брой Голове",
+             "line": "2.5",
+             "isMainLine": true
+            }
+           ],
+           "uId": 24
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4306317,
+         "externalId": "sr:match:73586650",
+         "name": "Депортиво Маритимо vs Олимпико Тотана",
+         "startTime": "2026-11-08T15:30:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 10594,
+           "name": "Депортиво Маритимо",
+           "score": 0
+          },
+          {
+           "id": 37358,
+           "name": "Олимпико Тотана",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 23,
+           "name": "Краен Резултат",
+           "markets": [
+            {
+             "id": 510112131,
+             "typeId": 23,
+             "status": 1,
+             "selections": [
+              {
+               "id": "517131031487239685",
+               "typeId": 49,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.5,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "5417081890469740147",
+               "typeId": 50,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.25,
+               "name": "X",
+               "typeName": "X"
+              },
+              {
+               "id": "2006216005605875334",
+               "typeId": 51,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.91,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Краен Резултат"
+            }
+           ],
+           "uId": 23
+          },
+          {
+           "id": 24,
+           "name": "Брой Голове",
+           "markets": [
+            {
+             "id": 510144071,
+             "typeId": 24,
+             "status": 1,
+             "selections": [
+              {
+               "id": "6156570643747511054",
+               "typeId": 52,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.92,
+               "name": "Над 2.5",
+               "typeName": "Над"
+              },
+              {
+               "id": "399234823880326139",
+               "typeId": 53,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.71,
+               "name": "Под 2.5",
+               "typeName": "Под"
+              }
+             ],
+             "name": "Брой Голове",
+             "line": "2.5",
+             "isMainLine": true
+            }
+           ],
+           "uId": 24
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4306248,
+         "externalId": "sr:match:73560420",
+         "name": "Торихос vs Манчего Сиудад Реал",
+         "startTime": "2026-11-08T15:30:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 391359,
+           "name": "Торихос",
+           "score": 0
+          },
+          {
+           "id": 10475,
+           "name": "Манчего Сиудад Реал",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 23,
+           "name": "Краен Резултат",
+           "markets": [
+            {
+             "id": 509661227,
+             "typeId": 23,
+             "status": 1,
+             "selections": [
+              {
+               "id": "6921589266621694439",
+               "typeId": 49,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.0,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "3174488452530055569",
+               "typeId": 50,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.95,
+               "name": "X",
+               "typeName": "X"
+              },
+              {
+               "id": "9004061218504378726",
+               "typeId": 51,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.25,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Краен Резултат"
+            }
+           ],
+           "uId": 23
+          },
+          {
+           "id": 24,
+           "name": "Брой Голове",
+           "markets": [
+            {
+             "id": 509676163,
+             "typeId": 24,
+             "status": 1,
+             "selections": [
+              {
+               "id": "3911590300755218411",
+               "typeId": 52,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.0,
+               "name": "Над 2.5",
+               "typeName": "Над"
+              },
+              {
+               "id": "7400002648806649630",
+               "typeId": 53,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.64,
+               "name": "Под 2.5",
+               "typeName": "Под"
+              }
+             ],
+             "name": "Брой Голове",
+             "line": "2.5",
+             "isMainLine": true
+            }
+           ],
+           "uId": 24
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4306332,
+         "externalId": "sr:match:73564374",
+         "name": "Санта Амалия vs Гуадиана",
+         "startTime": "2026-11-08T15:30:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 11549,
+           "name": "Санта Амалия",
+           "score": 0
+          },
+          {
+           "id": 436415,
+           "name": "Гуадиана",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 23,
+           "name": "Краен Резултат",
+           "markets": [
+            {
+             "id": 509576018,
+             "typeId": 23,
+             "status": 1,
+             "selections": [
+              {
+               "id": "4263390597637628874",
+               "typeId": 49,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.27,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "8586952172554996670",
+               "typeId": 50,
+               "isActive": true,
+               "status": 1,
+               "odds": 5.2,
+               "name": "X",
+               "typeName": "X"
+              },
+              {
+               "id": "2868843634392427339",
+               "typeId": 51,
+               "isActive": true,
+               "status": 1,
+               "odds": 7.0,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Краен Резултат"
+            }
+           ],
+           "uId": 23
+          },
+          {
+           "id": 24,
+           "name": "Брой Голове",
+           "markets": [
+            {
+             "id": 509581185,
+             "typeId": 24,
+             "status": 1,
+             "selections": [
+              {
+               "id": "3297731797947184730",
+               "typeId": 52,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.15,
+               "name": "Над 3.5",
+               "typeName": "Над"
+              },
+              {
+               "id": "9023296163781531309",
+               "typeId": 53,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.57,
+               "name": "Под 3.5",
+               "typeName": "Под"
+              }
+             ],
+             "name": "Брой Голове",
+             "line": "3.5",
+             "isMainLine": true
+            }
+           ],
+           "uId": 24
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4306246,
+         "externalId": "sr:match:73578970",
+         "name": "УД Вал де Уксо vs Асеро",
+         "startTime": "2026-11-08T15:30:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 21454,
+           "name": "УД Вал де Уксо",
+           "score": 0
+          },
+          {
+           "id": 431583,
+           "name": "Асеро",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 23,
+           "name": "Краен Резултат",
+           "markets": [
+            {
+             "id": 509630022,
+             "typeId": 23,
+             "status": 1,
+             "selections": [
+              {
+               "id": "1050981233644259482",
+               "typeId": 49,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.95,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "4797940490981957870",
+               "typeId": 50,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.95,
+               "name": "X",
+               "typeName": "X"
+              },
+              {
+               "id": "1328386930655641627",
+               "typeId": 51,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.8,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Краен Резултат"
+            }
+           ],
+           "uId": 23
+          },
+          {
+           "id": 24,
+           "name": "Брой Голове",
+           "markets": [
+            {
+             "id": 509631605,
+             "typeId": 24,
+             "status": 1,
+             "selections": [
+              {
+               "id": "8647113446791570479",
+               "typeId": 52,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.34,
+               "name": "Над 2.5",
+               "typeName": "Над"
+              },
+              {
+               "id": "2952780572389459160",
+               "typeId": 53,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.48,
+               "name": "Под 2.5",
+               "typeName": "Под"
+              }
+             ],
+             "name": "Брой Голове",
+             "line": "2.5",
+             "isMainLine": true
+            }
+           ],
+           "uId": 24
+          }
+         ],
+         "bonusTypes": []
+        },
+        {
+         "id": 4306247,
+         "externalId": "sr:match:73562198",
+         "name": "Епила vs Реал Сарагоса Депортиво Арагон",
+         "startTime": "2026-11-08T15:30:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 31051,
+           "name": "Епила",
+           "score": 0
+          },
+          {
+           "id": 11543,
+           "name": "Реал Сарагоса Депортиво Арагон",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 23,
+           "name": "Краен Резултат",
+           "markets": [
+            {
+             "id": 509916291,
+             "typeId": 23,
+             "status": 1,
+             "selections": [
+              {
+               "id": "5293264265055386747",
+               "typeId": 49,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.8,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "393241864802898957",
+               "typeId": 50,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.25,
+               "name": "X",
+               "typeName": "X"
+              },
+              {
+               "id": "6165365152512390394",
+               "typeId": 51,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.84,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Краен Резултат"
+            }
+           ],
+           "uId": 23
+          },
+          {
+           "id": 24,
+           "name": "Брой Голове",
+           "markets": [
+            {
+             "id": 509918910,
+             "typeId": 24,
+             "status": 1,
+             "selections": [
+              {
+               "id": "149648482859852673",
+               "typeId": 52,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.93,
+               "name": "Над 2.5",
+               "typeName": "Над"
+              },
+              {
+               "id": "5974443906517468022",
+               "typeId": 53,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.71,
+               "name": "Под 2.5",
+               "typeName": "Под"
+              }
+             ],
+             "name": "Брой Голове",
+             "line": "2.5",
+             "isMainLine": true
+            }
+           ],
+           "uId": 24
+          }
+         ],
+         "bonusTypes": []
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
