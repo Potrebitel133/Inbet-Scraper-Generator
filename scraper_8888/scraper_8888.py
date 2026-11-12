@@ -29,6 +29,7 @@ import difflib
 import random
 import re
 import time
+import uuid
 from datetime import datetime, timedelta, timezone
 from urllib.parse import parse_qs, urlsplit
 
@@ -52,13 +53,18 @@ HOME_TYPES = {49, 27556, 166}
 DRAW_TYPES = {50, 27561}
 AWAY_TYPES = {51, 27557, 167}
 
+# The same headers the 8888 site's own page sends (recorded from the browser),
+# including a fresh random "trace-id" on every request.
 HEADERS = {
     "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                    "(KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"),
-    "Accept": "application/json, text/plain, */*",
-    "Accept-Language": "bg-BG,bg;q=0.9,en;q=0.8",
+    "Accept": "application/json",
+    "Accept-Language": "en-US,en;q=0.6",
     "Origin": SITE,
     "Referer": SITE + "/",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "cross-site",
 }
 TIMEOUT = 30
 RETRY_STATUS = {429, 500, 502, 503, 504}
@@ -142,7 +148,7 @@ def fetch_json(path, params=None):
     last = None
     for attempt in range(3):
         try:
-            r = SESSION.get(url, params=params, timeout=TIMEOUT)
+            r = SESSION.get(url, params=params, timeout=TIMEOUT, headers={"trace-id": str(uuid.uuid4())})
         except (requests.ConnectionError, requests.Timeout) as e:
             last = ScrapeError(f"no connection to the 8888 odds server ({e.__class__.__name__})")
         else:
@@ -152,8 +158,11 @@ def fetch_json(path, params=None):
                 except ValueError:
                     raise ScrapeError("the 8888 odds server sent a reply that is not data "
                                       "(is this PC on a VPN or outside Bulgaria?)")
-            if r.status_code in (401, 403):
-                raise ScrapeError(f"the 8888 odds server refused the request (HTTP {r.status_code}). "
+            if r.status_code == 401:
+                raise ScrapeError("the 8888 odds server asked for a key it did not get (HTTP 401). "
+                                  "The site may have changed how it loads odds: send the activity log to support.")
+            if r.status_code == 403:
+                raise ScrapeError("the 8888 odds server refused the request (HTTP 403). "
                                   "Use a normal Bulgarian connection, no VPN.")
             if r.status_code == 404:
                 raise ScrapeError("not found on 8888 (HTTP 404): the tournament may have been removed")

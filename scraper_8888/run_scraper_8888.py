@@ -106,7 +106,7 @@ def write_sample_links(path):
 
 def scrape_all(urls, tourney_wait=(MIN_TOURNAMENT_WAIT_SECONDS, MAX_TOURNAMENT_WAIT_SECONDS), log=print):
     """Scrape every link in order; returns de-duplicated rows. Problems are logged, never fatal."""
-    all_rows, seen = [], set()
+    all_rows, seen, failed = [], set(), []
     for i, url in enumerate(urls):
         if i > 0:
             _wait(*tourney_wait, lambda s: log(f"  (waiting {s:.1f}s before next tournament...)"))
@@ -124,6 +124,10 @@ def scrape_all(urls, tourney_wait=(MIN_TOURNAMENT_WAIT_SECONDS, MAX_TOURNAMENT_W
         name = rows[0]["Tournament"] if rows else ""
         log(f"  -> {added} match(es) added{f' from {name}' if name else ''}"
             f" ({len(rows) - added} duplicate(s) skipped)")
+        if not rows and messages:
+            failed.append(url)
+    if urls and len(failed) == len(urls):
+        log("\n!! No tournament could be read, so the file has no matches. See the messages above.")
     return all_rows
 
 

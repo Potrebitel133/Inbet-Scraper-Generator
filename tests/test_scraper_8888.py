@@ -204,7 +204,7 @@ class FakeResponse:
 
 def test_server_replies(monkeypatch):
     replies = []
-    monkeypatch.setattr(s8.SESSION, "get", lambda url, params=None, timeout=None: replies.pop(0))
+    monkeypatch.setattr(s8.SESSION, "get", lambda url, params=None, timeout=None, headers=None: replies.pop(0))
     monkeypatch.setattr(s8.time, "sleep", lambda s: None)
 
     replies[:] = [FakeResponse(200, {"ok": 1})]
@@ -214,6 +214,9 @@ def test_server_replies(monkeypatch):
     replies[:] = [FakeResponse(403)]
     with pytest.raises(s8.ScrapeError, match="no VPN"):
         s8.fetch_json("x")
+    replies[:] = [FakeResponse(401)]
+    with pytest.raises(s8.ScrapeError, match="asked for a key"):
+        s8.fetch_json("x")
     replies[:] = [FakeResponse(200)]
     with pytest.raises(s8.ScrapeError, match="VPN or outside Bulgaria"):
         s8.fetch_json("x")
@@ -222,8 +225,8 @@ def test_server_replies(monkeypatch):
 def test_request_carries_brand_and_site(monkeypatch):
     seen = {}
 
-    def get(url, params=None, timeout=None):
-        seen.update(url=url, params=params)
+    def get(url, params=None, timeout=None, headers=None):
+        seen.update(url=url, params=params, headers=headers)
         return FakeResponse(200, {})
 
     monkeypatch.setattr(s8.SESSION, "get", get)
@@ -231,6 +234,8 @@ def test_request_carries_brand_and_site(monkeypatch):
     assert seen["url"] == "https://cdn-bgt-api.sportinno.net/api/v2/widgets/tournaments/2936"
     assert seen["params"] == {"sportEventTypes": "prematch", "bid": "1049641141"}
     assert s8.SESSION.headers["Origin"] == "https://8888punkt.bg"
+    import uuid
+    uuid.UUID(seen["headers"]["trace-id"])                         # a fresh trace-id, like the site sends
 
 
 def test_page_names_resolve_from_the_sites_own_lists(api):
@@ -242,3 +247,11 @@ def test_unknown_page_name_is_not_guessed(api):
     with pytest.raises(s8.ScrapeError) as e:
         s8.tournament_id_for("https://8888punkt.bg/#/tournaments/us-nba")
     assert "Did you mean 'usa-nba'" in str(e.value) and "НБА" in str(e.value)
+
+
+def test_all_links_failing_is_said_clearly(monkeypatch):
+    monkeypatch.setattr(s8, "fetch_json", lambda path, params=None: (_ for _ in ()).throw(
+        s8.ScrapeError("the 8888 odds server asked for a key it did not get (HTTP 401).")))
+    log = []
+    rows = run.scrape_all(["2936", "2980"], (0, 0), log=log.append)
+    assert rows == [] and any("No tournament could be read" in line for line in log)
