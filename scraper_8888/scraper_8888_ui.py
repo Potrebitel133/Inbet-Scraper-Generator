@@ -254,7 +254,15 @@ def _selftest():
         ScraperUI(root)
         root.update()
         root.destroy()
-        result, code = "selftest ok", 0
+        import scraper_8888
+        from browser_session import BrowserSession
+        browser = BrowserSession("about:blank", "-", executable=scraper_8888.BROWSER_EXECUTABLE)
+        try:
+            browser.launch_only()                # the bundled driver can start this PC's browser
+            name = browser.browser_name
+        finally:
+            browser.close()
+        result, code = f"selftest ok (browser: {name})", 0
     except Exception as e:  # noqa: BLE001
         result, code = f"selftest FAILED: {e!r}", 1
     with open(HERE / "selftest_8888.txt", "w", encoding="utf-8") as f:

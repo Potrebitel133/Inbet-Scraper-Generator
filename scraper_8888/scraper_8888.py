@@ -23,15 +23,21 @@ Home/Draw/Away odds, Tournament, Tournament ID. Column K is left for the client.
 
 The site itself blocks VPNs and foreign IPs, so the scraper is run from a normal
 Bulgarian connection (the client's PC).
+
+The odds server also wants the short-lived visitor key the 8888 page gets for
+itself, so live runs go through a hidden browser (see browser_session.py):
+odds_connection() opens it, and fetch_json() then asks from inside the page.
 """
 
 import difflib
 import random
 import re
+import contextlib
+import os
 import time
 import uuid
 from datetime import datetime, timedelta, timezone
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import parse_qs, urlencode, urlsplit
 
 import requests
 
@@ -72,6 +78,34 @@ WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", 
 
 SESSION = requests.Session()
 SESSION.headers.update(HEADERS)
+
+USE_BROWSER = True        # live runs read through the 8888 page (tests switch this off)
+# None = find Chrome / Edge / Brave on the PC; tests or a special setup can point at one.
+BROWSER_EXECUTABLE = os.environ.get("SCRAPER8888_BROWSER") or None
+KEY_TIMEOUT = 60          # seconds to wait for the 8888 page to get its key
+_browser = None           # the open BrowserSession during a run
+
+
+@contextlib.contextmanager
+def odds_connection(log=print):
+    """Open the hidden 8888 browser for the duration of a run (no-op when USE_BROWSER is off)."""
+    global _browser
+    if not USE_BROWSER:
+        yield
+        return
+    from browser_session import BrowserError, BrowserSession
+    session = BrowserSession(SITE + "/", urlsplit(API).netloc + "/api", log=log,
+                             executable=BROWSER_EXECUTABLE, key_timeout=KEY_TIMEOUT)
+    try:
+        try:
+            session.start()
+        except BrowserError as e:
+            raise ScrapeError(str(e))
+        _browser = session
+        yield
+    finally:
+        _browser = None
+        session.close()
 
 
 class TournamentUrlError(ValueError):
@@ -142,13 +176,33 @@ def parse_tournament_url(url):
 
 
 # --- API ---------------------------------------------------------------------------
+class _Reply:
+    """Same shape as a requests response, for replies read through the browser."""
+
+    def __init__(self, status, text):
+        self.status_code, self.text = status, text
+
+    def json(self):
+        import json
+        return json.loads(self.text)
+
+
+def _get(url, params):
+    if _browser is not None:
+        status, text = _browser.fetch(f"{url}?{urlencode(params)}")
+        if status == 0:
+            raise requests.ConnectionError(text)
+        return _Reply(status, text)
+    return SESSION.get(url, params=params, timeout=TIMEOUT, headers={"trace-id": str(uuid.uuid4())})
+
+
 def fetch_json(path, params=None):
     params = dict(params or {}, bid=BRAND_ID)
     url = f"{API}/{path.lstrip('/')}"
     last = None
     for attempt in range(3):
         try:
-            r = SESSION.get(url, params=params, timeout=TIMEOUT, headers={"trace-id": str(uuid.uuid4())})
+            r = _get(url, params)
         except (requests.ConnectionError, requests.Timeout) as e:
             last = ScrapeError(f"no connection to the 8888 odds server ({e.__class__.__name__})")
         else:

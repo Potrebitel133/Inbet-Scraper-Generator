@@ -22,6 +22,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from scraper_8888 import (  # noqa: E402
     COLUMNS,
+    ScrapeError,
+    odds_connection,
     MAX_TOURNAMENT_WAIT_SECONDS,
     MIN_TOURNAMENT_WAIT_SECONDS,
     TournamentUrlError,
@@ -107,6 +109,18 @@ def write_sample_links(path):
 def scrape_all(urls, tourney_wait=(MIN_TOURNAMENT_WAIT_SECONDS, MAX_TOURNAMENT_WAIT_SECONDS), log=print):
     """Scrape every link in order; returns de-duplicated rows. Problems are logged, never fatal."""
     all_rows, seen, failed = [], set(), []
+    try:
+        with odds_connection(log):
+            _scrape_each(urls, tourney_wait, log, all_rows, seen, failed)
+    except ScrapeError as e:
+        log(f"! {e}")
+        return all_rows
+    if urls and len(failed) == len(urls):
+        log("\n!! No tournament could be read, so the file has no matches. See the messages above.")
+    return all_rows
+
+
+def _scrape_each(urls, tourney_wait, log, all_rows, seen, failed):
     for i, url in enumerate(urls):
         if i > 0:
             _wait(*tourney_wait, lambda s: log(f"  (waiting {s:.1f}s before next tournament...)"))
@@ -126,9 +140,6 @@ def scrape_all(urls, tourney_wait=(MIN_TOURNAMENT_WAIT_SECONDS, MAX_TOURNAMENT_W
             f" ({len(rows) - added} duplicate(s) skipped)")
         if not rows and messages:
             failed.append(url)
-    if urls and len(failed) == len(urls):
-        log("\n!! No tournament could be read, so the file has no matches. See the messages above.")
-    return all_rows
 
 
 def main():

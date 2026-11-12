@@ -8,6 +8,10 @@ in your links file, and writes them in your usual **Formatted Matches** layout.
 - Run it on a PC with a **normal Bulgarian internet connection, no VPN**. The 8888 site
   blocks VPNs and foreign connections, and then the scraper gets no data.
 - Keep `Scraper8888.exe` in its own folder. It creates a `data` folder next to itself.
+- The PC needs Google Chrome, Microsoft Edge or Brave (Edge comes with every Windows PC).
+  The scraper opens 8888punkt.bg in a hidden window of that browser, takes the visitor
+  key the site gives every visitor, and reads the odds through it. You don't see or
+  touch that window; it closes by itself at the end.
 
 ## 2. The links file
 
@@ -50,6 +54,9 @@ whose odds are open right now are included.
 ## 5. Common messages
 
 - *refused the request / VPN or outside Bulgaria*: use a normal Bulgarian connection.
+- *did not hand out its key*: open 8888punkt.bg in a normal browser on the same PC; if it
+  shows no odds there either, the connection or the site is the problem.
+- *Could not start Chrome, Edge or Brave*: install or update one of them.
 - *not found on 8888*: the tournament link changed or the tournament ended; update the row.
 - *N match(es) skipped: main odds not offered or suspended*: those matches have no open
   odds at the moment; run again later.

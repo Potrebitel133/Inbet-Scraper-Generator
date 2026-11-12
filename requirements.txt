@@ -1,3 +1,4 @@
 requests
 openpyxl
 qrcode[pil]
+playwright==1.63.0

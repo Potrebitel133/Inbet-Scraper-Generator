@@ -17,6 +17,7 @@ import run_scraper_8888 as run  # noqa: E402
 import scraper_8888 as s8  # noqa: E402
 
 FIX = os.path.join(ROOT, "tests", "fixtures", "8888")
+s8.USE_BROWSER = False          # these tests replace the odds server; browser tests are separate
 
 
 def fixture(name):
