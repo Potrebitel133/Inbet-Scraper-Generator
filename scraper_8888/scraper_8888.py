@@ -307,12 +307,17 @@ def _odds(market, sport):
     return float(home), float(draw), float(away)
 
 
+def _clean(text):
+    """'Арсенал ' -> 'Арсенал' (the site sometimes leaves extra spaces in names)."""
+    return " ".join(str(text or "").split())
+
+
 def _teams(event):
-    teams = [t.get("name") for t in event.get("teams") or [] if t.get("name")]
+    teams = [_clean(t.get("name")) for t in event.get("teams") or [] if _clean(t.get("name"))]
     if len(teams) >= 2:
         return teams[0], teams[1]
     home, _, away = str(event.get("name") or "").partition(" vs ")
-    return home.strip(), away.strip()
+    return _clean(home), _clean(away)
 
 
 def parse_tournament(data):
@@ -340,7 +345,7 @@ def parse_tournament(data):
                         "Match ID": f"#{ev['id']}", "Day": day, "Time": hour,
                         "Match": f"{home} - {away}",
                         "Home Odds": odds[0], "Draw Odds": odds[1], "Away Odds": odds[2],
-                        "Tournament": tour.get("name"), "Tournament ID": tour.get("id"),
+                        "Tournament": _clean(tour.get("name")), "Tournament ID": tour.get("id"),
                         "_start": ev["startTime"],
                     })
     rows.sort(key=lambda r: (r["_start"], r["Match"]))

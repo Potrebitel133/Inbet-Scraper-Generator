@@ -256,3 +256,16 @@ def test_all_links_failing_is_said_clearly(monkeypatch):
     log = []
     rows = run.scrape_all(["2936", "2980"], (0, 0), log=log.append)
     assert rows == [] and any("No tournament could be read" in line for line in log)
+
+
+def test_extra_spaces_in_names_are_removed():
+    """Live 8888 data had 'Арсенал ' (trailing space): the Excel must say 'Нюкасъл - Арсенал'."""
+    data = fixture("tournament_football.json")
+    tour = data["sports"][0]["categories"][0]["tournaments"][0]
+    ev = next(e for e in tour["sportEvents"] if not e["isLive"])
+    ev["teams"][0]["name"] = "  Нюкасъл "
+    ev["teams"][1]["name"] = "Арсенал  "
+    tour["name"] = " Висша  Лига "
+    rows, _ = s8.parse_tournament(data)
+    row = next(r for r in rows if r["Match ID"] == f"#{ev['id']}")
+    assert row["Match"] == "Нюкасъл - Арсенал" and row["Tournament"] == "Висша Лига"
