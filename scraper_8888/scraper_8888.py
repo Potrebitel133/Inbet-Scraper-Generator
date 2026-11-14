@@ -12,6 +12,10 @@ the site's display variants):
     football    23   Краен Резултат (1 X 2)         -> Home / Draw / Away
     basketball  212  Победител (вкл. Продължение)   -> Home / Away, Draw = 10
     tennis      16   Победител                      -> Home / Away, Draw = 10
+Tournaments from 8888's other data provider send the same market under another
+number; it is then found by its exact name (see MAIN_MARKET_NAMES). A match whose
+odds are missing from the tournament list is read from its own match page
+(GET /api/v2/widgets/events/{id}).
 
 Early payout ("Ранно изплащане") on 8888 is a promotion on the top football,
 tennis and basketball tournaments, not a separate odds market, so the odds are
@@ -278,33 +282,75 @@ def tournament_id_for(url):
 
 
 # --- parsing -----------------------------------------------------------------------
+# 8888 takes its odds from more than one data provider. Most tournaments use the
+# uIds above, but some (ITF tennis, for example) send the same full-match market
+# under another number and with plain "1" / "2" selections. Those are found by the
+# market's exact name; a part-of-match market ("1-ви Сет - Победител",
+# "1-ва Четвърт - Победител") never matches an exact name.
+MAIN_MARKET_NAMES = {
+    "football": ("краен резултат",),
+    "basketball": ("победител (вкл. продължение)", "победител"),
+    "tennis": ("победител",),
+}
+EVENT_PAGE_LIMIT = 25           # match pages read per tournament when the list lacks the odds
+EVENT_PAGE_WAIT = (0.4, 1.0)    # seconds between those reads
+DEBUG_DIR = None                # folder for the raw reply of tournaments with skipped matches
+
+
+def _open_market(market_type):
+    for market in market_type.get("markets") or []:
+        if market.get("status") == 1:
+            return market
+    return None
+
+
 def _main_market(event, sport):
+    types = event.get("marketTypes") or []
     uid = SPORTS[sport]
-    for mt in event.get("marketTypes") or []:
+    for mt in types:
         if mt.get("uId") == uid or (mt.get("uId") is None and mt.get("id") == uid):
-            for market in mt.get("markets") or []:
-                if market.get("status") == 1:
+            market = _open_market(mt)
+            if market:
+                return market
+    for wanted in MAIN_MARKET_NAMES[sport]:
+        for mt in types:
+            if _clean(mt.get("name")).lower() == wanted:
+                market = _open_market(mt)
+                if market:
                     return market
     return None
 
 
-def _odds(market, sport):
-    """(home, draw, away) from a main market, or None if any needed price is missing/suspended."""
+def _odds(market, sport, teams=("", "")):
+    """(home, draw, away) from a main market, or None if it is not a clean 1 X 2 / 1 2 market.
+
+    A selection counts by its type number, its "1" / "X" / "2" name, or (some
+    providers) the team's own name. Any unknown, missing, suspended or doubled
+    selection means the match is skipped rather than guessed.
+    """
     sels = [s for s in market.get("selections") or [] if s.get("isActive", True) and s.get("status", 1) == 1]
-    home = draw = away = None
-    for s in sels:
-        t, name = s.get("typeId"), str(s.get("typeName") or s.get("name") or "").strip().upper()
-        if t in HOME_TYPES or name == "1":
-            home = s.get("odds")
-        elif t in DRAW_TYPES or name in ("X", "Х"):
-            draw = s.get("odds")
-        elif t in AWAY_TYPES or name == "2":
-            away = s.get("odds")
-    if sport != "football":
-        draw = NO_DRAW_ODDS
-    if None in (home, draw, away):
+    if len(sels) != (3 if sport == "football" else 2):
         return None
-    return float(home), float(draw), float(away)
+    home_team, away_team = (_clean(t).upper() for t in teams)
+    found = {}
+    for s in sels:
+        t, name = s.get("typeId"), _clean(s.get("typeName") or s.get("name")).upper()
+        if t in HOME_TYPES or name == "1" or (home_team and name == home_team):
+            side = "home"
+        elif t in DRAW_TYPES or name in ("X", "Х"):
+            side = "draw"
+        elif t in AWAY_TYPES or name == "2" or (away_team and name == away_team):
+            side = "away"
+        else:
+            return None
+        if side in found or s.get("odds") is None:
+            return None
+        found[side] = s.get("odds")
+    if sport != "football":
+        found["draw"] = NO_DRAW_ODDS
+    if set(found) != {"home", "draw", "away"}:
+        return None
+    return float(found["home"]), float(found["draw"]), float(found["away"])
 
 
 def _clean(text):
@@ -320,43 +366,104 @@ def _teams(event):
     return _clean(home), _clean(away)
 
 
-def parse_tournament(data):
-    """Tournament API reply -> (rows, notes). Upcoming matches with open main-market odds only."""
-    rows, skipped = [], {"live": 0, "no odds": 0, "other sport": 0}
+def _row(event, sport, tour):
+    """One template row for a match with open main odds, else None."""
+    home, away = _teams(event)
+    if not (home and away):
+        return None                                   # not a match (e.g. a tournament-winner bet)
+    market = _main_market(event, sport)
+    odds = _odds(market, sport, (home, away)) if market else None
+    if not odds:
+        return None
+    day, hour = day_and_time(event["startTime"])
+    return {
+        "Match ID": f"#{event['id']}", "Day": day, "Time": hour,
+        "Match": f"{home} - {away}",
+        "Home Odds": odds[0], "Draw Odds": odds[1], "Away Odds": odds[2],
+        "Tournament": _clean(tour.get("name")), "Tournament ID": tour.get("id"),
+        "_start": event["startTime"],
+    }
+
+
+def _read_tournament(data):
+    """Tournament reply -> (rows, matches without odds [(event, sport, tournament)], other-sport count)."""
+    rows, missing, other = [], [], 0
     for sport_block in data.get("sports") or []:
         sport = sport_block.get("identifier")
         for cat in sport_block.get("categories") or []:
             for tour in cat.get("tournaments") or []:
                 for ev in tour.get("sportEvents") or []:
                     if sport not in SPORTS:
-                        skipped["other sport"] += 1
-                        continue
-                    if ev.get("isLive"):
-                        skipped["live"] += 1
-                        continue
-                    market = _main_market(ev, sport)
-                    odds = _odds(market, sport) if market else None
-                    if not odds:
-                        skipped["no odds"] += 1
-                        continue
-                    home, away = _teams(ev)
-                    day, hour = day_and_time(ev["startTime"])
-                    rows.append({
-                        "Match ID": f"#{ev['id']}", "Day": day, "Time": hour,
-                        "Match": f"{home} - {away}",
-                        "Home Odds": odds[0], "Draw Odds": odds[1], "Away Odds": odds[2],
-                        "Tournament": _clean(tour.get("name")), "Tournament ID": tour.get("id"),
-                        "_start": ev["startTime"],
-                    })
+                        other += 1
+                    elif not ev.get("isLive"):
+                        row = _row(ev, sport, tour)
+                        if row:
+                            rows.append(row)
+                        else:
+                            missing.append((ev, sport, tour))
+    return rows, missing, other
+
+
+def _finish(rows, no_odds, other):
     rows.sort(key=lambda r: (r["_start"], r["Match"]))
     for r in rows:
         r.pop("_start")
     notes = []
-    if skipped["no odds"]:
-        notes.append(f"{skipped['no odds']} match(es) skipped: main odds not offered or suspended right now")
-    if skipped["other sport"]:
-        notes.append(f"{skipped['other sport']} match(es) skipped: not football, basketball or tennis")
+    if no_odds:
+        notes.append(f"{no_odds} match(es) skipped: main odds not offered or suspended right now")
+    if other:
+        notes.append(f"{other} match(es) skipped: not football, basketball or tennis")
     return rows, notes
+
+
+def parse_tournament(data):
+    """Tournament API reply -> (rows, notes). Upcoming matches with open main-market odds only."""
+    rows, missing, other = _read_tournament(data)
+    return _finish(rows, len(missing), other)
+
+
+def _from_match_pages(missing, raw_pages):
+    """Read each match page for matches whose odds were not in the tournament list.
+
+    Some tournaments list their matches without the main market; the match's own
+    page has every market. Returns the rows found and the matches still without odds.
+    """
+    rows, still_missing = [], []
+    for i, (ev, sport, tour) in enumerate(missing):
+        if i >= EVENT_PAGE_LIMIT:
+            still_missing.extend(missing[i:])
+            break
+        if i:
+            _wait(*EVENT_PAGE_WAIT)
+        try:
+            page = fetch_json(f"v2/widgets/events/{ev['id']}")
+        except ScrapeError:
+            still_missing.extend(missing[i:])        # one failure: the rest would fail the same way
+            break
+        raw_pages[str(ev["id"])] = page
+        row = None
+        if isinstance(page, dict) and not page.get("isLive"):
+            row = _row(dict(ev, **{k: page[k] for k in ("marketTypes", "teams") if page.get(k)}), sport, tour)
+        if row:
+            rows.append(row)
+        else:
+            still_missing.append((ev, sport, tour))
+    return rows, still_missing
+
+
+def _save_raw(tid, data, raw_pages):
+    """Keep the site's reply for a tournament with skipped matches, for checking later."""
+    if not DEBUG_DIR:
+        return None
+    import json
+    try:
+        os.makedirs(DEBUG_DIR, exist_ok=True)
+        path = os.path.join(DEBUG_DIR, f"tournament_{tid}.json")
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump({"tournament": data, "match_pages": raw_pages}, f, ensure_ascii=False, indent=1)
+        return path
+    except OSError:
+        return None
 
 
 def scrape_tournament(url, on_wait=None):
@@ -366,7 +473,16 @@ def scrape_tournament(url, on_wait=None):
         data = fetch_json(f"v2/widgets/tournaments/{tid}", {"sportEventTypes": "prematch"})
     except (TournamentUrlError, ScrapeError) as e:
         return [], [str(e)]
-    rows, notes = parse_tournament(data)
+    rows, missing, other = _read_tournament(data)
+    raw_pages = {}
+    if missing:
+        found, missing = _from_match_pages(missing, raw_pages)
+        rows += found
+    rows, notes = _finish(rows, len(missing), other)
+    if missing:
+        saved = _save_raw(tid, data, raw_pages)
+        if saved:
+            notes[0] += f" (site data saved in {saved})"
     if not rows and not notes:
         notes.append("no upcoming matches in this tournament right now")
     return rows, notes

@@ -269,3 +269,143 @@ def test_extra_spaces_in_names_are_removed():
     rows, _ = s8.parse_tournament(data)
     row = next(r for r in rows if r["Match ID"] == f"#{ev['id']}")
     assert row["Match"] == "Нюкасъл - Арсенал" and row["Tournament"] == "Висша Лига"
+
+
+# --- 8888's other data provider and match pages -------------------------------------------
+def events_of(data):
+    return data["sports"][0]["categories"][0]["tournaments"][0]["sportEvents"]
+
+
+def test_other_provider_tennis_is_read():
+    """Real ITF reply: winner market 277 "Победител" with selections "1" / "2" (the old version skipped all 13)."""
+    rows, notes = s8.parse_tournament(fixture("tournament_tennis_itf.json"))
+    events, tour = raw_events("tournament_tennis_itf.json")
+    assert len(rows) == len(events) == 13 and notes == []
+    for r in rows:
+        market = events[r["Match ID"]]["marketTypes"][0]["markets"][0]
+        odds = {s["typeName"]: s["odds"] for s in market["selections"]}
+        assert (r["Home Odds"], r["Draw Odds"], r["Away Odds"]) == (odds["1"], 10, odds["2"])
+        assert (r["Tournament"], r["Tournament ID"]) == ("Йокохама, Жени, Сингъл", 66379)
+
+
+def other_provider_basketball():
+    """The real basketball reply, with the winner market sent the other provider's way:
+    another market number, both selections of one type, named after the teams, away team first."""
+    data = fixture("tournament_basketball.json")
+    for ev in events_of(data):
+        for mt in ev["marketTypes"]:
+            if mt["uId"] == 212:
+                mt["id"] = mt["uId"] = 9212
+                for m in mt["markets"]:
+                    for s in m["selections"]:
+                        team = ev["teams"][0 if s["typeId"] == 166 else 1]["name"]
+                        s["typeId"], s["typeName"], s["name"] = 440762, team, team
+                    m["selections"].reverse()
+    return data
+
+
+def test_other_provider_basketball_is_read_by_team_names():
+    expected, _ = s8.parse_tournament(fixture("tournament_basketball.json"))
+    rows, _ = s8.parse_tournament(other_provider_basketball())
+    assert expected and rows == expected
+
+
+def test_part_of_match_markets_are_never_used():
+    data = fixture("tournament_basketball.json")
+    for ev in events_of(data):
+        for mt in ev["marketTypes"]:
+            if mt["uId"] == 212:
+                mt["id"] = mt["uId"] = 9115
+                mt["name"] = "1-ва Четвърт - Победител"
+    rows, notes = s8.parse_tournament(data)
+    assert rows == [] and "skipped" in notes[0]
+
+
+@pytest.mark.parametrize("change", ["unknown name", "same side twice", "one side missing", "suspended"])
+def test_unclear_odds_are_skipped_not_guessed(change):
+    data = fixture("tournament_tennis_itf.json")
+    ev = events_of(data)[0]
+    sels = ev["marketTypes"][0]["markets"][0]["selections"]
+    if change == "unknown name":
+        sels[1]["typeName"] = sels[1]["name"] = "Някой Друг"
+    elif change == "same side twice":
+        sels[1]["typeName"] = sels[1]["name"] = "1"
+    elif change == "one side missing":
+        sels.pop()
+    else:
+        sels[0]["status"] = -1
+    rows, notes = s8.parse_tournament(data)
+    assert f"#{ev['id']}" not in {r["Match ID"] for r in rows} and len(rows) == 12
+    assert notes == ["1 match(es) skipped: main odds not offered or suspended right now"]
+
+
+def test_tournament_winner_bets_are_not_matches():
+    data = fixture("tournament_tennis_itf.json")
+    ev = events_of(data)[0]
+    ev["teams"], ev["name"] = [], "Йокохама - Победител в Турнира"
+    rows, _ = s8.parse_tournament(data)
+    assert f"#{ev['id']}" not in {r["Match ID"] for r in rows}
+
+
+def serve(monkeypatch, listed, pages):
+    """Fake odds server: the tournament list, plus match pages by event id (missing page = HTTP 404)."""
+    calls = []
+
+    def fake(path, params=None):
+        calls.append(path)
+        if path.startswith("v2/widgets/tournaments/"):
+            return listed
+        eid = int(path.rsplit("/", 1)[1])
+        if eid not in pages:
+            raise s8.ScrapeError("not found on 8888 (HTTP 404)")
+        return pages[eid]
+
+    monkeypatch.setattr(s8, "fetch_json", fake)
+    monkeypatch.setattr(s8, "EVENT_PAGE_WAIT", (0, 0))
+    return calls
+
+
+def test_match_pages_are_read_when_the_list_lacks_the_odds(monkeypatch, tmp_path):
+    full = other_provider_basketball()
+    listed = other_provider_basketball()
+    for ev in events_of(listed):
+        ev["marketTypes"] = []                     # the list names the matches but has no odds
+    pages = {ev["id"]: ev for ev in events_of(full)}
+    calls = serve(monkeypatch, listed, pages)
+    monkeypatch.setattr(s8, "DEBUG_DIR", str(tmp_path / "debug"))
+
+    rows, notes = s8.scrape_tournament("3004")
+    expected, expected_notes = s8.parse_tournament(fixture("tournament_basketball.json"))
+    assert expected and rows == expected and notes == expected_notes
+    upcoming = [ev["id"] for ev in events_of(listed) if not ev["isLive"]]
+    assert calls == ["v2/widgets/tournaments/3004"] + [f"v2/widgets/events/{i}" for i in upcoming]
+
+
+def test_site_data_is_kept_when_matches_are_still_skipped(monkeypatch, tmp_path):
+    listed = fixture("tournament_basketball.json")
+    for ev in events_of(listed):
+        ev["marketTypes"] = []
+    upcoming = [ev["id"] for ev in events_of(listed) if not ev["isLive"]]
+    serve(monkeypatch, listed, {i: {"id": i, "isLive": False, "marketTypes": []} for i in upcoming})
+    monkeypatch.setattr(s8, "DEBUG_DIR", str(tmp_path / "debug"))
+
+    rows, notes = s8.scrape_tournament("3004")
+    saved = tmp_path / "debug" / "tournament_3004.json"
+    assert rows == [] and saved.exists()
+    assert notes[0].startswith(f"{len(upcoming)} match(es) skipped") and str(saved) in notes[0]
+    kept = json.loads(saved.read_text(encoding="utf-8"))
+    assert kept["tournament"] == listed and set(kept["match_pages"]) == {str(i) for i in upcoming}
+
+
+def test_match_pages_stop_at_the_first_failure_and_at_the_limit(monkeypatch):
+    listed = fixture("tournament_tennis_itf.json")
+    for ev in events_of(listed):
+        ev["marketTypes"] = []
+    calls = serve(monkeypatch, listed, {})                 # every match page fails
+    rows, notes = s8.scrape_tournament("66379")
+    assert rows == [] and len(calls) == 2 and notes[0].startswith("13 match(es) skipped")
+
+    calls = serve(monkeypatch, listed, {ev["id"]: {"isLive": False} for ev in events_of(listed)})
+    monkeypatch.setattr(s8, "EVENT_PAGE_LIMIT", 3)
+    rows, notes = s8.scrape_tournament("66379")
+    assert len(calls) == 1 + 3 and notes[0].startswith("13 match(es) skipped")

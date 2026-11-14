@@ -59,4 +59,6 @@ whose odds are open right now are included.
 - *Could not start Chrome, Edge or Brave*: install or update one of them.
 - *not found on 8888*: the tournament link changed or the tournament ended; update the row.
 - *N match(es) skipped: main odds not offered or suspended*: those matches have no open
-  odds at the moment; run again later.
+  odds at the moment; run again later. The scraper has already looked at each of those
+  matches' own pages too. What the site sent is saved in `data\debug\tournament_<number>.json`;
+  if the site shows odds for those matches, send that file to support.

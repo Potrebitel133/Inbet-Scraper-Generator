@@ -1,0 +1,1377 @@
+{
+ "sports": [
+  {
+   "id": 68,
+   "name": "Тенис",
+   "identifier": "tennis",
+   "eventsCount": 107,
+   "categories": [
+    {
+     "id": 607,
+     "name": "ИТФ Жени",
+     "tournaments": [
+      {
+       "id": 66379,
+       "name": "Йокохама, Жени, Сингъл",
+       "orderNumber": 4764,
+       "sportEvents": [
+        {
+         "id": 4344562,
+         "externalId": "",
+         "name": "Кайо Нишимура vs Чиа И Цао",
+         "startTime": "2026-11-09T00:30:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 128493,
+           "name": "Кайо Нишимура",
+           "score": 0
+          },
+          {
+           "id": 333600,
+           "name": "Чиа И Цао",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513121810,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "203084286675817281",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.47,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "4564482656343811113",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.2,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4344562,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Кайо Нишимура"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Чиа И Цао"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T00:30:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20822637",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245192522543136768"
+        },
+        {
+         "id": 4344876,
+         "externalId": "",
+         "name": "Ерика Сема vs Тиана Тян Дън",
+         "startTime": "2026-11-09T01:30:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 117762,
+           "name": "Ерика Сема",
+           "score": 0
+          },
+          {
+           "id": 167226,
+           "name": "Тиана Тян Дън",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513193697,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "435026241452020940",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.76,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "4287509103304237988",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.76,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4344876,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Ерика Сема"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Тиана Тян Дън"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T01:30:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20823098",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245193288540487680"
+        },
+        {
+         "id": 4344878,
+         "externalId": "",
+         "name": "Приска Маделин Нугрохо vs Аюми Миямото",
+         "startTime": "2026-11-09T01:30:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 113418,
+           "name": "Приска Маделин Нугрохо",
+           "score": 0
+          },
+          {
+           "id": 137925,
+           "name": "Аюми Миямото",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513193700,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "6627416518722663943",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.11,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "1494009621739376097",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 4.3,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4344878,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Приска Маделин Нугрохо"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Аюми Миямото"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T01:30:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20823099",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245191104159547392"
+        },
+        {
+         "id": 4345106,
+         "externalId": "",
+         "name": "Рико Кикавада vs Муцуми Уемура",
+         "startTime": "2026-11-09T03:00:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 128579,
+           "name": "Рико Кикавада",
+           "score": 0
+          },
+          {
+           "id": 137937,
+           "name": "Муцуми Уемура",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513223863,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "1501883097769408847",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.65,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "2980835841674186279",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.16,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4345106,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Рико Кикавада"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Муцуми Уемура"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T03:00:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20823298",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245190840031641600"
+        },
+        {
+         "id": 4344579,
+         "externalId": "",
+         "name": "Куреа Хаясака vs Чък Йинг Шек",
+         "startTime": "2026-11-09T00:30:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 340028,
+           "name": "Куреа Хаясака",
+           "score": 0
+          },
+          {
+           "id": 128409,
+           "name": "Чък Йинг Шек",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513243687,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "2062821568723928984",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.66,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "7952243544129446249",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.89,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4344579,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Куреа Хаясака"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Чък Йинг Шек"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T00:30:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20822695",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245205362977013760"
+        },
+        {
+         "id": 4345224,
+         "externalId": "",
+         "name": "Юно Китахара vs Хироко Кувата",
+         "startTime": "2026-11-09T03:00:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 122146,
+           "name": "Юно Китахара",
+           "score": 0
+          },
+          {
+           "id": 127498,
+           "name": "Хироко Кувата",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513244997,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "6839415516208935104",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.15,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "7161762390825420760",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.75,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4345224,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Юно Китахара"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Хироко Кувата"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T03:00:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20823450",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245200073385050112"
+        },
+        {
+         "id": 4345225,
+         "externalId": "",
+         "name": "Хан Цзянсюе vs Йошиока Киса",
+         "startTime": "2026-11-09T03:00:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 125350,
+           "name": "Хан Цзянсюе",
+           "score": 0
+          },
+          {
+           "id": 132252,
+           "name": "Йошиока Киса",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513245005,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "6211944458599865643",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.65,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "1835176658676655821",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.9,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4345225,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Хан Цзянсюе"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Йошиока Киса"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T03:00:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20823451",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245207661212336128"
+        },
+        {
+         "id": 4345039,
+         "externalId": "",
+         "name": "Мичика Озеки vs Наги Ханатани",
+         "startTime": "2026-11-09T04:00:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 129075,
+           "name": "Мичика Озеки",
+           "score": 0
+          },
+          {
+           "id": 114281,
+           "name": "Наги Ханатани",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513245006,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "619249237441890519",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.76,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "4380036207761858017",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.78,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4345039,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Мичика Озеки"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Наги Ханатани"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T04:00:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20823239",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245203471933112320"
+        },
+        {
+         "id": 4345238,
+         "externalId": "",
+         "name": "Шихо Цуджиока vs Сае Ногучи",
+         "startTime": "2026-11-09T06:45:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 128558,
+           "name": "Шихо Цуджиока",
+           "score": 0
+          },
+          {
+           "id": 127965,
+           "name": "Сае Ногучи",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513252482,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "3737323091614174153",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.94,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "1853374114571238731",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.62,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4345238,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Шихо Цуджиока"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Сае Ногучи"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T06:45:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20823478",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245203476169359360"
+        },
+        {
+         "id": 4345249,
+         "externalId": "",
+         "name": "Харуна Аракава vs Камонван Йодпетч",
+         "startTime": "2026-11-09T06:45:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 117800,
+           "name": "Харуна Аракава",
+           "score": 0
+          },
+          {
+           "id": 181235,
+           "name": "Камонван Йодпетч",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513258520,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "1741752686519600019",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.12,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "2711798133647357179",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.51,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4345249,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Харуна Аракава"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Камонван Йодпетч"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T06:45:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20823493",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245203478874685440"
+        },
+        {
+         "id": 4345232,
+         "externalId": "",
+         "name": "Кацуми Нанари vs Юхан Уан",
+         "startTime": "2026-11-09T02:45:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 127095,
+           "name": "Кацуми Нанари",
+           "score": 0
+          },
+          {
+           "id": 120871,
+           "name": "Юхан Уан",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513261484,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "599453058300604660",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 6.2,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "5677906639103650124",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.02,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4345232,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Кацуми Нанари"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Юхан Уан"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T02:45:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20823466",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245196322452537344"
+        },
+        {
+         "id": 4345353,
+         "externalId": "",
+         "name": "Джияй Уан vs Химари Сато",
+         "startTime": "2026-11-09T00:30:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 129264,
+           "name": "Джияй Уан",
+           "score": 0
+          },
+          {
+           "id": 117949,
+           "name": "Химари Сато",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513263077,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "4724260036158042862",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.07,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "8936898297995281798",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 4.8,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4345353,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Джияй Уан"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Химари Сато"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T00:30:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20823497",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245206882711764992"
+        },
+        {
+         "id": 4345355,
+         "externalId": "",
+         "name": "Маюка Айкава vs Карен Цуцуми",
+         "startTime": "2026-11-09T06:45:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 127977,
+           "name": "Маюка Айкава",
+           "score": 0
+          },
+          {
+           "id": 458707,
+           "name": "Карен Цуцуми",
+           "score": 0
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 277,
+           "name": "Победител",
+           "markets": [
+            {
+             "id": 513279594,
+             "typeId": 277,
+             "status": 1,
+             "selections": [
+              {
+               "id": "2310018256045807936",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.01,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "7391673889721057528",
+               "typeId": 440762,
+               "isActive": true,
+               "status": 1,
+               "odds": 7.0,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Победител"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 2570,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 277,
+           "orderNumber": 10,
+           "leadingMarketPriority": 10
+          }
+         ],
+         "metadata": {
+          "$type": "se_sbc",
+          "sportEventId": 4345355,
+          "externalId": "",
+          "sport": {
+           "id": 68,
+           "name": "Тенис",
+           "identifier": "tennis"
+          },
+          "homeCompetitor": {
+           "gameScore": 0,
+           "name": "Маюка Айкава"
+          },
+          "awayCompetitor": {
+           "gameScore": 0,
+           "name": "Карен Цуцуми"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "scheduled": "2026-11-09T06:45:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 2,
+            "externalId": "20823501",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [],
+         "v": "245203476387463168"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -148,6 +148,8 @@ def main():
     parser.add_argument("--input", default=str(here / "data" / "Tournament_Links_8888.xlsx"))
     parser.add_argument("--output", default=str(here / "data" / "Scraped_Matches_8888.xlsx"))
     args = parser.parse_args()
+    import scraper_8888
+    scraper_8888.DEBUG_DIR = os.path.join(os.path.dirname(os.path.abspath(args.output)), "debug")
 
     errors = validate_input_file(args.input)
     if errors:

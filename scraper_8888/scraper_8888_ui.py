@@ -29,6 +29,7 @@ from run_scraper_8888 import (  # noqa: E402
     write_matches,
     write_sample_links,
 )
+import scraper_8888  # noqa: E402
 from scraper_8888 import MAX_TOURNAMENT_WAIT_SECONDS, MIN_TOURNAMENT_WAIT_SECONDS  # noqa: E402
 
 
@@ -42,6 +43,7 @@ def app_dir():
 HERE = app_dir()
 DATA_DIR = HERE / "data"
 DEFAULT_INPUT = DATA_DIR / "Tournament_Links_8888.xlsx"
+scraper_8888.DEBUG_DIR = str(DATA_DIR / "debug")   # site data of tournaments with skipped matches
 
 BG = "#f4f6f8"
 CARD = "#ffffff"
@@ -254,7 +256,6 @@ def _selftest():
         ScraperUI(root)
         root.update()
         root.destroy()
-        import scraper_8888
         from browser_session import BrowserSession
         browser = BrowserSession("about:blank", "-", executable=scraper_8888.BROWSER_EXECUTABLE)
         try:

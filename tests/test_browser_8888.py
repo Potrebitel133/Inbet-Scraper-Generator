@@ -32,7 +32,7 @@ class FakeOdds:
 
     def __init__(self):
         self.valid, self.page_loads, self.served, self.trace_ids = set(), 0, [], []
-        self.expire_after = None          # invalidate all keys after this many tournament replies
+        self.expire_after = None          # invalidate all keys once, after this many tournament replies
         self.page_makes_key = True
 
     def tournament(self, tid):
@@ -65,8 +65,8 @@ def make_servers(state):
                 tid = int(self.path.split("/widgets/tournaments/")[1].split("?")[0])
                 state.served.append(tid)
                 body = state.tournament(tid)
-                if state.expire_after and len(state.served) >= state.expire_after:
-                    state.valid.clear()                       # every key expires now
+                if state.expire_after and len(state.served) == state.expire_after:
+                    state.valid.clear()                       # every key expires now (once)
             self.send_response(200); self._cors()
             self.send_header("Content-Type", "application/json"); self.end_headers()
             self.wfile.write(body.encode("utf-8"))
