@@ -13,7 +13,9 @@ the site's display variants):
     basketball  212  Победител (вкл. Продължение)   -> Home / Away, Draw = 10
     tennis      16   Победител                      -> Home / Away, Draw = 10
 Tournaments from 8888's other data provider send the same market under another
-number; it is then found by its exact name (see MAIN_MARKET_NAMES). A match whose
+number; it is then found by its exact name (see MAIN_MARKET_NAMES). The boosted-odds
+copy of a market (bonus type 1, e.g. id 10000023) is never used: the client bets
+the regular market, which carries the early payout (bonus type 2). A match whose
 odds are missing from the tournament list is read from its own match page
 (GET /api/v2/widgets/events/{id}).
 
@@ -304,14 +306,26 @@ def _open_market(market_type):
     return None
 
 
+def _boosted(market_type):
+    """8888's boosted-odds copy of a market (bonus type 1, "reduced margin", e.g. id 10000023).
+
+    Featured matches carry it next to the regular market, often listed first, with
+    slightly higher odds. The client bets the regular market (the one with early
+    payout, bonus type 2), so the boosted copy is never used (same rule as the
+    Inbet robot's "Enhanced Odds" market).
+    """
+    return any(b.get("typeId") == 1 or "reducedMarginValue" in b for b in market_type.get("bonusTypes") or [])
+
+
 def _main_market(event, sport):
-    types = event.get("marketTypes") or []
+    types = [mt for mt in event.get("marketTypes") or [] if not _boosted(mt)]
     uid = SPORTS[sport]
-    for mt in types:
-        if mt.get("uId") == uid or (mt.get("uId") is None and mt.get("id") == uid):
-            market = _open_market(mt)
-            if market:
-                return market
+    by_uid = [mt for mt in types if mt.get("uId") == uid or (mt.get("uId") is None and mt.get("id") == uid)]
+    by_uid.sort(key=lambda mt: mt.get("id") != uid)          # the regular market first
+    for mt in by_uid:
+        market = _open_market(mt)
+        if market:
+            return market
     for wanted in MAIN_MARKET_NAMES[sport]:
         for mt in types:
             if _clean(mt.get("name")).lower() == wanted:

@@ -1,0 +1,481 @@
+{
+ "sports": [
+  {
+   "id": 66,
+   "name": "Футбол",
+   "identifier": "football",
+   "categories": [
+    {
+     "id": 497,
+     "name": "Англия",
+     "identifier": "GB-ENG",
+     "tournaments": [
+      {
+       "id": 2936,
+       "name": "Висша Лига",
+       "identifier": "premier_league_england",
+       "sportEvents": [
+        {
+         "id": 4200604,
+         "externalId": "14040160",
+         "name": "Манчестър Юнайтед vs Астън Вила",
+         "startTime": "2026-11-08T16:30:00Z",
+         "status": "bookedNotLive",
+         "isLive": false,
+         "teams": [
+          {
+           "id": 444,
+           "name": "Манчестър Юнайтед",
+           "score": 0,
+           "country": "ENG"
+          },
+          {
+           "id": 433,
+           "name": "Астън Вила",
+           "score": 0,
+           "country": "ENG"
+          }
+         ],
+         "marketTypes": [
+          {
+           "id": 10000023,
+           "name": "Краен Резултат",
+           "markets": [
+            {
+             "id": 24753119530,
+             "typeId": 10000023,
+             "status": 1,
+             "selections": [
+              {
+               "id": "6991025617546158380",
+               "typeId": 49,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.08,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "5322727405072414088",
+               "typeId": 50,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.8,
+               "name": "X",
+               "typeName": "X"
+              },
+              {
+               "id": "8980859840181848248",
+               "typeId": 51,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.2,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Краен Резултат"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 0,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "bonusTypes": [
+            {
+             "typeId": 1,
+             "isZeroMargin": false,
+             "reducedMarginValue": 105
+            }
+           ],
+           "isBetBuilder": false,
+           "uId": 23,
+           "orderNumber": 9
+          },
+          {
+           "id": 23,
+           "name": "Краен Резултат",
+           "markets": [
+            {
+             "id": 495601479,
+             "typeId": 23,
+             "status": 1,
+             "selections": [
+              {
+               "id": "6260497374187710630",
+               "typeId": 49,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.0,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "1937006991557771474",
+               "typeId": 50,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.7,
+               "name": "X",
+               "typeName": "X"
+              },
+              {
+               "id": "5339989378994200613",
+               "typeId": 51,
+               "isActive": true,
+               "status": 1,
+               "odds": 3.0,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "Краен Резултат"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            }
+           ],
+           "visGroup": {
+            "id": 915,
+            "visTypeId": 2,
+            "marketTypeNames": {}
+           },
+           "bonusTypes": [
+            {
+             "typeId": 2,
+             "bonusValue": 2
+            }
+           ],
+           "isBetBuilder": false,
+           "uId": 23,
+           "orderNumber": 10
+          },
+          {
+           "id": 24,
+           "name": "Брой Голове",
+           "markets": [
+            {
+             "id": 495605809,
+             "typeId": 24,
+             "status": 1,
+             "selections": [
+              {
+               "id": "945900197916024382",
+               "typeId": 52,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.22,
+               "name": "Над 3.5",
+               "typeName": "Над"
+              },
+              {
+               "id": "6762813049699090121",
+               "typeId": 53,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.61,
+               "name": "Под 3.5",
+               "typeName": "Под"
+              }
+             ],
+             "name": "Брой Голове",
+             "line": "3.5",
+             "isMainLine": true
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            },
+            {
+             "id": 7,
+             "name": "event.marketTypeCategoryGroups.goals",
+             "orderNumber": 3,
+             "identifier": "goals"
+            }
+           ],
+           "visGroup": {
+            "id": 918,
+            "visTypeId": 3,
+            "marketTypeNames": {
+             "24": "90 Минути"
+            }
+           },
+           "customNameInGroup": "90 Минути",
+           "isBetBuilder": false,
+           "uId": 24,
+           "orderNumber": 30
+          },
+          {
+           "id": 101,
+           "name": "Следващ Гол",
+           "markets": [
+            {
+             "id": 495605665,
+             "typeId": 101,
+             "status": 1,
+             "selections": [
+              {
+               "id": "2985234153261802256",
+               "typeId": 150,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.74,
+               "name": "1",
+               "typeName": "1"
+              },
+              {
+               "id": "8761607054499087335",
+               "typeId": 149,
+               "isActive": true,
+               "status": 1,
+               "odds": 12.0,
+               "name": "Без",
+               "typeName": "Без"
+              },
+              {
+               "id": "9189776555508635799",
+               "typeId": 151,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.18,
+               "name": "2",
+               "typeName": "2"
+              }
+             ],
+             "name": "1-ви Гол"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            },
+            {
+             "id": 7,
+             "name": "event.marketTypeCategoryGroups.goals",
+             "orderNumber": 3,
+             "identifier": "goals"
+            }
+           ],
+           "visGroup": {
+            "id": 1312,
+            "visTypeId": 12,
+            "marketTypeNames": {}
+           },
+           "isBetBuilder": false,
+           "uId": 101,
+           "orderNumber": 82
+          },
+          {
+           "id": 67,
+           "name": "Двата Отбора да Отбележат Гол",
+           "markets": [
+            {
+             "id": 495605668,
+             "typeId": 67,
+             "status": 1,
+             "selections": [
+              {
+               "id": "5124392106863279132",
+               "typeId": 102,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.47,
+               "name": "Да",
+               "typeName": "Да"
+              },
+              {
+               "id": "6622484177416696989",
+               "typeId": 103,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.55,
+               "name": "Не",
+               "typeName": "Не"
+              }
+             ],
+             "name": "Двата Отбора да Отбележат Гол"
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            },
+            {
+             "id": 7,
+             "name": "event.marketTypeCategoryGroups.goals",
+             "orderNumber": 3,
+             "identifier": "goals"
+            }
+           ],
+           "visGroup": {
+            "id": 13,
+            "visTypeId": 2,
+            "marketTypeNames": {
+             "67": "90 Минути"
+            }
+           },
+           "customNameInGroup": "90 Минути",
+           "isBetBuilder": false,
+           "uId": 67,
+           "orderNumber": 40
+          },
+          {
+           "id": 134,
+           "name": "Брой Корнери",
+           "markets": [
+            {
+             "id": 507002702,
+             "typeId": 134,
+             "status": 1,
+             "selections": [
+              {
+               "id": "2478139645372529148",
+               "typeId": 52,
+               "isActive": true,
+               "status": 1,
+               "odds": 1.67,
+               "name": "Над 9.5",
+               "typeName": "Над"
+              },
+              {
+               "id": "8259262466229065995",
+               "typeId": 53,
+               "isActive": true,
+               "status": 1,
+               "odds": 2.02,
+               "name": "Под 9.5",
+               "typeName": "Под"
+              }
+             ],
+             "name": "Брой Корнери",
+             "line": "9.5",
+             "isMainLine": true
+            }
+           ],
+           "categoryGroups": [
+            {
+             "id": 5,
+             "name": "event.marketTypeCategoryGroups.main",
+             "orderNumber": 1,
+             "identifier": "main"
+            },
+            {
+             "id": 1,
+             "name": "event.marketTypeCategoryGroups.corners",
+             "orderNumber": 5,
+             "identifier": "corners"
+            }
+           ],
+           "visGroup": {
+            "id": 27,
+            "visTypeId": 3,
+            "marketTypeNames": {
+             "134": "90 Минути"
+            }
+           },
+           "customNameInGroup": "90 Минути",
+           "isBetBuilder": false,
+           "uId": 134,
+           "orderNumber": 45
+          }
+         ],
+         "metadata": {
+          "$type": "football",
+          "sportEventId": 4200604,
+          "externalId": "14040160",
+          "sport": {
+           "id": 66,
+           "name": "Футбол",
+           "identifier": "football"
+          },
+          "homeCompetitor": {
+           "redCards": 0,
+           "name": "Манчестър Юнайтед",
+           "jersey": {
+            "baseColor": "ea0000",
+            "number": "ffffff",
+            "sleeveColor": "000000",
+            "design": "plain",
+            "type": "shortSleeve",
+            "incomingType": "short_sleeves"
+           },
+           "country": "ENG"
+          },
+          "awayCompetitor": {
+           "redCards": 0,
+           "name": "Астън Вила",
+           "jersey": {
+            "baseColor": "88002d",
+            "number": "ffffff",
+            "sleeveColor": "d8e7f9",
+            "design": "plain",
+            "type": "shortSleeve",
+            "incomingType": "short_sleeves"
+           },
+           "country": "ENG"
+          },
+          "isLive": false,
+          "isOutright": false,
+          "status": 0,
+          "periods": [],
+          "isClockStoppedForPhase": false,
+          "scheduled": "2026-11-08T16:30:00Z",
+          "hasLiveStream": false,
+          "providers": [
+           {
+            "id": 1,
+            "externalId": "sr:match:72221386",
+            "hasLiveVideo": false
+           },
+           {
+            "id": 3,
+            "externalId": "14040160",
+            "hasLiveVideo": false
+           }
+          ]
+         },
+         "bonusTypes": [
+          {
+           "typeId": 1,
+           "isZeroMargin": false,
+           "reducedMarginValue": 105
+          },
+          {
+           "typeId": 2,
+           "bonusValue": 2
+          }
+         ],
+         "v": "245208053912436736"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -409,3 +409,24 @@ def test_match_pages_stop_at_the_first_failure_and_at_the_limit(monkeypatch):
     monkeypatch.setattr(s8, "EVENT_PAGE_LIMIT", 3)
     rows, notes = s8.scrape_tournament("66379")
     assert len(calls) == 1 + 3 and notes[0].startswith("13 match(es) skipped")
+
+
+# --- boosted odds: the regular (early payout) market is always the one used -----------------
+def test_boosted_odds_market_is_never_used():
+    """Real derby reply: Man Utd vs Aston Villa has a boosted 1X2 (id 10000023, bonus type 1,
+    2.08 / 3.8 / 3.2) listed BEFORE the regular early payout 1X2 (id 23, bonus type 2,
+    2.0 / 3.7 / 3.0). The old version took the boosted odds."""
+    data = fixture("tournament_football_boosted.json")
+    ev = events_of(data)[0]
+    assert [mt["id"] for mt in ev["marketTypes"]][:2] == [10000023, 23]
+    rows, notes = s8.parse_tournament(data)
+    assert notes == [] and len(rows) == 1
+    assert (rows[0]["Home Odds"], rows[0]["Draw Odds"], rows[0]["Away Odds"]) == (2.0, 3.7, 3.0)
+
+
+def test_match_with_only_boosted_odds_is_skipped():
+    data = fixture("tournament_football_boosted.json")
+    ev = events_of(data)[0]
+    ev["marketTypes"] = [mt for mt in ev["marketTypes"] if mt["id"] != 23]
+    rows, notes = s8.parse_tournament(data)
+    assert rows == [] and notes[0].startswith("1 match(es) skipped")
