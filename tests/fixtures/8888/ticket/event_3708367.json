@@ -1,0 +1,517 @@
+{
+ "sport": {
+  "id": 66,
+  "name": "Футбол",
+  "identifier": "football"
+ },
+ "category": {
+  "id": 1133,
+  "name": "Евротурнири",
+  "identifier": "EU"
+ },
+ "tournament": {
+  "id": 16808,
+  "name": "Шампионска Лига"
+ },
+ "id": 3708367,
+ "externalId": "14388184",
+ "name": "Спортинг vs Манчестър Юнайтед",
+ "startTime": "2026-11-25T20:00:00Z",
+ "status": "bookedNotLive",
+ "isLive": false,
+ "teams": [
+  {
+   "id": 25,
+   "name": "Спортинг",
+   "score": 0
+  },
+  {
+   "id": 444,
+   "name": "Манчестър Юнайтед",
+   "score": 0
+  }
+ ],
+ "marketTypes": [
+  {
+   "id": 101,
+   "name": "Следващ Гол",
+   "markets": [
+    {
+     "id": 508839813,
+     "typeId": 101,
+     "status": 1,
+     "selections": [
+      {
+       "id": "8079539545869339896",
+       "typeId": 150,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.89,
+       "name": "1",
+       "typeName": "1"
+      },
+      {
+       "id": "2367380460028455937",
+       "typeId": 149,
+       "isActive": true,
+       "status": 1,
+       "odds": 10.5,
+       "name": "Без",
+       "typeName": "Без"
+      },
+      {
+       "id": "2793711556138235761",
+       "typeId": 151,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.92,
+       "name": "2",
+       "typeName": "2"
+      }
+     ],
+     "name": "1-ви Гол"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    },
+    {
+     "id": 7,
+     "name": "event.marketTypeCategoryGroups.goals",
+     "orderNumber": 3,
+     "identifier": "goals"
+    }
+   ],
+   "visGroup": {
+    "id": 1312,
+    "visTypeId": 12,
+    "marketTypeNames": {}
+   },
+   "isBetBuilder": false,
+   "uId": 101,
+   "orderNumber": 82
+  },
+  {
+   "id": 23,
+   "name": "Краен Резултат",
+   "markets": [
+    {
+     "id": 508839289,
+     "typeId": 23,
+     "status": 1,
+     "selections": [
+      {
+       "id": "5977048929807781092",
+       "typeId": 49,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.4,
+       "name": "1",
+       "typeName": "1"
+      },
+      {
+       "id": "2230089943052772500",
+       "typeId": 50,
+       "isActive": true,
+       "status": 1,
+       "odds": 3.2,
+       "name": "X",
+       "typeName": "X"
+      },
+      {
+       "id": "5622756678033589349",
+       "typeId": 51,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.45,
+       "name": "2",
+       "typeName": "2"
+      }
+     ],
+     "name": "Краен Резултат"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    }
+   ],
+   "visGroup": {
+    "id": 915,
+    "visTypeId": 2,
+    "marketTypeNames": {}
+   },
+   "bonusTypes": [
+    {
+     "typeId": 2,
+     "bonusValue": 2
+    }
+   ],
+   "isBetBuilder": false,
+   "uId": 23,
+   "orderNumber": 10
+  },
+  {
+   "id": 67,
+   "name": "Двата Отбора да Отбележат Гол",
+   "markets": [
+    {
+     "id": 508839816,
+     "typeId": 67,
+     "status": 1,
+     "selections": [
+      {
+       "id": "3731485016073976692",
+       "typeId": 102,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.42,
+       "name": "Да",
+       "typeName": "Да"
+      },
+      {
+       "id": "3400869622176527349",
+       "typeId": 103,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.45,
+       "name": "Не",
+       "typeName": "Не"
+      }
+     ],
+     "name": "Двата Отбора да Отбележат Гол"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    },
+    {
+     "id": 7,
+     "name": "event.marketTypeCategoryGroups.goals",
+     "orderNumber": 3,
+     "identifier": "goals"
+    }
+   ],
+   "visGroup": {
+    "id": 13,
+    "visTypeId": 2,
+    "marketTypeNames": {
+     "67": "90 Минути"
+    }
+   },
+   "customNameInGroup": "90 Минути",
+   "isBetBuilder": false,
+   "uId": 67,
+   "orderNumber": 40
+  },
+  {
+   "id": 72,
+   "name": "Двоен Шанс",
+   "markets": [
+    {
+     "id": 508839287,
+     "typeId": 72,
+     "status": 1,
+     "selections": [
+      {
+       "id": "5567161177730848337",
+       "typeId": 163,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.45,
+       "name": "1X",
+       "typeName": "1X"
+      },
+      {
+       "id": "5949328610268078806",
+       "typeId": 164,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.27,
+       "name": "12",
+       "typeName": "12"
+      },
+      {
+       "id": "174117892834050595",
+       "typeId": 165,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.48,
+       "name": "Х2",
+       "typeName": "Х2"
+      }
+     ],
+     "name": "Двоен Шанс"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    }
+   ],
+   "visGroup": {
+    "id": 31,
+    "visTypeId": 2,
+    "marketTypeNames": {
+     "72": "90 Минути"
+    }
+   },
+   "customNameInGroup": "90 Минути",
+   "isBetBuilder": false,
+   "uId": 72,
+   "orderNumber": 42
+  },
+  {
+   "id": 74,
+   "name": "Равенство Няма Залог",
+   "markets": [
+    {
+     "id": 508839288,
+     "typeId": 74,
+     "status": 1,
+     "selections": [
+      {
+       "id": "4173379846692399914",
+       "typeId": 166,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.79,
+       "name": "1",
+       "typeName": "1"
+      },
+      {
+       "id": "7570559010679475167",
+       "typeId": 167,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.84,
+       "name": "2",
+       "typeName": "2"
+      }
+     ],
+     "name": "Равенство Няма Залог"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    }
+   ],
+   "visGroup": {
+    "id": 14,
+    "visTypeId": 2,
+    "marketTypeNames": {
+     "74": "90 Минути"
+    }
+   },
+   "customNameInGroup": "90 Минути",
+   "isBetBuilder": false,
+   "uId": 74,
+   "orderNumber": 80
+  },
+  {
+   "id": 24,
+   "name": "Брой Голове",
+   "markets": [
+    {
+     "id": 508839524,
+     "typeId": 24,
+     "status": 1,
+     "selections": [
+      {
+       "id": "6989072461902640508",
+       "typeId": 52,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.18,
+       "name": "Над 3.5",
+       "typeName": "Над"
+      },
+      {
+       "id": "3460165065969948045",
+       "typeId": 53,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.54,
+       "name": "Под 3.5",
+       "typeName": "Под"
+      }
+     ],
+     "name": "Брой Голове",
+     "line": "3.5",
+     "isMainLine": true
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    },
+    {
+     "id": 7,
+     "name": "event.marketTypeCategoryGroups.goals",
+     "orderNumber": 3,
+     "identifier": "goals"
+    }
+   ],
+   "visGroup": {
+    "id": 918,
+    "visTypeId": 3,
+    "marketTypeNames": {
+     "24": "90 Минути",
+     "82": "1-во Полувреме"
+    }
+   },
+   "customNameInGroup": "90 Минути",
+   "isBetBuilder": false,
+   "uId": 24,
+   "orderNumber": 30
+  },
+  {
+   "id": 82,
+   "name": "1-во Полувреме - Брой Голове",
+   "markets": [
+    {
+     "id": 508839872,
+     "typeId": 82,
+     "status": 1,
+     "selections": [
+      {
+       "id": "6903476553031516048",
+       "typeId": 52,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.12,
+       "name": "Над 1.5",
+       "typeName": "Над"
+      },
+      {
+       "id": "1095719197001867111",
+       "typeId": 53,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.58,
+       "name": "Под 1.5",
+       "typeName": "Под"
+      }
+     ],
+     "name": "1-во Полувреме - Брой Голове",
+     "line": "1.5",
+     "isMainLine": true
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    },
+    {
+     "id": 7,
+     "name": "event.marketTypeCategoryGroups.goals",
+     "orderNumber": 3,
+     "identifier": "goals"
+    },
+    {
+     "id": 2,
+     "name": "event.marketTypeCategoryGroups.first_half",
+     "orderNumber": 8,
+     "identifier": "first_half"
+    }
+   ],
+   "visGroup": {
+    "id": 918,
+    "visTypeId": 3,
+    "marketTypeNames": {
+     "24": "90 Минути",
+     "82": "1-во Полувреме"
+    }
+   },
+   "customNameInGroup": "1-во Полувреме",
+   "isBetBuilder": false,
+   "uId": 82,
+   "orderNumber": 200
+  }
+ ],
+ "metadata": {
+  "$type": "football",
+  "sportEventId": 3708367,
+  "externalId": "14388184",
+  "sport": {
+   "id": 66,
+   "name": "Футбол",
+   "identifier": "football"
+  },
+  "homeCompetitor": {
+   "redCards": 0,
+   "name": "Спортинг",
+   "jersey": {
+    "baseColor": "187312",
+    "number": "ffffff",
+    "secondaryColor": "ffffff",
+    "sleeveColor": "f5f5f5",
+    "design": "horizontalStripes",
+    "type": "shortSleeve",
+    "incomingType": "short_sleeves"
+   }
+  },
+  "awayCompetitor": {
+   "redCards": 0,
+   "name": "Манчестър Юнайтед",
+   "jersey": {
+    "baseColor": "ea0000",
+    "number": "ffffff",
+    "sleeveColor": "000000",
+    "design": "plain",
+    "type": "shortSleeve",
+    "incomingType": "short_sleeves"
+   }
+  },
+  "isLive": false,
+  "isOutright": false,
+  "status": 0,
+  "periods": [],
+  "isClockStoppedForPhase": false,
+  "scheduled": "2026-11-25T20:00:00Z",
+  "hasLiveStream": false,
+  "providers": [
+   {
+    "id": 1,
+    "externalId": "sr:match:74166048",
+    "hasLiveVideo": false
+   },
+   {
+    "id": 3,
+    "externalId": "14388184",
+    "hasLiveVideo": false
+   }
+  ]
+ },
+ "bonusTypes": [
+  {
+   "typeId": 2,
+   "bonusValue": 2
+  }
+ ],
+ "v": "247535797195243520"
+}

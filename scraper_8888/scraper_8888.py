@@ -233,6 +233,63 @@ def fetch_json(path, params=None):
     raise last
 
 
+def _send(url, method, body, content_type, with_key):
+    """One request through the 8888 page (live) or plain requests (tests) -> (status, text)."""
+    if _browser is not None:
+        status, text = _browser.fetch(url, method=method, body=body, content_type=content_type,
+                                      with_key=with_key)
+        if status == 0:
+            raise ScrapeError(f"no connection to 8888 ({str(text)[:120]})")
+        return status, text
+    headers = {"trace-id": str(uuid.uuid4())} if with_key else {}
+    if content_type:
+        headers["content-type"] = content_type
+    try:
+        r = SESSION.request(method, url, data=body, headers=headers, timeout=TIMEOUT)
+    except (requests.ConnectionError, requests.Timeout) as e:
+        raise ScrapeError(f"no connection to 8888 ({e.__class__.__name__})")
+    return r.status_code, r.text
+
+
+def _reply_json(status, text, what):
+    import json
+    try:
+        data = json.loads(text)
+    except ValueError:
+        data = None
+    if status == 200 and data is not None:
+        return data
+    if status == 401:
+        raise ScrapeError(f"{what}: 8888 asked for a key it did not get (HTTP 401)")
+    if status == 403:
+        raise ScrapeError(f"{what}: 8888 refused the request (HTTP 403). Use a normal Bulgarian "
+                          "connection, no VPN.")
+    detail = ""
+    if isinstance(data, dict):
+        err = data.get("err") or data.get("error") or {}
+        detail = (err.get("messageKey") or err.get("message") or "") if isinstance(err, dict) else str(err)
+    raise ScrapeError(f"{what}: 8888 answered HTTP {status}{f' ({detail})' if detail else ''}")
+
+
+def post_json(path, payload):
+    """POST JSON to the odds server (as the 8888 page does) -> reply data.
+
+    Never repeated automatically: a POST that may have reached the server is
+    not sent twice (only a refused key, HTTP 401, is renewed and resent).
+    """
+    import json
+    url = f"{API}/{path.lstrip('/')}"
+    status, text = _send(url, "POST", json.dumps(payload, ensure_ascii=False), "application/json", True)
+    return _reply_json(status, text, path)
+
+
+def post_site_form(path, fields):
+    """POST a form to 8888punkt.bg itself (same as the page's own ticket popup) -> reply data."""
+    url = f"{SITE}/{path.lstrip('/')}"
+    status, text = _send(url, "POST", urlencode(fields), "application/x-www-form-urlencoded", False)
+    return _reply_json(status, text, path)
+
+
 SPORT_IDS = {"football": 66, "basketball": 67, "tennis": 68}
 _slug_cache = {}          # page name -> (tournament id, title)
 _menus_loaded = set()
@@ -317,7 +374,12 @@ def _boosted(market_type):
     return any(b.get("typeId") == 1 or "reducedMarginValue" in b for b in market_type.get("bonusTypes") or [])
 
 
-def _main_market(event, sport):
+def main_market_type(event, sport):
+    """(market type, open market) of the match's main market, or (None, None).
+
+    Shared with the 8888 ticket generator, so the Excel odds and the tickets
+    always come from the same market.
+    """
     types = [mt for mt in event.get("marketTypes") or [] if not _boosted(mt)]
     uid = SPORTS[sport]
     by_uid = [mt for mt in types if mt.get("uId") == uid or (mt.get("uId") is None and mt.get("id") == uid)]
@@ -325,22 +387,26 @@ def _main_market(event, sport):
     for mt in by_uid:
         market = _open_market(mt)
         if market:
-            return market
+            return mt, market
     for wanted in MAIN_MARKET_NAMES[sport]:
         for mt in types:
             if _clean(mt.get("name")).lower() == wanted:
                 market = _open_market(mt)
                 if market:
-                    return market
-    return None
+                    return mt, market
+    return None, None
 
 
-def _odds(market, sport, teams=("", "")):
-    """(home, draw, away) from a main market, or None if it is not a clean 1 X 2 / 1 2 market.
+def _main_market(event, sport):
+    return main_market_type(event, sport)[1]
+
+
+def market_sides(market, sport, teams=("", "")):
+    """{'home': selection, 'away': selection[, 'draw': selection]} of a main market, or None.
 
     A selection counts by its type number, its "1" / "X" / "2" name, or (some
     providers) the team's own name. Any unknown, missing, suspended or doubled
-    selection means the match is skipped rather than guessed.
+    selection gives None: the match is skipped rather than guessed.
     """
     sels = [s for s in market.get("selections") or [] if s.get("isActive", True) and s.get("status", 1) == 1]
     if len(sels) != (3 if sport == "football" else 2):
@@ -359,12 +425,19 @@ def _odds(market, sport, teams=("", "")):
             return None
         if side in found or s.get("odds") is None:
             return None
-        found[side] = s.get("odds")
-    if sport != "football":
-        found["draw"] = NO_DRAW_ODDS
-    if set(found) != {"home", "draw", "away"}:
+        found[side] = s
+    if set(found) != ({"home", "draw", "away"} if sport == "football" else {"home", "away"}):
         return None
-    return float(found["home"]), float(found["draw"]), float(found["away"])
+    return found
+
+
+def _odds(market, sport, teams=("", "")):
+    """(home, draw, away) from a main market, or None if it is not a clean 1 X 2 / 1 2 market."""
+    sides = market_sides(market, sport, teams)
+    if not sides:
+        return None
+    draw = sides["draw"]["odds"] if sport == "football" else NO_DRAW_ODDS
+    return float(sides["home"]["odds"]), float(draw), float(sides["away"]["odds"])
 
 
 def _clean(text):

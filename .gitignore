@@ -70,3 +70,12 @@ Delivery/InbetComboTicketBot.exe
 Delivery/InbetScraperBot.exe
 tournaments/data/Tournament_Link - Copy.xlsx
 Delivery4.zip
+
+# --- 8888 ticket generator (ticket_8888) ---
+selftest_ticket8888.txt
+tickets_log_8888.json
+tickets_in_progress_8888.json
+tickets_rejected_8888.json
+settings_8888.json
+acca_bonus_8888.json
+qr_codes_8888/

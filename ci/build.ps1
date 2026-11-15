@@ -24,7 +24,11 @@ $builds = @(
     @{ Name = "InbetComboTicketBot"; Entry = "dashboard.py"; Report = "selftest.txt";
        Options = @("--collect-submodules", "qrcode", "--hidden-import", "PIL._tkinter_finder") },
     @{ Name = "Scraper8888"; Entry = "scraper_8888/scraper_8888_ui.py"; Report = "selftest_8888.txt";
-       Options = @("--paths", "scraper_8888", "--collect-all", "playwright") }
+       Options = @("--paths", "scraper_8888", "--collect-all", "playwright") },
+    @{ Name = "Ticket8888"; Entry = "ticket_8888/dashboard_8888.py"; Report = "selftest_ticket8888.txt";
+       Options = @("--paths", ".", "--paths", "ticket_8888", "--paths", "scraper_8888",
+                   "--collect-all", "playwright", "--collect-submodules", "qrcode",
+                   "--hidden-import", "PIL._tkinter_finder") }
 )
 
 foreach ($b in $builds) {

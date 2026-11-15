@@ -60,6 +60,7 @@ MAX_INTERVAL_SECONDS = 60
 EXCEL_FILE = "PreFOrmattingOdds Goals MoreMatchesMainFOrtestOriginal - Copy.xlsm"
 TOURNAMENTS_FILE = "tournaments.json"
 QR_OUTPUT_DIR = "qr_codes"
+LOG_FILE_NAME = "bot.jsonl"     # in logs/
 TICKETS_LOG = "tickets_log.json"   # local ledger: voucher -> the bets on it (also stops duplicates)
 IN_PROGRESS_FILE = "tickets_in_progress.json"  # voucher received, QR/log not yet written
 

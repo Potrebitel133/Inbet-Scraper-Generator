@@ -1,0 +1,519 @@
+{
+ "sport": {
+  "id": 66,
+  "name": "Футбол",
+  "identifier": "football"
+ },
+ "category": {
+  "id": 1133,
+  "name": "Евротурнири",
+  "identifier": "EU"
+ },
+ "tournament": {
+  "id": 16808,
+  "name": "Шампионска Лига"
+ },
+ "id": 3707207,
+ "externalId": "14388191",
+ "name": "Славия Прага vs Виляреал",
+ "startTime": "2026-11-25T17:45:00Z",
+ "status": "bookedNotLive",
+ "isLive": false,
+ "teams": [
+  {
+   "id": 2421,
+   "name": "Славия Прага",
+   "score": 0
+  },
+  {
+   "id": 479,
+   "name": "Виляреал",
+   "score": 0
+  }
+ ],
+ "marketTypes": [
+  {
+   "id": 23,
+   "name": "Краен Резултат",
+   "markets": [
+    {
+     "id": 508799846,
+     "typeId": 23,
+     "status": 1,
+     "selections": [
+      {
+       "id": "5437882690039379982",
+       "typeId": 49,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.75,
+       "name": "1",
+       "typeName": "1"
+      },
+      {
+       "id": "538001860448768122",
+       "typeId": 50,
+       "isActive": true,
+       "status": 1,
+       "odds": 3.35,
+       "name": "X",
+       "typeName": "X"
+      },
+      {
+       "id": "6308848478000607373",
+       "typeId": 51,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.1,
+       "name": "2",
+       "typeName": "2"
+      }
+     ],
+     "name": "Краен Резултат"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    }
+   ],
+   "visGroup": {
+    "id": 915,
+    "visTypeId": 2,
+    "marketTypeNames": {}
+   },
+   "bonusTypes": [
+    {
+     "typeId": 2,
+     "bonusValue": 2
+    }
+   ],
+   "isBetBuilder": false,
+   "uId": 23,
+   "orderNumber": 10
+  },
+  {
+   "id": 67,
+   "name": "Двата Отбора да Отбележат Гол",
+   "markets": [
+    {
+     "id": 508802008,
+     "typeId": 67,
+     "status": 1,
+     "selections": [
+      {
+       "id": "1667540478812894810",
+       "typeId": 102,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.44,
+       "name": "Да",
+       "typeName": "Да"
+      },
+      {
+       "id": "855400281218596571",
+       "typeId": 103,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.4,
+       "name": "Не",
+       "typeName": "Не"
+      }
+     ],
+     "name": "Двата Отбора да Отбележат Гол"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    },
+    {
+     "id": 7,
+     "name": "event.marketTypeCategoryGroups.goals",
+     "orderNumber": 3,
+     "identifier": "goals"
+    }
+   ],
+   "visGroup": {
+    "id": 13,
+    "visTypeId": 2,
+    "marketTypeNames": {
+     "67": "90 Минути"
+    }
+   },
+   "customNameInGroup": "90 Минути",
+   "isBetBuilder": false,
+   "uId": 67,
+   "orderNumber": 40
+  },
+  {
+   "id": 72,
+   "name": "Двоен Шанс",
+   "markets": [
+    {
+     "id": 508799844,
+     "typeId": 72,
+     "status": 1,
+     "selections": [
+      {
+       "id": "1643729941171074664",
+       "typeId": 163,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.61,
+       "name": "1X",
+       "typeName": "1X"
+      },
+      {
+       "id": "8537958721818128380",
+       "typeId": 164,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.26,
+       "name": "12",
+       "typeName": "12"
+      },
+      {
+       "id": "2775969631697620749",
+       "typeId": 165,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.36,
+       "name": "Х2",
+       "typeName": "Х2"
+      }
+     ],
+     "name": "Двоен Шанс"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    }
+   ],
+   "visGroup": {
+    "id": 31,
+    "visTypeId": 2,
+    "marketTypeNames": {
+     "72": "90 Минути"
+    }
+   },
+   "customNameInGroup": "90 Минути",
+   "isBetBuilder": false,
+   "uId": 72,
+   "orderNumber": 42
+  },
+  {
+   "id": 74,
+   "name": "Равенство Няма Залог",
+   "markets": [
+    {
+     "id": 508799845,
+     "typeId": 74,
+     "status": 1,
+     "selections": [
+      {
+       "id": "7090890054856149777",
+       "typeId": 166,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.1,
+       "name": "1",
+       "typeName": "1"
+      },
+      {
+       "id": "3647127877175749606",
+       "typeId": 167,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.59,
+       "name": "2",
+       "typeName": "2"
+      }
+     ],
+     "name": "Равенство Няма Залог"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    }
+   ],
+   "visGroup": {
+    "id": 14,
+    "visTypeId": 2,
+    "marketTypeNames": {
+     "74": "90 Минути"
+    }
+   },
+   "customNameInGroup": "90 Минути",
+   "isBetBuilder": false,
+   "uId": 74,
+   "orderNumber": 80
+  },
+  {
+   "id": 101,
+   "name": "Следващ Гол",
+   "markets": [
+    {
+     "id": 508802005,
+     "typeId": 101,
+     "status": 1,
+     "selections": [
+      {
+       "id": "6071264370016455323",
+       "typeId": 150,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.06,
+       "name": "1",
+       "typeName": "1"
+      },
+      {
+       "id": "341045776830442094",
+       "typeId": 149,
+       "isActive": true,
+       "status": 1,
+       "odds": 10.5,
+       "name": "Без",
+       "typeName": "Без"
+      },
+      {
+       "id": "190415022375547164",
+       "typeId": 151,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.77,
+       "name": "2",
+       "typeName": "2"
+      }
+     ],
+     "name": "1-ви Гол"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    },
+    {
+     "id": 7,
+     "name": "event.marketTypeCategoryGroups.goals",
+     "orderNumber": 3,
+     "identifier": "goals"
+    }
+   ],
+   "visGroup": {
+    "id": 1312,
+    "visTypeId": 12,
+    "marketTypeNames": {}
+   },
+   "isBetBuilder": false,
+   "uId": 101,
+   "orderNumber": 82
+  },
+  {
+   "id": 24,
+   "name": "Брой Голове",
+   "markets": [
+    {
+     "id": 508802149,
+     "typeId": 24,
+     "status": 1,
+     "selections": [
+      {
+       "id": "994422977797633178",
+       "typeId": 52,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.2,
+       "name": "Над 3.5",
+       "typeName": "Над"
+      },
+      {
+       "id": "6716613040158807151",
+       "typeId": 53,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.54,
+       "name": "Под 3.5",
+       "typeName": "Под"
+      }
+     ],
+     "name": "Брой Голове",
+     "line": "3.5",
+     "isMainLine": true
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    },
+    {
+     "id": 7,
+     "name": "event.marketTypeCategoryGroups.goals",
+     "orderNumber": 3,
+     "identifier": "goals"
+    }
+   ],
+   "visGroup": {
+    "id": 918,
+    "visTypeId": 3,
+    "marketTypeNames": {
+     "24": "90 Минути",
+     "82": "1-во Полувреме"
+    }
+   },
+   "customNameInGroup": "90 Минути",
+   "isBetBuilder": false,
+   "uId": 24,
+   "orderNumber": 30
+  },
+  {
+   "id": 82,
+   "name": "1-во Полувреме - Брой Голове",
+   "markets": [
+    {
+     "id": 508802064,
+     "typeId": 82,
+     "status": 1,
+     "selections": [
+      {
+       "id": "3674050451484491378",
+       "typeId": 52,
+       "isActive": true,
+       "status": 1,
+       "odds": 2.14,
+       "name": "Над 1.5",
+       "typeName": "Над"
+      },
+      {
+       "id": "7063347358220263045",
+       "typeId": 53,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.57,
+       "name": "Под 1.5",
+       "typeName": "Под"
+      }
+     ],
+     "name": "1-во Полувреме - Брой Голове",
+     "line": "1.5",
+     "isMainLine": true
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    },
+    {
+     "id": 7,
+     "name": "event.marketTypeCategoryGroups.goals",
+     "orderNumber": 3,
+     "identifier": "goals"
+    },
+    {
+     "id": 2,
+     "name": "event.marketTypeCategoryGroups.first_half",
+     "orderNumber": 8,
+     "identifier": "first_half"
+    }
+   ],
+   "visGroup": {
+    "id": 918,
+    "visTypeId": 3,
+    "marketTypeNames": {
+     "24": "90 Минути",
+     "82": "1-во Полувреме"
+    }
+   },
+   "customNameInGroup": "1-во Полувреме",
+   "isBetBuilder": false,
+   "uId": 82,
+   "orderNumber": 200
+  }
+ ],
+ "metadata": {
+  "$type": "football",
+  "sportEventId": 3707207,
+  "externalId": "14388191",
+  "sport": {
+   "id": 66,
+   "name": "Футбол",
+   "identifier": "football"
+  },
+  "homeCompetitor": {
+   "redCards": 0,
+   "name": "Славия Прага",
+   "jersey": {
+    "baseColor": "ffffff",
+    "number": "1e48a9",
+    "secondaryColor": "f72c30",
+    "sleeveColor": "ffffff",
+    "design": "split",
+    "type": "shortSleeve",
+    "sleeveDetail": "f72c30",
+    "incomingType": "short_sleeves"
+   }
+  },
+  "awayCompetitor": {
+   "redCards": 0,
+   "name": "Виляреал",
+   "jersey": {
+    "baseColor": "ffff00",
+    "number": "0b2037",
+    "sleeveColor": "ffff00",
+    "design": "plain",
+    "type": "shortSleeve",
+    "sleeveDetail": "112836",
+    "incomingType": "short_sleeves"
+   }
+  },
+  "isLive": false,
+  "isOutright": false,
+  "status": 0,
+  "periods": [],
+  "isClockStoppedForPhase": false,
+  "scheduled": "2026-11-25T17:45:00Z",
+  "hasLiveStream": false,
+  "providers": [
+   {
+    "id": 1,
+    "externalId": "sr:match:74166034",
+    "hasLiveVideo": false
+   },
+   {
+    "id": 3,
+    "externalId": "14388191",
+    "hasLiveVideo": false
+   }
+  ]
+ },
+ "bonusTypes": [
+  {
+   "typeId": 2,
+   "bonusValue": 2
+  }
+ ],
+ "v": "247727402904715264"
+}

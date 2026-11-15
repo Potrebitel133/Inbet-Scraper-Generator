@@ -36,6 +36,14 @@ import logsetup
 import stake_rules
 import ticket_ledger
 
+# The robot behind the window. The 8888 ticket generator reuses this window with
+# its own backend (ticket_8888/dashboard_8888.py sets these before it starts).
+backend = bot
+APP_TITLE = "Combo-Ticket Bot — Dashboard"
+WINDOW_WIDTH = 1450
+CONFIRM_LIVE = "This will place REAL bet drafts from:"
+SELFTEST_FILE = "selftest.txt"
+
 
 def app_dir():
     """Directory to read/write data from: next to the .exe when frozen, else here."""
@@ -53,7 +61,8 @@ def _file_size(path):
 
 HERE = app_dir()
 TICKETS = os.path.join(HERE, config.TICKETS_LOG)
-LOG_FILE = os.path.join(HERE, "logs", "bot.jsonl")
+LOG_NAME = os.path.join("logs", getattr(config, "LOG_FILE_NAME", "bot.jsonl"))
+LOG_FILE = os.path.join(HERE, LOG_NAME)
 SETTINGS = os.path.join(HERE, config.SETTINGS_FILE)
 PREVIEW_LINES = 25   # max per-ticket stake lines in the confirm dialog
 
@@ -145,19 +154,19 @@ def _summarize_last_run(events):
 class Dashboard:
     def __init__(self, root):
         self.root = root
-        root.title("Combo-Ticket Bot — Dashboard")
+        root.title(APP_TITLE)
         # The toolbar packs 7 buttons left + a "Run:" label and dropdown right,
         # all in one row with no wrapping — the buttons alone need ~1090px, and
         # the Run selector another ~230px beyond that. Below ~1340px there's no
         # room left for the Run selector at all and it's clipped to 0 width
         # (invisible), not shrunk. 1450 leaves real margin; never let the window
         # go narrower than that either.
-        root.geometry("1450x760")
-        root.minsize(1450, 640)
+        root.geometry(f"{WINDOW_WIDTH}x760")
+        root.minsize(WINDOW_WIDTH, 640)
         root.configure(bg=BG)
 
         os.chdir(HERE)              # bot writes logs/qr/tickets next to the app
-        logsetup.setup_logging()    # in-process bot logs go to logs/bot.jsonl
+        logsetup.setup_logging(log_file=LOG_NAME)   # in-process bot logs go to logs/bot.jsonl
 
         self.worker = None
         self._worker_error = None
@@ -351,6 +360,11 @@ class Dashboard:
         self.btn_live = self._btn(bar, "🚀  Generate", lambda: self._run(live=True),
                                   bg=GREEN, fg="white", big=True)
         self.btn_live.pack(side="left", padx=(8, 0))
+        if getattr(backend, "SUPPORTS_CHECK", False):
+            # A full run against the live site that creates nothing: every match,
+            # pick, odd and stake checked, problems listed. (8888 robot)
+            self.btn_check = self._btn(bar, "🔍  Check only", lambda: self._run(live=False))
+            self.btn_check.pack(side="left", padx=(8, 0))
         self.btn_resume = self._btn(bar, "▶  Resume", self._resume, bg=BLUE, fg="white", big=True)
         self.btn_resume.config(state="disabled")
         self.btn_resume.pack(side="left", padx=(8, 0))
@@ -416,6 +430,25 @@ class Dashboard:
             messagebox.showinfo("Run finished",
                                 f"All {created_count} tickets created successfully.{skipped_note}")
         self.banner.pack(fill="x", before=self._stats_row, pady=(0, 4))
+
+    def _show_check_summary(self):
+        """After "Check only": which tickets are ready, which are not and why. Nothing was made."""
+        s = _summarize_last_run(_read_log_events())
+        if not s:
+            return
+        ready, failed, already = s["created"], s["failed"], s["already"]
+        msg = f"Ready to create: {len(ready)} ticket(s)"
+        if ready:
+            msg += f"\n   sheets {', '.join(map(str, ready))}"
+        if already:
+            msg += f"\n\nAlready created earlier (will be skipped): {', '.join(map(str, already))}"
+        if failed:
+            msg += f"\n\nNot ready: {len(failed)}  (sheets {', '.join(map(str, failed))})"
+            for u in s["unresolved"][:20]:
+                msg += f"\n   • Sheet {u['sheet']}: {u['match'] or u['match_id'] or ''} — {u['reason']}"
+        msg += "\n\nNothing was created. Open 📋 Logs for the live odds and stakes."
+        title = "Check finished — some tickets not ready" if failed else "Check finished — all ready"
+        (messagebox.showwarning if failed else messagebox.showinfo)(title, msg)
 
     # --- stats row ------------------------------------------------------------
     def _build_stats(self):
@@ -600,7 +633,7 @@ class Dashboard:
             return
         win = tk.Toplevel(self.root)
         self._logs_win = win
-        win.title("Activity Log — logs/bot.jsonl")
+        win.title(f"Activity Log — {LOG_NAME}")
         win.geometry("900x560")
         win.configure(bg=BG)
 
@@ -709,9 +742,10 @@ class Dashboard:
         already = []
         if live:
             try:
-                bot.recover_interrupted()
+                backend.recover_interrupted()
                 index = ticket_ledger.created_index()
-                already = [s for s in tickets if ticket_ledger.find_created(picks=tickets[s], index=index)]
+                find_created = getattr(backend, "find_created", ticket_ledger.find_created)
+                already = [s for s in tickets if find_created(picks=tickets[s], index=index)]
             except ticket_ledger.LedgerError as e:
                 messagebox.showerror("Ticket history problem", str(e))
                 return
@@ -743,12 +777,12 @@ class Dashboard:
             preview.append(f"To create now ({len(stakes)}):")
         for sheet, stake in list(stakes.items())[:PREVIEW_LINES]:
             shown = stake if stake is not None else "from the live odds"
-            preview.append(f"   Ticket {bot.ticket_label(match_type, sheet)}:  stake {shown}")
+            preview.append(f"   Ticket {backend.ticket_label(match_type, sheet)}:  stake {shown}")
         if len(stakes) > PREVIEW_LINES:
             preview.append(f"   … and {len(stakes) - PREVIEW_LINES} more")
         if live and not messagebox.askyesno(
             "Confirm LIVE run",
-            f"This will place REAL bet drafts from:\n{os.path.basename(self.excel_path)}\n\n"
+            f"{CONFIRM_LIVE}\n{os.path.basename(self.excel_path)}\n\n"
             f"Ticket type: {match_type} matches  ({len(stakes)} tickets)\n"
             f"Stake: {stake_rules.describe(rule)}\n\n" + "\n".join(preview) +
             "\n\nContinue?"):
@@ -759,11 +793,12 @@ class Dashboard:
             return
         self._match_type = match_type
         self._stake_rule = rule
+        self._live_run = live
         if not self.console_open:
             self._toggle_console()
         self._log_pos = _file_size(LOG_FILE)  # console shows only this run's log lines
         self.console.delete("1.0", "end")
-        self._log_console(f"--- {'LIVE run' if live else 'dry run'} started ---\n")
+        self._log_console(f"--- {'LIVE run' if live else 'check only (no tickets made)'} started ---\n")
         self._set_buttons(running=True)
         self._set_status(True, "LIVE" if live else "preview")
         self._worker_error = None
@@ -781,7 +816,7 @@ class Dashboard:
 
     def _run_worker(self, live):
         try:
-            bot.run(
+            backend.run(
                 excel=self.excel_path,
                 dry_run=not live,
                 cancel=self._stop_event.is_set,
@@ -814,6 +849,8 @@ class Dashboard:
                   dialog, so nothing is abandoned silently).
         """
         self.btn_live.config(state="normal" if (idle or paused) else "disabled")
+        if hasattr(self, "btn_check"):
+            self.btn_check.config(state="normal" if (idle or paused) else "disabled")
         self.btn_resume.config(state="normal" if paused else "disabled")
         self.btn_stop.config(state="normal" if running else "disabled")
 
@@ -851,7 +888,9 @@ class Dashboard:
             self._current_run_id = None
             self._refresh(force=True)
             # Detect paused state: stopped by user before all sheets finished
-            if self._stop_event.is_set() and os.path.exists(self.excel_path):
+            # (a stopped "Check only" is never resumed: Resume makes real tickets)
+            if (self._stop_event.is_set() and getattr(self, "_live_run", True)
+                    and os.path.exists(self.excel_path)):
                 all_sheets = excel_reader.get_available_ticket_sheets(self.excel_path)
                 pending = [s for s in all_sheets if s not in self._current_run_done_sheets]
                 if pending:
@@ -874,6 +913,8 @@ class Dashboard:
             self._log_console("\n[run finished]\n")
             if self._worker_error:
                 messagebox.showerror("Run failed", self._worker_error)
+            elif not getattr(self, "_live_run", True):
+                self._show_check_summary()
             else:
                 self._show_run_summary()
         elif self.worker and self.worker.is_alive():
@@ -900,7 +941,7 @@ class Dashboard:
 
     def _resume_worker(self):
         try:
-            bot.run(
+            backend.run(
                 excel=self._resume_excel,
                 dry_run=False,
                 sheets=list(self._pending_sheets),
@@ -1073,11 +1114,14 @@ def _selftest():
         root.update()
         root.destroy()
         assert stake_rules.compute_stake(stake_rules.default_rule(), i12=74.95670826) == 275
-        bot.generate_qr("SELFTEST", os.path.join(HERE, "logs", "selftest_qr.png"))
+        backend.generate_qr("SELFTEST", os.path.join(HERE, "logs", "selftest_qr.png"))
+        extra_check = getattr(backend, "selftest", None)
+        if extra_check:
+            extra_check()
         result, code = "selftest ok", 0
     except Exception as e:  # noqa: BLE001 - report anything
         result, code = f"selftest FAILED: {e!r}", 1
-    with open(os.path.join(HERE, "selftest.txt"), "w", encoding="utf-8") as f:
+    with open(os.path.join(HERE, SELFTEST_FILE), "w", encoding="utf-8") as f:
         f.write(result + "\n")
     sys.exit(code)
 

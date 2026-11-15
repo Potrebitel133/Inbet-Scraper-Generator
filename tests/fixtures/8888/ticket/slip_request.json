@@ -1,0 +1,48 @@
+{
+ "betSlip": {
+  "includeTranslations": false,
+  "selections": [
+   {
+    "id": "8445580519484368069",
+    "isHard": false,
+    "isExcluded": false,
+    "source": "tournament-events-table"
+   },
+   {
+    "id": "1942426617783846636",
+    "isHard": false,
+    "isExcluded": false,
+    "source": "tournament-events-table"
+   },
+   {
+    "id": "6308848478000607373",
+    "isHard": false,
+    "isExcluded": false,
+    "source": "hot-events"
+   },
+   {
+    "id": "8067599692425423394",
+    "isHard": false,
+    "isExcluded": false,
+    "source": "hot-events"
+   },
+   {
+    "id": "5622756678033589349",
+    "isHard": false,
+    "isExcluded": false,
+    "source": "hot-events"
+   }
+  ],
+  "betSlipType": 2,
+  "bets": [
+   {
+    "betAmount": 10,
+    "type": 2,
+    "clientId": "092b0014-5aa5-44a5-9705-68f5cd24256f"
+   }
+  ],
+  "createdAt": 1794752080050,
+  "isDemo": false
+ },
+ "data": "[{\"betSlipId\":\"1239ec27-5171-4dff-83d8-71127609a430\",\"betSlipType\":2,\"bets\":{\"ids\":[\"0398cf57-adb6-40f3-a27b-6be230727a5d\"],\"entities\":{\"0398cf57-adb6-40f3-a27b-6be230727a5d\":{\"clientId\":\"0398cf57-adb6-40f3-a27b-6be230727a5d\",\"type\":2,\"amount\":10,\"odds\":{\"initial\":40.56,\"approved\":40.56,\"current\":40.56},\"winnings\":433.25,\"count\":0,\"size\":0,\"isEditing\":false}}},\"selections\":{\"ids\":[\"8445580519484368069\",\"1942426617783846636\",\"6308848478000607373\",\"8067599692425423394\",\"5622756678033589349\"],\"entities\":{\"8445580519484368069\":{\"id\":\"8445580519484368069\",\"name\":\"1 - Победител (вкл. Продължение)\",\"event\":\"Олимпия Милано - Цървена Звезда\",\"bank\":false,\"odds\":{\"initial\":1.92,\"approved\":1.92,\"current\":1.92},\"isBetBuilder\":false,\"source\":\"{\\\"id\\\":\\\"8445580519484368069\\\",\\\"sportId\\\":67,\\\"identifier\\\":\\\"basketball\\\",\\\"eventId\\\":4156205,\\\"odds\\\":1.92,\\\"marketName\\\":\\\"Победител (вкл. Продължение)\\\",\\\"marketTypeName\\\":\\\"Победител (вкл. Продължение)\\\",\\\"eventName\\\":\\\"Олимпия Милано - Цървена Звезда\\\",\\\"selectionName\\\":\\\"1\\\",\\\"disabled\\\":false,\\\"incompatible\\\":false,\\\"bank\\\":false,\\\"bonusPercentage\\\":7,\\\"bonusTypes\\\":[{\\\"typeId\\\":2,\\\"bonusValue\\\":20}],\\\"isExcluded\\\":false,\\\"sourceWidget\\\":\\\"tournament-events-table\\\",\\\"clientId\\\":\\\"7e6a71c9-f6ba-4e6a-ae80-cb529c586bea\\\",\\\"isLive\\\":false,\\\"keyboard\\\":false}\"},\"1942426617783846636\":{\"id\":\"1942426617783846636\",\"name\":\"1 - Победител (вкл. Продължение)\",\"event\":\"Бешикташ - Реал Мадрид\",\"bank\":false,\"odds\":{\"initial\":2.55,\"approved\":2.55,\"current\":2.55},\"isBetBuilder\":false,\"source\":\"{\\\"id\\\":\\\"1942426617783846636\\\",\\\"sportId\\\":67,\\\"identifier\\\":\\\"basketball\\\",\\\"eventId\\\":4167326,\\\"odds\\\":2.55,\\\"marketName\\\":\\\"Победител (вкл. Продължение)\\\",\\\"marketTypeName\\\":\\\"Победител (вкл. Продължение)\\\",\\\"eventName\\\":\\\"Бешикташ - Реал Мадрид\\\",\\\"selectionName\\\":\\\"1\\\",\\\"disabled\\\":false,\\\"incompatible\\\":false,\\\"bank\\\":false,\\\"bonusPercentage\\\":7,\\\"bonusTypes\\\":[{\\\"typeId\\\":2,\\\"bonusValue\\\":20}],\\\"isExcluded\\\":false,\\\"sourceWidget\\\":\\\"tournament-events-table\\\",\\\"clientId\\\":\\\"c47f9ad7-d929-4488-89aa-e45f7b5e42c7\\\",\\\"isLive\\\":false,\\\"keyboard\\\":false}\"},\"6308848478000607373\":{\"id\":\"6308848478000607373\",\"name\":\"2 - Краен Резултат\",\"event\":\"Славия Прага - Виляреал\",\"bank\":false,\"odds\":{\"initial\":2.1,\"approved\":2.1,\"current\":2.1},\"isBetBuilder\":false,\"source\":\"{\\\"id\\\":\\\"6308848478000607373\\\",\\\"sportId\\\":66,\\\"identifier\\\":\\\"football\\\",\\\"eventId\\\":3707207,\\\"odds\\\":2.1,\\\"marketName\\\":\\\"Краен Резултат\\\",\\\"marketTypeName\\\":\\\"Краен Резултат\\\",\\\"eventName\\\":\\\"Славия Прага - Виляреал\\\",\\\"selectionName\\\":\\\"2\\\",\\\"disabled\\\":false,\\\"incompatible\\\":false,\\\"bank\\\":false,\\\"bonusPercentage\\\":7,\\\"bonusTypes\\\":[{\\\"typeId\\\":2,\\\"bonusValue\\\":2}],\\\"isExcluded\\\":false,\\\"sourceWidget\\\":\\\"hot-events\\\",\\\"isLive\\\":false,\\\"keyboard\\\":false}\"},\"8067599692425423394\":{\"id\":\"8067599692425423394\",\"name\":\"2 - Краен Резултат\",\"event\":\"Брюж - Ливърпул\",\"bank\":false,\"odds\":{\"initial\":1.61,\"approved\":1.61,\"current\":1.61},\"isBetBuilder\":false,\"source\":\"{\\\"id\\\":\\\"8067599692425423394\\\",\\\"sportId\\\":66,\\\"identifier\\\":\\\"football\\\",\\\"eventId\\\":3708369,\\\"odds\\\":1.61,\\\"marketName\\\":\\\"Краен Резултат\\\",\\\"marketTypeName\\\":\\\"Краен Резултат\\\",\\\"eventName\\\":\\\"Брюж - Ливърпул\\\",\\\"selectionName\\\":\\\"2\\\",\\\"disabled\\\":false,\\\"incompatible\\\":false,\\\"bank\\\":false,\\\"bonusPercentage\\\":7,\\\"bonusTypes\\\":[{\\\"typeId\\\":2,\\\"bonusValue\\\":2}],\\\"isExcluded\\\":false,\\\"sourceWidget\\\":\\\"hot-events\\\",\\\"isLive\\\":false,\\\"keyboard\\\":false}\"},\"5622756678033589349\":{\"id\":\"5622756678033589349\",\"name\":\"2 - Краен Резултат\",\"event\":\"Спортинг - Манчестър Юнайтед\",\"bank\":false,\"odds\":{\"initial\":2.45,\"approved\":2.45,\"current\":2.45},\"isBetBuilder\":false,\"source\":\"{\\\"id\\\":\\\"5622756678033589349\\\",\\\"sportId\\\":66,\\\"identifier\\\":\\\"football\\\",\\\"eventId\\\":3708367,\\\"odds\\\":2.45,\\\"marketName\\\":\\\"Краен Резултат\\\",\\\"marketTypeName\\\":\\\"Краен Резултат\\\",\\\"eventName\\\":\\\"Спортинг - Манчестър Юнайтед\\\",\\\"selectionName\\\":\\\"2\\\",\\\"disabled\\\":false,\\\"incompatible\\\":false,\\\"bank\\\":false,\\\"bonusPercentage\\\":7,\\\"bonusTypes\\\":[{\\\"typeId\\\":2,\\\"bonusValue\\\":2}],\\\"isExcluded\\\":false,\\\"sourceWidget\\\":\\\"hot-events\\\",\\\"isLive\\\":false,\\\"keyboard\\\":false}\"}}}}]"
+}

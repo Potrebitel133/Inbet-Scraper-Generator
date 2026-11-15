@@ -1,0 +1,136 @@
+{
+ "betSlipType": 2,
+ "betSlip": {
+  "potentialWinBonusPart": 27.69,
+  "potentialWinWithoutBonus": 405.56,
+  "maxAccaBonusReached": false,
+  "totalOdds": 40.56,
+  "oddsBonusPercentage": 0.07,
+  "nextAccaBoostInfo": {
+   "selectionsToNextBoost": 1,
+   "currentBoostPercentage": 0.07,
+   "nextBoostPercentage": 0.1,
+   "translationKey": {
+    "key": "bet.accaBoost.nextTier",
+    "translations": {
+     "selectionsToNextBoost": 1
+    }
+   }
+  },
+  "accaBoostStatus": 1,
+  "eligibleSelectionsCount": 5,
+  "cashbackPercentage": 0,
+  "id": "c3e190a2-504a-493d-9d25-4afffc89d2f8",
+  "type": 2,
+  "selections": [
+   {
+    "eventId": 4156205,
+    "marketTypeId": 212,
+    "marketId": 518277941,
+    "selectionId": "8445580519484368069",
+    "odds": 1.92,
+    "isLive": false,
+    "wasEventLive": false,
+    "isHard": false,
+    "isEnabled": true,
+    "hasBonus": true,
+    "bonusPercentage": 7,
+    "marketBonus": {
+     "typeId": 2,
+     "bonusValue": 20
+    },
+    "isBetBuilder": false,
+    "isScoreLive": false
+   },
+   {
+    "eventId": 4167326,
+    "marketTypeId": 212,
+    "marketId": 518867241,
+    "selectionId": "1942426617783846636",
+    "odds": 2.55,
+    "isLive": false,
+    "wasEventLive": false,
+    "isHard": false,
+    "isEnabled": true,
+    "hasBonus": true,
+    "bonusPercentage": 7,
+    "marketBonus": {
+     "typeId": 2,
+     "bonusValue": 20
+    },
+    "isBetBuilder": false,
+    "isScoreLive": false
+   },
+   {
+    "eventId": 3707207,
+    "marketTypeId": 23,
+    "marketId": 508799846,
+    "selectionId": "6308848478000607373",
+    "odds": 2.1,
+    "isLive": false,
+    "wasEventLive": false,
+    "isHard": false,
+    "isEnabled": true,
+    "hasBonus": true,
+    "bonusPercentage": 7,
+    "marketBonus": {
+     "typeId": 2,
+     "bonusValue": 2
+    },
+    "isBetBuilder": false,
+    "isScoreLive": false
+   },
+   {
+    "eventId": 3708369,
+    "marketTypeId": 23,
+    "marketId": 508801648,
+    "selectionId": "8067599692425423394",
+    "odds": 1.61,
+    "isLive": false,
+    "wasEventLive": false,
+    "isHard": false,
+    "isEnabled": true,
+    "hasBonus": true,
+    "bonusPercentage": 7,
+    "marketBonus": {
+     "typeId": 2,
+     "bonusValue": 2
+    },
+    "isBetBuilder": false,
+    "isScoreLive": false
+   },
+   {
+    "eventId": 3708367,
+    "marketTypeId": 23,
+    "marketId": 508839289,
+    "selectionId": "5622756678033589349",
+    "odds": 2.45,
+    "isLive": false,
+    "wasEventLive": false,
+    "isHard": false,
+    "isEnabled": true,
+    "hasBonus": true,
+    "bonusPercentage": 7,
+    "marketBonus": {
+     "typeId": 2,
+     "bonusValue": 2
+    },
+    "isBetBuilder": false,
+    "isScoreLive": false
+   }
+  ],
+  "hardSelectionIds": [],
+  "incompatibleSelections": [],
+  "excludedSelections": [],
+  "totalPotentialWin": 433.25,
+  "totalBetAmount": 10,
+  "isFreebet": false,
+  "maxPotentialWin": 125000,
+  "config": {
+   "maxSelectionsPerBetSlip": 30
+  }
+ },
+ "birDelaySeconds": 0,
+ "betSlipHash": "12923813516550674103",
+ "success": false
+}

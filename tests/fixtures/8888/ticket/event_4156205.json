@@ -1,0 +1,434 @@
+{
+ "sport": {
+  "id": 67,
+  "name": "Баскетбол",
+  "identifier": "basketball"
+ },
+ "category": {
+  "id": 1061,
+  "name": "Международни",
+  "identifier": "international"
+ },
+ "tournament": {
+  "id": 2995,
+  "name": "Евролига"
+ },
+ "id": 4156205,
+ "externalId": "14242717",
+ "name": "Олимпия Милано vs Цървена Звезда",
+ "startTime": "2026-11-17T19:30:00Z",
+ "status": "bookedNotLive",
+ "isLive": false,
+ "teams": [
+  {
+   "id": 9481,
+   "name": "Олимпия Милано",
+   "score": 0
+  },
+  {
+   "id": 22088,
+   "name": "Цървена Звезда",
+   "score": 0
+  }
+ ],
+ "marketTypes": [
+  {
+   "id": 115,
+   "name": "1-во Полувреме - Победител",
+   "markets": [
+    {
+     "id": 518431456,
+     "typeId": 115,
+     "status": 1,
+     "selections": [
+      {
+       "id": "8345158958901143200",
+       "typeId": 166,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.88,
+       "name": "1",
+       "typeName": "1"
+      },
+      {
+       "id": "2536969490496325207",
+       "typeId": 167,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.75,
+       "name": "2",
+       "typeName": "2"
+      }
+     ],
+     "name": "1-во Полувреме - Победител"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    },
+    {
+     "id": 2,
+     "name": "event.marketTypeCategoryGroups.first_half",
+     "orderNumber": 6,
+     "identifier": "first_half"
+    }
+   ],
+   "visGroup": {
+    "id": 13971,
+    "visTypeId": 2,
+    "marketTypeNames": {}
+   },
+   "isBetBuilder": false,
+   "uId": 115,
+   "orderNumber": 32
+  },
+  {
+   "id": 212,
+   "name": "Победител (вкл. Продължение)",
+   "markets": [
+    {
+     "id": 518277941,
+     "typeId": 212,
+     "status": 1,
+     "selections": [
+      {
+       "id": "8445580519484368069",
+       "typeId": 166,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.92,
+       "name": "1",
+       "typeName": "1"
+      },
+      {
+       "id": "2724237045645050930",
+       "typeId": 167,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.72,
+       "name": "2",
+       "typeName": "2"
+      }
+     ],
+     "name": "Победител (вкл. Продължение)"
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    }
+   ],
+   "visGroup": {
+    "id": 14461,
+    "visTypeId": 2,
+    "marketTypeNames": {}
+   },
+   "bonusTypes": [
+    {
+     "typeId": 2,
+     "bonusValue": 20
+    }
+   ],
+   "isBetBuilder": false,
+   "uId": 212,
+   "orderNumber": 10,
+   "leadingMarketPriority": 10
+  },
+  {
+   "id": 80,
+   "name": "1-во Полувреме - Азиатски Хендикап",
+   "markets": [
+    {
+     "id": 518431548,
+     "typeId": 80,
+     "status": 1,
+     "selections": [
+      {
+       "id": "6420658804564360564",
+       "typeId": 54,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.8,
+       "name": "1 (+0.5)",
+       "typeName": "1"
+      },
+      {
+       "id": "711593748747509125",
+       "typeId": 55,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.82,
+       "name": "2 (-0.5)",
+       "typeName": "2"
+      }
+     ],
+     "name": "1-во Полувреме - Азиатски Хендикап",
+     "line": "0.5",
+     "isMainLine": true
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 9,
+     "name": "event.marketTypeCategoryGroups.handicap",
+     "orderNumber": 5,
+     "identifier": "handicap"
+    },
+    {
+     "id": 2,
+     "name": "event.marketTypeCategoryGroups.first_half",
+     "orderNumber": 6,
+     "identifier": "first_half"
+    }
+   ],
+   "visGroup": {
+    "id": 14236,
+    "visTypeId": 13,
+    "marketTypeNames": {}
+   },
+   "isBetBuilder": false,
+   "uId": 80,
+   "orderNumber": 34
+  },
+  {
+   "id": 82,
+   "name": "1-во Полувреме - Брой Точки",
+   "markets": [
+    {
+     "id": 518431565,
+     "typeId": 82,
+     "status": 1,
+     "selections": [
+      {
+       "id": "1767686403778426215",
+       "typeId": 52,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.8,
+       "name": "Над 83.5",
+       "typeName": "Над"
+      },
+      {
+       "id": "5220447121805743506",
+       "typeId": 53,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.82,
+       "name": "Под 83.5",
+       "typeName": "Под"
+      }
+     ],
+     "name": "1-во Полувреме - Брой Точки",
+     "line": "83.5",
+     "isMainLine": true
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 12,
+     "name": "event.marketTypeCategoryGroups.points",
+     "orderNumber": 4,
+     "identifier": "points"
+    },
+    {
+     "id": 2,
+     "name": "event.marketTypeCategoryGroups.first_half",
+     "orderNumber": 6,
+     "identifier": "first_half"
+    }
+   ],
+   "visGroup": {
+    "id": 14241,
+    "visTypeId": 3,
+    "marketTypeNames": {
+     "206": "За Мача"
+    }
+   },
+   "isBetBuilder": false,
+   "uId": 82,
+   "orderNumber": 35
+  },
+  {
+   "id": 203,
+   "name": "Хендикап (вкл. Продължение)",
+   "markets": [
+    {
+     "id": 518277953,
+     "typeId": 203,
+     "status": 1,
+     "selections": [
+      {
+       "id": "615907096838871644",
+       "typeId": 54,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.82,
+       "name": "1 (+1.5)",
+       "typeName": "1"
+      },
+      {
+       "id": "6374548032448903853",
+       "typeId": 55,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.8,
+       "name": "2 (-1.5)",
+       "typeName": "2"
+      }
+     ],
+     "name": "Азиатски Хендикап (вкл. Продължение)",
+     "line": "1.5",
+     "isMainLine": true
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    },
+    {
+     "id": 9,
+     "name": "event.marketTypeCategoryGroups.handicap",
+     "orderNumber": 5,
+     "identifier": "handicap"
+    }
+   ],
+   "visGroup": {
+    "id": 14071,
+    "visTypeId": 13,
+    "marketTypeNames": {}
+   },
+   "isBetBuilder": false,
+   "uId": 203,
+   "orderNumber": 20,
+   "leadingMarketPriority": 20
+  },
+  {
+   "id": 206,
+   "name": "Брой Точки (вкл. Продължение)",
+   "markets": [
+    {
+     "id": 518431539,
+     "typeId": 206,
+     "status": 1,
+     "selections": [
+      {
+       "id": "1997552568658364420",
+       "typeId": 52,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.78,
+       "name": "Над 166.5",
+       "typeName": "Над"
+      },
+      {
+       "id": "5423018873672444149",
+       "typeId": 53,
+       "isActive": true,
+       "status": 1,
+       "odds": 1.85,
+       "name": "Под 166.5",
+       "typeName": "Под"
+      }
+     ],
+     "name": "Брой Точки (вкл. Продължение)",
+     "line": "166.5",
+     "isMainLine": true
+    }
+   ],
+   "categoryGroups": [
+    {
+     "id": 5,
+     "name": "event.marketTypeCategoryGroups.main",
+     "orderNumber": 1,
+     "identifier": "main"
+    },
+    {
+     "id": 12,
+     "name": "event.marketTypeCategoryGroups.points",
+     "orderNumber": 4,
+     "identifier": "points"
+    }
+   ],
+   "visGroup": {
+    "id": 14241,
+    "visTypeId": 3,
+    "marketTypeNames": {
+     "206": "За Мача"
+    }
+   },
+   "customNameInGroup": "За Мача",
+   "isBetBuilder": false,
+   "uId": 206,
+   "orderNumber": 30,
+   "leadingMarketPriority": 30
+  }
+ ],
+ "metadata": {
+  "$type": "se_sec",
+  "sportEventId": 4156205,
+  "externalId": "14242717",
+  "sport": {
+   "id": 67,
+   "name": "Баскетбол",
+   "identifier": "basketball"
+  },
+  "homeCompetitor": {
+   "name": "Олимпия Милано",
+   "jersey": {
+    "baseColor": "c10e11",
+    "number": "ffffff",
+    "sleeveColor": "ffffff",
+    "design": "plain",
+    "type": "shortSleeve",
+    "incomingType": "no_sleeves"
+   }
+  },
+  "awayCompetitor": {
+   "name": "Цървена Звезда",
+   "jersey": {
+    "baseColor": "ffffff",
+    "number": "f0192e",
+    "sleeveColor": "e13d3d",
+    "design": "plain",
+    "type": "shortSleeve",
+    "incomingType": "no_sleeves"
+   }
+  },
+  "isLive": false,
+  "isOutright": false,
+  "status": 0,
+  "periods": [],
+  "isClockStoppedForPhase": false,
+  "scheduled": "2026-11-17T19:30:00Z",
+  "hasLiveStream": false,
+  "providers": [
+   {
+    "id": 1,
+    "externalId": "sr:match:73263168",
+    "hasLiveVideo": false
+   },
+   {
+    "id": 3,
+    "externalId": "14242717",
+    "hasLiveVideo": false
+   }
+  ]
+ },
+ "bonusTypes": [
+  {
+   "typeId": 2,
+   "bonusValue": 20
+  }
+ ],
+ "v": "247725288644149248"
+}

@@ -32,9 +32,11 @@ OFFSCREEN = ["--window-position=-32000,-32000", "--window-size=1280,900"]
 KEEP_HEADERS = ("authorization", "accept", "accept-language")
 
 _FETCH_JS = """
-async ({url, headers}) => {
+async ({url, method, headers, body}) => {
   try {
-    const r = await fetch(url, {headers});
+    const options = {method, headers};
+    if (body !== null) options.body = body;
+    const r = await fetch(url, options);
     return {status: r.status, text: await r.text()};
   } catch (e) {
     return {status: 0, text: String(e)};
@@ -130,15 +132,21 @@ class BrowserSession:
         return False
 
     # --- odds server -----------------------------------------------------------
-    def fetch(self, url):
-        """GET url from inside the 8888 page with the site's key -> (status, text).
+    def fetch(self, url, method="GET", body=None, content_type=None, with_key=True):
+        """Request url from inside the 8888 page -> (status, text).
 
-        On HTTP 401 the page is reloaded once for a fresh key and the request retried.
+        with_key: send the site's key and a fresh trace-id (odds server requests,
+        as the page does). Requests to 8888punkt.bg itself go without them, like
+        the page's own. On HTTP 401 the page is reloaded once for a fresh key and
+        the request repeated (a 401 means the server did nothing with it).
         """
         for attempt in range(2):
-            headers = dict(self._headers or {}, **{"trace-id": str(uuid.uuid4())})
-            result = self._page.evaluate(_FETCH_JS, {"url": url, "headers": headers})
-            if result["status"] != 401 or attempt:
+            headers = dict(self._headers or {}, **{"trace-id": str(uuid.uuid4())}) if with_key else {}
+            if content_type:
+                headers["content-type"] = content_type
+            result = self._page.evaluate(_FETCH_JS, {"url": url, "method": method, "headers": headers,
+                                                     "body": body})
+            if result["status"] != 401 or attempt or not with_key:
                 return result["status"], result["text"]
             self.log("  (the site's key expired, getting a new one...)")
             if not self._open_site():
