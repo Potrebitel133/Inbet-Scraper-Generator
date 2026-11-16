@@ -41,6 +41,7 @@ import ticket_ledger
 backend = bot
 APP_TITLE = "Combo-Ticket Bot — Dashboard"
 WINDOW_WIDTH = 1450
+SHOW_REFRESH = True        # the window refreshes itself every second anyway
 CONFIRM_LIVE = "This will place REAL bet drafts from:"
 SELFTEST_FILE = "selftest.txt"
 
@@ -161,8 +162,10 @@ class Dashboard:
         # room left for the Run selector at all and it's clipped to 0 width
         # (invisible), not shrunk. 1450 leaves real margin; never let the window
         # go narrower than that either.
-        root.geometry(f"{WINDOW_WIDTH}x760")
-        root.minsize(WINDOW_WIDTH, 640)
+        # Never wider than the screen (a smaller or scaled screen cut the right side off).
+        width = min(WINDOW_WIDTH, root.winfo_screenwidth())
+        root.geometry(f"{width}x760+0+0" if width < WINDOW_WIDTH else f"{width}x760")
+        root.minsize(width, 640)
         root.configure(bg=BG)
 
         os.chdir(HERE)              # bot writes logs/qr/tickets next to the app
@@ -371,7 +374,8 @@ class Dashboard:
         self.btn_stop = self._btn(bar, "⏹  Stop", self._stop, fg=RED)
         self.btn_stop.config(state="disabled")
         self.btn_stop.pack(side="left", padx=(8, 0))
-        self._btn(bar, "🔄  Refresh", lambda: self._refresh(force=True)).pack(side="left", padx=(8, 0))
+        if SHOW_REFRESH:
+            self._btn(bar, "🔄  Refresh", lambda: self._refresh(force=True)).pack(side="left", padx=(8, 0))
         self._btn(bar, "📋  Logs", self._open_logs).pack(side="left", padx=(8, 0))
         self._btn(bar, "📄  QR to PDF", self._export_pdf).pack(side="left", padx=(8, 0))
 

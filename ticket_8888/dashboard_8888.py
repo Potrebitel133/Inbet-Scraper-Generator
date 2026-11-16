@@ -24,7 +24,8 @@ import dashboard  # noqa: E402
 
 dashboard.backend = bot_8888
 dashboard.APP_TITLE = "8888 Ticket Generator"
-dashboard.WINDOW_WIDTH = 1640
+dashboard.WINDOW_WIDTH = 1450       # same as the Inbet window: "Check only" replaces "Refresh"
+dashboard.SHOW_REFRESH = False
 dashboard.CONFIRM_LIVE = "This will create real 8888 tickets (QR codes) from:"
 dashboard.SELFTEST_FILE = "selftest_ticket8888.txt"
 
