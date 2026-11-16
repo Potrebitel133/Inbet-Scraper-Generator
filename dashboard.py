@@ -164,8 +164,10 @@ class Dashboard:
         # go narrower than that either.
         # Never wider than the screen (a smaller or scaled screen cut the right side off).
         width = min(WINDOW_WIDTH, root.winfo_screenwidth())
-        root.geometry(f"{width}x760+0+0" if width < WINDOW_WIDTH else f"{width}x760")
-        root.minsize(width, 640)
+        height = min(860, max(560, root.winfo_screenheight() - 90))     # above the taskbar
+        small = width < WINDOW_WIDTH or height < 860
+        root.geometry(f"{width}x{height}+0+0" if small else f"{width}x{height}")
+        root.minsize(width, min(640, height))
         root.configure(bg=BG)
 
         os.chdir(HERE)              # bot writes logs/qr/tickets next to the app
@@ -382,8 +384,14 @@ class Dashboard:
         self.run_var = tk.StringVar(value="All runs")
         self.run_combo = ttk.Combobox(bar, textvariable=self.run_var, width=30, state="readonly")
         self.run_combo.pack(side="right")
-        self.run_combo.bind("<<ComboboxSelected>>", lambda _e: setattr(self, "_user_selected_run", True))
+        self.run_combo.bind("<<ComboboxSelected>>", self._run_chosen)
         tk.Label(bar, text="Run:", bg=BG, fg=MUTE).pack(side="right", padx=(0, 6))
+
+    def _run_chosen(self, _event=None):
+        """A run picked from the list: show its tickets, also when it is the run already shown
+        (picking the same value changes nothing, so the list must be reloaded here)."""
+        self._user_selected_run = True
+        self._reload_tickets()
 
     # --- last-run banner ------------------------------------------------------
     def _build_banner(self):
@@ -474,6 +482,7 @@ class Dashboard:
     def _build_main(self):
         main = tk.Frame(self.root, bg=BG)
         main.pack(fill="both", expand=True, padx=14)
+        self._main = main
 
         # left: ticket list
         left = tk.Frame(main, bg=CARD, highlightthickness=1, highlightbackground="#e1e6eb")
@@ -502,8 +511,12 @@ class Dashboard:
                                      font=("Segoe UI", 14, "bold"))
         self.detail_title.pack(anchor="w", padx=14, pady=(12, 6))
 
-        kv = tk.Frame(right, bg=CARD)
-        kv.pack(fill="x", padx=14)
+        # small screen: the QR sits beside the details so the matches keep their room
+        self._small_screen = self.root.winfo_screenheight() < 900
+        top = tk.Frame(right, bg=CARD)
+        top.pack(fill="x", padx=(14, 6) if self._small_screen else 14)
+        kv = tk.Frame(top, bg=CARD)
+        kv.pack(side="left", fill="x", anchor="n")
         self.kv = {}
         for key, label in [("voucher", "Voucher"), ("stake", "Stake"),
                            ("odds", "Combined Odds"), ("time", "Generated")]:
@@ -515,8 +528,12 @@ class Dashboard:
             v.pack(side="left", fill="x")
             self.kv[key] = v
 
-        self.qr_label = tk.Label(right, bg=CARD, text="")
-        self.qr_label.pack(pady=(6, 4))
+        if self._small_screen:
+            self.qr_label = tk.Label(top, bg=CARD, text="")
+            self.qr_label.pack(side="right", anchor="n")
+        else:
+            self.qr_label = tk.Label(right, bg=CARD, text="")
+            self.qr_label.pack(pady=(6, 4))
         tk.Label(right, text="MATCHES", bg=CARD, fg=MUTE,
                  font=("Segoe UI", 8, "bold")).pack(anchor="w", padx=14)
         mwrap = tk.Frame(right, bg=CARD)
@@ -537,9 +554,11 @@ class Dashboard:
         self.toggle = tk.Button(self.root, text="▼  Activity", command=self._toggle_console,
                                 bg=BG, fg=INK, relief="flat", anchor="w", cursor="hand2",
                                 font=("Segoe UI", 9, "bold"), bd=0)
-        self.toggle.pack(fill="x", padx=14)
+        # packed at the bottom BEFORE the main area: on a short screen the ticket
+        # lists get shorter, the Activity box stays fully visible
         self.console_frame = tk.Frame(self.root, bg=BG)
-        self.console_frame.pack(fill="x", padx=14, pady=(0, 10))
+        self.console_frame.pack(side="bottom", fill="x", padx=14, pady=(0, 10), before=self._main)
+        self.toggle.pack(side="bottom", fill="x", padx=14, before=self._main)
         self.console = tk.Text(self.console_frame, height=5, wrap="none", bd=0,
                                bg="#1e1e1e", fg="#d4d4d4", font=("Consolas", 9))
         self.console.pack(fill="x")
@@ -547,7 +566,8 @@ class Dashboard:
     def _toggle_console(self):
         self.console_open = not self.console_open
         if self.console_open:
-            self.console_frame.pack(fill="x", padx=14, pady=(0, 10))
+            self.console_frame.pack(side="bottom", fill="x", padx=14, pady=(0, 10),
+                                    before=self.toggle)
             self.toggle.config(text="▼  Activity")
         else:
             self.console_frame.pack_forget()
@@ -1097,7 +1117,8 @@ class Dashboard:
         qr_path = qr if os.path.isabs(qr) else os.path.join(HERE, os.path.normpath(qr))
         try:
             img = tk.PhotoImage(file=qr_path)
-            factor = max(1, -(-img.width() // 200))  # shrink so it fits ~200px wide
+            target = 120 if self._small_screen else 200   # small screen: room for the matches
+            factor = max(1, -(-img.width() // target))  # shrink so it fits ~target px wide
             self._qr_img = img.subsample(factor) if factor > 1 else img
             self.qr_label.config(image=self._qr_img, text="")
         except tk.TclError:
