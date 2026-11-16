@@ -1,36 +1,43 @@
-   # Builds and checks every robot on a Windows machine. The steps live in
-   # ci/build.ps1, so build changes never need this file. Download the exes from
-   # the run's "Artifacts" section (Actions tab -> latest run).
-   name: Build Windows exe
+# Builds and checks every robot on a Windows machine. The steps live in
+# ci/build.ps1, so build changes never need this file. Download the exes from
+# the run's "Artifacts" section (Actions tab -> latest run).
+name: Build Windows exe
 
-   on:
-     workflow_dispatch:
-     push:
-       branches: ["**"]
+on:
+  workflow_dispatch:
+  push:
+    branches: ["**"]
 
-   jobs:
-     build:
-       runs-on: windows-latest
-       steps:
-         - uses: actions/checkout@v4
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
 
-         - uses: actions/setup-python@v5
-           with:
-             python-version: "3.12"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-         - name: Build and check every robot (ci/build.ps1)
-           shell: pwsh
-           run: ./ci/build.ps1
+      - name: Build and check every robot (ci/build.ps1)
+        shell: pwsh
+        run: ./ci/build.ps1
 
-         - uses: actions/upload-artifact@v4
-           with:
-             name: InbetComboTicketBot
-             path: dist/InbetComboTicketBot.exe
-             retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: InbetComboTicketBot
+          path: dist/InbetComboTicketBot.exe
+          retention-days: 30
 
-         - uses: actions/upload-artifact@v4
-           with:
-             name: Scraper8888
-             path: dist/Scraper8888.exe
-             if-no-files-found: ignore
-             retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Scraper8888
+          path: dist/Scraper8888.exe
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Ticket8888
+          path: dist/Ticket8888.exe
+          if-no-files-found: ignore
+          retention-days: 30
