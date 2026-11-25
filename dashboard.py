@@ -45,7 +45,7 @@ SHOW_REFRESH = True        # the window refreshes itself every second anyway
 CONFIRM_LIVE = "This will place REAL bet drafts from:"
 SELFTEST_FILE = "selftest.txt"
 CODE_NAME = "QR"           # what the ticket image is called in the window ("Barcode" for efbet)
-WIDE_CODE = False          # True: the ticket image is a wide barcode, shown under the details
+WIDE_CODE = False          # True: the ticket image is a wide barcode (efbet), not a square QR
 
 
 def app_dir():
@@ -506,16 +506,18 @@ class Dashboard:
         self.tickets.bind("<<TreeviewSelect>>", self._show_ticket)
 
         # right: selected-ticket detail
-        right = tk.Frame(main, bg=CARD, width=380, highlightthickness=1, highlightbackground="#e1e6eb")
+        # small screen: the QR (or the half-size barcode, in a slightly wider panel)
+        # sits beside the details so the matches keep their room
+        self._small_screen = self.root.winfo_screenheight() < 900
+        beside = self._small_screen
+        width = 400 if (beside and WIDE_CODE) else 380
+        right = tk.Frame(main, bg=CARD, width=width, highlightthickness=1, highlightbackground="#e1e6eb")
         right.pack(side="right", fill="y", padx=(12, 0))
         right.pack_propagate(False)
         self.detail_title = tk.Label(right, text="Select a ticket", bg=CARD, fg=INK,
                                      font=("Segoe UI", 14, "bold"))
         self.detail_title.pack(anchor="w", padx=14, pady=(12, 6))
 
-        # small screen: the QR sits beside the details so the matches keep their room
-        self._small_screen = self.root.winfo_screenheight() < 900
-        beside = self._small_screen and not WIDE_CODE      # a wide barcode always goes under them
         top = tk.Frame(right, bg=CARD)
         top.pack(fill="x", padx=(14, 6) if beside else 14)
         kv = tk.Frame(top, bg=CARD)
@@ -1134,7 +1136,7 @@ class Dashboard:
         try:
             img = tk.PhotoImage(file=qr_path)
             if img.width() > img.height() * 1.5:          # barcode: whole pixels only, up to the panel
-                target = 340
+                target = 140 if self._small_screen else 340   # small screen: half size, room for the matches
             else:
                 target = 120 if self._small_screen else 200   # small screen: room for the matches
             factor = max(1, -(-img.width() // target))  # shrink so it fits ~target px wide
