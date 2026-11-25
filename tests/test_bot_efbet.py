@@ -268,3 +268,16 @@ def test_tied_odds_pick_one_side_at_random(site, tmp_path):
     assert result["done"] == ["4"]
     (t,) = tickets_log()
     assert t["selections"][0]["random_pick"] and t["selections"][0]["side"] in ("home", "away")
+
+
+def test_the_window_names_tickets_like_the_sheets():
+    from types import SimpleNamespace
+
+    import dashboard
+    saved = dashboard.backend
+    dashboard.backend = bot
+    try:
+        assert dashboard.Dashboard._labels(SimpleNamespace(_match_type=5), ["2", "13", "19"]) == "5-2, 5-13, 5-19"
+        assert dashboard.Dashboard._labels(SimpleNamespace(), ["2"]) == "2"
+    finally:
+        dashboard.backend = saved

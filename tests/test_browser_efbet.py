@@ -45,6 +45,7 @@ class FakeSwarm:
         self.origins = []
         self.close_after = None       # drop the connection after this many commands (once)
         self.ignore = set()           # commands never answered
+        self.ignore_once = set()      # commands not answered the first time (a silent connection)
         self.refuse = set()           # commands answered with an error code
         self.numbers = iter(range(3535002, 3535100))
         future = datetime.now(timezone.utc) + timedelta(days=3)
@@ -56,6 +57,9 @@ class FakeSwarm:
         command, params, rid = msg.get("command"), msg.get("params") or {}, msg.get("rid")
         self.received.append((command, params))
         if command in self.ignore:
+            return None
+        if command in self.ignore_once:
+            self.ignore_once.discard(command)
             return None
         if command in self.refuse:
             return {"code": 12, "rid": rid, "msg": "Invalid request"}
@@ -181,6 +185,16 @@ def test_a_dropped_connection_is_reopened(efbet):
         swarm._session.page.wait_for_timeout(300)
         games = swarm.get_games(IDS[1:2])
     assert list(games) == ["31500242"] and len(efbet.sessions) == 2
+    assert any("opening it again" in line for line in log)
+
+
+def test_a_silent_connection_is_reopened_for_reading(efbet):
+    efbet.ignore_once.add("get")                            # efbet stops answering, without closing
+    log = []
+    with swarm.connection(log.append):
+        games = swarm.get_games(IDS)
+    assert len(games) == 5 and len(efbet.sessions) == 2
+    assert [c for c, _ in efbet.received].count("get") == 2
     assert any("opening it again" in line for line in log)
 
 

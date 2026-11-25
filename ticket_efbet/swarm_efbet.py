@@ -35,6 +35,7 @@ BROWSER_EXECUTABLE = os.environ.get("SCRAPER8888_BROWSER") or None
 PAGE_TIMEOUT = 60
 
 _session = None             # the open browser page during a run (None in tests)
+READ_ONLY = {"get", "get_booking_by_id_v2", "get_sport_bonus_rules"}   # safe to send twice
 
 
 class SwarmError(RuntimeError):
@@ -42,9 +43,10 @@ class SwarmError(RuntimeError):
 
 
 _CONNECT_JS = """
-async ({confPath, fallback, session, timeoutMs}) => {
+async ({confPath, fallback, session, timeoutMs, force}) => {
   const k = window.__kc;
-  if (k && k.ws && k.ws.readyState === 1 && k.session) return {ok: true, session: k.session, reused: true};
+  if (!force && k && k.ws && k.ws.readyState === 1 && k.session) return {ok: true, session: k.session, reused: true};
+  if (k && k.ws) { try { k.ws.onmessage = null; k.ws.close(); } catch (e) {} }
   let url = null;
   try {
     const r = await fetch(confPath, {cache: 'no-store'});
@@ -139,20 +141,26 @@ class EfbetPage:
                          "). Check that the site opens normally in a browser on this PC "
                          "(Bulgarian connection, no VPN).")
 
-    def _connect(self):
+    def _connect(self, force=False):
         result = self.page.evaluate(_CONNECT_JS, {"confPath": CONF_PATH, "fallback": DEFAULT_SOCKET,
-                                                  "session": session_params(), "timeoutMs": TIMEOUT * 1000})
+                                                  "session": session_params(), "timeoutMs": TIMEOUT * 1000,
+                                                  "force": force})
         if not result.get("ok"):
             raise SwarmError(f"efbet did not open a session: {result.get('error')}")
         self.session = result.get("session") or {}
 
-    def call(self, command, params, retry_unsent=True):
-        """One swarm command -> its reply's data. Never repeats a command efbet may have received."""
+    def call(self, command, params, retry=True):
+        """One swarm command -> its reply's data.
+
+        A closed or silent connection is opened again and the command sent once
+        more, but a booking only when efbet surely never received it: a booking
+        is never repeated (no answer -> error, nothing is guessed).
+        """
         result = self.page.evaluate(_SEND_JS, {"command": command, "params": params, "timeoutMs": TIMEOUT * 1000})
-        if not result.get("ok") and not result.get("sent") and retry_unsent:
-            self.log("  (the efbet connection closed, opening it again...)")
-            self._connect()
-            return self.call(command, params, retry_unsent=False)
+        if not result.get("ok") and retry and (not result.get("sent") or command in READ_ONLY):
+            self.log("  (the efbet connection stopped answering, opening it again...)")
+            self._connect(force=True)
+            return self.call(command, params, retry=False)
         if not result.get("ok"):
             raise SwarmError(f"efbet: {command}: {result.get('error')}")
         reply = result.get("reply") or {}

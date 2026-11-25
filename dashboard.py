@@ -415,7 +415,7 @@ class Dashboard:
         already    = s["already"]    if s else []
         why = "  •  ".join(f"{r} ({n})" for r, n in reasons.most_common(3))
         skipped_note = (f"\n\nAlready created earlier, skipped (never made twice): {len(already)}"
-                        f"\n   sheets {', '.join(map(str, already))}" if already else "")
+                        f"\n   tickets {self._labels(already)}" if already else "")
 
         if failed:
             self.banner.config(
@@ -423,14 +423,14 @@ class Dashboard:
                      + (f"  —  {why}" if why else ""),
                 bg="#fdecea", fg=RED)
             msg = f"Tickets created: {created_count}"
-            msg += f"\nNot created: {len(failed)}  (sheets {', '.join(map(str, failed))})"
+            msg += f"\nNot created: {len(failed)}  (tickets {self._labels(failed)})"
             if reasons:
                 msg += "\n\nWhy:\n" + "\n".join(f"   • {r} — {n} match(es)"
                                                  for r, n in reasons.most_common())
             if unresolved:
                 shown, extra = unresolved[:20], len(unresolved) - 20
                 msg += "\n\nUnresolved matches:\n" + "\n".join(
-                    f"   • Sheet {u['sheet']}: {u['match_id'] or '(no Match ID)'} "
+                    f"   • Ticket {self._labels([u['sheet']])}: {u['match_id'] or '(no Match ID)'} "
                     f"[{u['tournament'] or '(no tournament)'}] — {u['reason']}"
                     for u in shown)
                 if extra > 0:
@@ -445,6 +445,13 @@ class Dashboard:
                                 f"All {created_count} tickets created successfully.{skipped_note}")
         self.banner.pack(fill="x", before=self._stats_row, pady=(0, 4))
 
+    def _labels(self, sheets):
+        """'5-2, 5-13': the tickets as they are named in the list (bare sheet numbers before a run)."""
+        match_type = getattr(self, "_match_type", None)
+        if match_type is None:
+            return ", ".join(map(str, sheets))
+        return ", ".join(backend.ticket_label(match_type, s) for s in sheets)
+
     def _show_check_summary(self):
         """After "Check only": which tickets are ready, which are not and why. Nothing was made."""
         s = _summarize_last_run(_read_log_events())
@@ -453,13 +460,13 @@ class Dashboard:
         ready, failed, already = s["created"], s["failed"], s["already"]
         msg = f"Ready to create: {len(ready)} ticket(s)"
         if ready:
-            msg += f"\n   sheets {', '.join(map(str, ready))}"
+            msg += f"\n   tickets {self._labels(ready)}"
         if already:
-            msg += f"\n\nAlready created earlier (will be skipped): {', '.join(map(str, already))}"
+            msg += f"\n\nAlready created earlier (will be skipped): {self._labels(already)}"
         if failed:
-            msg += f"\n\nNot ready: {len(failed)}  (sheets {', '.join(map(str, failed))})"
+            msg += f"\n\nNot ready: {len(failed)}  (tickets {self._labels(failed)})"
             for u in s["unresolved"][:20]:
-                msg += f"\n   • Sheet {u['sheet']}: {u['match'] or u['match_id'] or ''} — {u['reason']}"
+                msg += f"\n   • Ticket {self._labels([u['sheet']])}: {u['match'] or u['match_id'] or ''} — {u['reason']}"
         msg += "\n\nNothing was created. Open 📋 Logs for the live odds and stakes."
         title = "Check finished — some tickets not ready" if failed else "Check finished — all ready"
         (messagebox.showwarning if failed else messagebox.showinfo)(title, msg)
