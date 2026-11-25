@@ -1,0 +1,11 @@
+{
+ "command": "request_session",
+ "params": {
+  "language": "bgr",
+  "site_id": 18762167,
+  "source": 42,
+  "release_date": "09/23/2026-13:04",
+  "afec": "(the browser's fingerprint, optional)"
+ },
+ "rid": "2d6e4078"
+}

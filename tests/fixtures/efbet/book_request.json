@@ -1,0 +1,34 @@
+{
+ "command": "create_bet_book_v2",
+ "params": {
+  "bets": [
+   {
+    "BetType": 2,
+    "Selections": [
+     {
+      "SelectionId": 7474303803,
+      "Price": 1.64
+     },
+     {
+      "SelectionId": 7474303854,
+      "Price": 1.87
+     },
+     {
+      "SelectionId": 7474303843,
+      "Price": 1.42
+     },
+     {
+      "SelectionId": 7474303912,
+      "Price": 2.3
+     },
+     {
+      "SelectionId": 7474303867,
+      "Price": 1.65
+     }
+    ],
+    "Amount": 2
+   }
+  ]
+ },
+ "rid": "df03715c"
+}

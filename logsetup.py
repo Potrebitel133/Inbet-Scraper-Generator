@@ -52,6 +52,10 @@ def setup_logging(log_file=LOG_FILE, console_level=logging.INFO):
     if root.handlers:  # already configured this process
         return logging.getLogger("bot")
     root.setLevel(logging.DEBUG)
+    # Libraries' own debug chatter (PIL while making a PDF, the browser driver)
+    # would otherwise fill the log and the window's Activity box.
+    for noisy in ("PIL", "asyncio", "urllib3"):
+        logging.getLogger(noisy).setLevel(logging.INFO)
 
     os.makedirs(os.path.dirname(log_file) or ".", exist_ok=True)
     # Rotate so a long-running bot doesn't grow an unbounded log file.

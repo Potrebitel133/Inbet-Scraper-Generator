@@ -13,7 +13,7 @@ function Step([string]$What, [scriptblock]$Block) {
     if ($LASTEXITCODE -ne 0) { throw "$What failed (exit code $LASTEXITCODE)" }
 }
 
-Step "Install" { python -m pip install --quiet -r requirements.txt pyinstaller pillow pytest }
+Step "Install" { python -m pip install --quiet -r requirements.txt pyinstaller pillow pytest websockets }
 Step "Tests" { python -m pytest -q tests }
 Step "Self-check excel_reader" { python excel_reader.py }
 Step "Self-check stake_rules" { python stake_rules.py }
@@ -27,6 +27,10 @@ $builds = @(
        Options = @("--paths", "scraper_8888", "--collect-all", "playwright") },
     @{ Name = "Ticket8888"; Entry = "ticket_8888/dashboard_8888.py"; Report = "selftest_ticket8888.txt";
        Options = @("--paths", ".", "--paths", "ticket_8888", "--paths", "scraper_8888",
+                   "--collect-all", "playwright", "--collect-submodules", "qrcode",
+                   "--hidden-import", "PIL._tkinter_finder") },
+    @{ Name = "TicketEfbet"; Entry = "ticket_efbet/dashboard_efbet.py"; Report = "selftest_ticketefbet.txt";
+       Options = @("--paths", ".", "--paths", "ticket_efbet", "--paths", "ticket_8888", "--paths", "scraper_8888",
                    "--collect-all", "playwright", "--collect-submodules", "qrcode",
                    "--hidden-import", "PIL._tkinter_finder") }
 )

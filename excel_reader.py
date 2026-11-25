@@ -201,7 +201,8 @@ def read_product(ws):
     return _num(ws[config.PRODUCT_CELL].value)
 
 
-def _validate(picks, has_tournament_id_column=False, match_count=10):
+def _validate(picks, has_tournament_id_column=False, match_count=10, match_id_re=MATCH_ID_RE,
+              match_id_example="#3887"):
     """Return a list of human-readable problems; empty list == sheet is good.
 
     has_tournament_id_column: True when the sheet's header row has a
@@ -209,6 +210,9 @@ def _validate(picks, has_tournament_id_column=False, match_count=10):
     sheets that include the column (e.g. from the tournament scraper) are
     expected to resolve by id, not name. Sheets with NO such column (the
     original hand-built workbook) are unaffected and keep resolving by name.
+
+    match_id_re / match_id_example: the Match ID format (Inbet and 8888: #3887;
+    efbet: the plain efbet match number).
     """
     errors = []
     found = sum(1 for p in picks if str(p.get("match") or "").strip())
@@ -218,9 +222,9 @@ def _validate(picks, has_tournament_id_column=False, match_count=10):
         where = f"row {row_no}"
         match_id = str(p["match_id"] or "").strip()
         if not match_id:
-            errors.append(f"{where}: Match ID is empty; enter it like #3887")
-        elif not MATCH_ID_RE.fullmatch(match_id):
-            errors.append(f"{where}: Match ID must contain # followed by digits, like #3887")
+            errors.append(f"{where}: Match ID is empty; enter it like {match_id_example}")
+        elif not match_id_re.fullmatch(match_id):
+            errors.append(f"{where}: Match ID must be like {match_id_example}")
         match_text = str(p["match"] or "").strip()
         if not match_text:
             errors.append(f"{where}: Match Name is empty.")

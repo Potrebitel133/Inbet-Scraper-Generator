@@ -1,0 +1,29 @@
+{
+ "code": 0,
+ "rid": "r1",
+ "data": {
+  "sid": "00000000-0000-0000-0000-000000000000",
+  "version": "v1.0.380",
+  "partner_config": {
+   "currency": "EUR",
+   "min_bet_stakes": {
+    "BGN": 0.5,
+    "EUR": 0.25
+   },
+   "prematch_max_stake": {
+    "BGN": 3800.0,
+    "EUR": 1943.0
+   },
+   "max_payout": 1000000.0,
+   "price_decimals": 3,
+   "max_selections_in_multiple_bet": 15,
+   "max_odd_for_multiple_bet": 1000000.0,
+   "price_round_method": 0
+  },
+  "ctx": {
+   "site": 18762167,
+   "k_type": "None",
+   "tree_mode": "dict"
+  }
+ }
+}

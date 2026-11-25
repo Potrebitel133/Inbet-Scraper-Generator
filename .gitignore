@@ -79,3 +79,11 @@ tickets_rejected_8888.json
 settings_8888.json
 acca_bonus_8888.json
 qr_codes_8888/
+
+# --- efbet ticket generator (ticket_efbet) ---
+selftest_ticketefbet.txt
+tickets_log_efbet.json
+tickets_in_progress_efbet.json
+tickets_rejected_efbet.json
+settings_efbet.json
+barcodes_efbet/

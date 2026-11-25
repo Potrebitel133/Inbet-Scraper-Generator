@@ -1,0 +1,7 @@
+{
+ "command": "get_booking_by_id_v2",
+ "params": {
+  "booking_id": 3535002
+ },
+ "rid": "5eb09300"
+}

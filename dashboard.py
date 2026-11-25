@@ -44,6 +44,8 @@ WINDOW_WIDTH = 1450
 SHOW_REFRESH = True        # the window refreshes itself every second anyway
 CONFIRM_LIVE = "This will place REAL bet drafts from:"
 SELFTEST_FILE = "selftest.txt"
+CODE_NAME = "QR"           # what the ticket image is called in the window ("Barcode" for efbet)
+WIDE_CODE = False          # True: the ticket image is a wide barcode, shown under the details
 
 
 def app_dir():
@@ -379,7 +381,7 @@ class Dashboard:
         if SHOW_REFRESH:
             self._btn(bar, "🔄  Refresh", lambda: self._refresh(force=True)).pack(side="left", padx=(8, 0))
         self._btn(bar, "📋  Logs", self._open_logs).pack(side="left", padx=(8, 0))
-        self._btn(bar, "📄  QR to PDF", self._export_pdf).pack(side="left", padx=(8, 0))
+        self._btn(bar, f"📄  {CODE_NAME} to PDF", self._export_pdf).pack(side="left", padx=(8, 0))
 
         self.run_var = tk.StringVar(value="All runs")
         self.run_combo = ttk.Combobox(bar, textvariable=self.run_var, width=30, state="readonly")
@@ -513,8 +515,9 @@ class Dashboard:
 
         # small screen: the QR sits beside the details so the matches keep their room
         self._small_screen = self.root.winfo_screenheight() < 900
+        beside = self._small_screen and not WIDE_CODE      # a wide barcode always goes under them
         top = tk.Frame(right, bg=CARD)
-        top.pack(fill="x", padx=(14, 6) if self._small_screen else 14)
+        top.pack(fill="x", padx=(14, 6) if beside else 14)
         kv = tk.Frame(top, bg=CARD)
         kv.pack(side="left", fill="x", anchor="n")
         self.kv = {}
@@ -528,7 +531,7 @@ class Dashboard:
             v.pack(side="left", fill="x")
             self.kv[key] = v
 
-        if self._small_screen:
+        if beside:
             self.qr_label = tk.Label(top, bg=CARD, text="")
             self.qr_label.pack(side="right", anchor="n")
         else:
@@ -626,12 +629,22 @@ class Dashboard:
             qr = t.get("qr", "")
             qr_path = qr if os.path.isabs(qr) else os.path.join(HERE, os.path.normpath(qr))
             if os.path.exists(qr_path):
-                img = Image.open(qr_path).convert("RGB").resize((620, 620), Image.NEAREST)
-                page.paste(img, (90, y))
-                y += 660
+                img = Image.open(qr_path).convert("RGB")
+                if img.width > img.height * 1.5:        # barcode: enlarge whole pixels, keep its shape
+                    factor = max(1, (A4[0] - 180) // img.width)
+                    img = img.resize((img.width * factor, img.height * factor), Image.NEAREST)
+                    page.paste(img, ((A4[0] - img.width) // 2, y))
+                    y += img.height + 20
+                    d.text(((A4[0] - d.textlength(str(t.get("voucher", "")), font=font_big)) // 2, y),
+                           str(t.get("voucher", "")), fill="black", font=font_big)
+                    y += 90
+                else:
+                    img = img.resize((620, 620), Image.NEAREST)
+                    page.paste(img, (90, y))
+                    y += 660
             else:
                 missing += 1
-                d.text((90, y), "(QR image not found)", fill="red", font=font)
+                d.text((90, y), f"({CODE_NAME} image not found)", fill="red", font=font)
                 y += 60
 
             for s in t.get("selections", []):
@@ -647,7 +660,7 @@ class Dashboard:
         except OSError as e:
             messagebox.showerror("PDF export failed", str(e))
             return
-        note = f"\n({missing} QR image(s) missing)" if missing else ""
+        note = f"\n({missing} {CODE_NAME} image(s) missing)" if missing else ""
         messagebox.showinfo("PDF saved", f"{len(pages)} ticket(s) written to:\n{out}{note}")
 
     # --- logs window ----------------------------------------------------------
@@ -744,8 +757,8 @@ class Dashboard:
         # Validate every requested sheet synchronously so the user sees one
         # grouped popup and no API call can start with an invalid workbook.
         try:
-            tickets, validation_errors, products = excel_reader.load_tickets_and_products(
-                self.excel_path, sheets=None, match_count=match_type)
+            loader = getattr(backend, "load_tickets_and_products", excel_reader.load_tickets_and_products)
+            tickets, validation_errors, products = loader(self.excel_path, sheets=None, match_count=match_type)
             stakes, stake_errors = stake_rules.preview_stakes(rule, products, list(tickets))
         except Exception as e:
             messagebox.showerror("Workbook validation failed", str(e))
@@ -915,7 +928,10 @@ class Dashboard:
             # (a stopped "Check only" is never resumed: Resume makes real tickets)
             if (self._stop_event.is_set() and getattr(self, "_live_run", True)
                     and os.path.exists(self.excel_path)):
-                all_sheets = excel_reader.get_available_ticket_sheets(self.excel_path)
+                if hasattr(backend, "available_sheets"):
+                    all_sheets = backend.available_sheets(self.excel_path, getattr(self, "_match_type", None))
+                else:
+                    all_sheets = excel_reader.get_available_ticket_sheets(self.excel_path)
                 pending = [s for s in all_sheets if s not in self._current_run_done_sheets]
                 if pending:
                     self._pending_sheets = pending
@@ -1117,12 +1133,15 @@ class Dashboard:
         qr_path = qr if os.path.isabs(qr) else os.path.join(HERE, os.path.normpath(qr))
         try:
             img = tk.PhotoImage(file=qr_path)
-            target = 120 if self._small_screen else 200   # small screen: room for the matches
+            if img.width() > img.height() * 1.5:          # barcode: whole pixels only, up to the panel
+                target = 340
+            else:
+                target = 120 if self._small_screen else 200   # small screen: room for the matches
             factor = max(1, -(-img.width() // target))  # shrink so it fits ~target px wide
             self._qr_img = img.subsample(factor) if factor > 1 else img
             self.qr_label.config(image=self._qr_img, text="")
         except tk.TclError:
-            self.qr_label.config(image="", text=f"(QR not found)\n{qr}", fg=MUTE)
+            self.qr_label.config(image="", text=f"({CODE_NAME} not found)\n{qr}", fg=MUTE)
 
         self.sel.delete(*self.sel.get_children())
         for x in t.get("selections", []):

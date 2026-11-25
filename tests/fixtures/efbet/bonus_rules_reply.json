@@ -1,0 +1,407 @@
+{
+ "code": 0,
+ "rid": "9240e41c",
+ "data": {
+  "result": 0,
+  "result_text": null,
+  "details": [
+   {
+    "ExactLosing": 0,
+    "MinOdds": 1.3,
+    "MinBetOdds": 1.3,
+    "SportBonusRules": [],
+    "MaximumSelections": 4,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "Amount": null,
+       "MaxBonusAmount": 10000.0,
+       "BonusId": 377909,
+       "IsActive": true,
+       "$id": "1",
+       "Currency": "BGN"
+      },
+      {
+       "Currency": "EUR",
+       "Amount": null,
+       "MaxBonusAmount": 5000.0,
+       "BonusId": 377909,
+       "IsActive": true,
+       "$id": "2"
+      }
+     ]
+    },
+    "Basis": 1,
+    "MinimumSelections": 3,
+    "IgnoreLowOddSelection": true,
+    "BetType": 2,
+    "AmountPercent": 3.0
+   },
+   {
+    "MinBetOdds": 1.3,
+    "IgnoreLowOddSelection": true,
+    "ExactLosing": 0,
+    "MinOdds": 1.3,
+    "MinimumSelections": 4,
+    "SportBonusRules": [],
+    "MinBetStakes": {},
+    "BetType": 2,
+    "Basis": 1,
+    "AmountPercent": 4.0,
+    "MaximumSelections": 4
+   },
+   {
+    "MaximumSelections": 5,
+    "MinBetOdds": 1.3,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "IsActive": true,
+       "$id": "1",
+       "Currency": "BGN",
+       "Amount": null,
+       "MaxBonusAmount": 10000.0,
+       "BonusId": 378033
+      },
+      {
+       "MaxBonusAmount": 5000.0,
+       "BonusId": 378033,
+       "IsActive": true,
+       "$id": "2",
+       "Currency": "EUR",
+       "Amount": null
+      }
+     ]
+    },
+    "IgnoreLowOddSelection": true,
+    "AmountPercent": 5.0,
+    "MinOdds": 1.3,
+    "MinimumSelections": 5,
+    "SportBonusRules": [],
+    "BetType": 2,
+    "Basis": 1,
+    "ExactLosing": 0
+   },
+   {
+    "MaximumSelections": 6,
+    "MinOdds": 1.3,
+    "MinimumSelections": 6,
+    "MinBetOdds": 1.3,
+    "IgnoreLowOddSelection": true,
+    "SportBonusRules": [],
+    "BetType": 2,
+    "Basis": 1,
+    "AmountPercent": 10.0,
+    "ExactLosing": 0,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "Currency": "BGN",
+       "Amount": null,
+       "MaxBonusAmount": 10000.0,
+       "BonusId": 378038,
+       "IsActive": true,
+       "$id": "1"
+      },
+      {
+       "Amount": null,
+       "MaxBonusAmount": 5000.0,
+       "BonusId": 378038,
+       "IsActive": true,
+       "$id": "2",
+       "Currency": "EUR"
+      }
+     ]
+    }
+   },
+   {
+    "MinOdds": 1.3,
+    "MaximumSelections": 7,
+    "IgnoreLowOddSelection": true,
+    "SportBonusRules": [],
+    "Basis": 1,
+    "ExactLosing": 0,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "Amount": null,
+       "MaxBonusAmount": 10000.0,
+       "BonusId": 378283,
+       "IsActive": true,
+       "$id": "1",
+       "Currency": "BGN"
+      },
+      {
+       "$id": "2",
+       "Currency": "EUR",
+       "Amount": null,
+       "MaxBonusAmount": 5000.0,
+       "BonusId": 378283,
+       "IsActive": true
+      }
+     ]
+    },
+    "BetType": 2,
+    "AmountPercent": 20.0,
+    "MinimumSelections": 7,
+    "MinBetOdds": 1.3
+   },
+   {
+    "IgnoreLowOddSelection": true,
+    "ExactLosing": 0,
+    "MinimumSelections": 8,
+    "MaximumSelections": 8,
+    "BetType": 2,
+    "Basis": 1,
+    "MinOdds": 1.3,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "IsActive": true,
+       "$id": "1",
+       "Currency": "BGN",
+       "Amount": null,
+       "MaxBonusAmount": 10000.0,
+       "BonusId": 378391
+      },
+      {
+       "$id": "2",
+       "Currency": "EUR",
+       "Amount": null,
+       "MaxBonusAmount": 5000.0,
+       "BonusId": 378391,
+       "IsActive": true
+      }
+     ]
+    },
+    "SportBonusRules": [],
+    "AmountPercent": 30.0,
+    "MinBetOdds": 1.3
+   },
+   {
+    "ExactLosing": 0,
+    "MinBetOdds": 1.3,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "Currency": "BGN",
+       "Amount": null,
+       "MaxBonusAmount": 10000.0,
+       "BonusId": 378601,
+       "IsActive": true,
+       "$id": "1"
+      },
+      {
+       "BonusId": 378601,
+       "IsActive": true,
+       "$id": "2",
+       "Currency": "EUR",
+       "Amount": null,
+       "MaxBonusAmount": 5000.0
+      }
+     ]
+    },
+    "MinimumSelections": 9,
+    "MaximumSelections": 9,
+    "BetType": 2,
+    "Basis": 1,
+    "AmountPercent": 40.0,
+    "MinOdds": 1.3,
+    "IgnoreLowOddSelection": true,
+    "SportBonusRules": []
+   },
+   {
+    "ExactLosing": 0,
+    "MinOdds": 1.3,
+    "MinBetOdds": 1.3,
+    "IgnoreLowOddSelection": true,
+    "Basis": 1,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "Amount": null,
+       "MaxBonusAmount": 10000.0,
+       "BonusId": 433697,
+       "IsActive": true,
+       "$id": "1",
+       "Currency": "BGN"
+      },
+      {
+       "BonusId": 433697,
+       "IsActive": true,
+       "$id": "2",
+       "Currency": "EUR",
+       "Amount": null,
+       "MaxBonusAmount": 5000.0
+      }
+     ]
+    },
+    "MinimumSelections": 10,
+    "SportBonusRules": [],
+    "AmountPercent": 50.0,
+    "MaximumSelections": 10,
+    "BetType": 2
+   },
+   {
+    "MinimumSelections": 11,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "Currency": "BGN",
+       "Amount": null,
+       "MaxBonusAmount": 10000.0,
+       "BonusId": 0,
+       "IsActive": true,
+       "$id": "1"
+      },
+      {
+       "$id": "2",
+       "Currency": "EUR",
+       "Amount": null,
+       "MaxBonusAmount": 5000.0,
+       "BonusId": 0,
+       "IsActive": true
+      }
+     ]
+    },
+    "SportBonusRules": [],
+    "Basis": 1,
+    "MaximumSelections": 11,
+    "MinBetOdds": 1.3,
+    "IgnoreLowOddSelection": true,
+    "BetType": 2,
+    "MinOdds": 1.3,
+    "AmountPercent": 60.0,
+    "ExactLosing": 0
+   },
+   {
+    "AmountPercent": 70.0,
+    "MinOdds": 1.3,
+    "MinBetOdds": 1.3,
+    "IgnoreLowOddSelection": true,
+    "SportBonusRules": [],
+    "BetType": 2,
+    "Basis": 1,
+    "MinimumSelections": 12,
+    "MaximumSelections": 12,
+    "ExactLosing": 0,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "IsActive": true,
+       "$id": "1",
+       "Currency": "BGN",
+       "Amount": null,
+       "MaxBonusAmount": 10000.0,
+       "BonusId": 0
+      },
+      {
+       "MaxBonusAmount": 5000.0,
+       "BonusId": 0,
+       "IsActive": true,
+       "$id": "2",
+       "Currency": "EUR",
+       "Amount": null
+      }
+     ]
+    }
+   },
+   {
+    "AmountPercent": 80.0,
+    "MaximumSelections": 13,
+    "SportBonusRules": [],
+    "MinimumSelections": 13,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "BonusId": 0,
+       "IsActive": true,
+       "$id": "1",
+       "Currency": "BGN",
+       "Amount": null,
+       "MaxBonusAmount": 10000.0
+      },
+      {
+       "Amount": null,
+       "MaxBonusAmount": 5000.0,
+       "BonusId": 0,
+       "IsActive": true,
+       "$id": "2",
+       "Currency": "EUR"
+      }
+     ]
+    },
+    "BetType": 2,
+    "Basis": 1,
+    "MinOdds": 1.3,
+    "MinBetOdds": 1.3,
+    "IgnoreLowOddSelection": true,
+    "ExactLosing": 0
+   },
+   {
+    "BetType": 2,
+    "AmountPercent": 90.0,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "IsActive": true,
+       "$id": "1",
+       "Currency": "BGN",
+       "Amount": null,
+       "MaxBonusAmount": 10000.0,
+       "BonusId": 0
+      },
+      {
+       "IsActive": true,
+       "$id": "2",
+       "Currency": "EUR",
+       "Amount": null,
+       "MaxBonusAmount": 5000.0,
+       "BonusId": 0
+      }
+     ]
+    },
+    "MaximumSelections": 14,
+    "ExactLosing": 0,
+    "MinOdds": 1.3,
+    "MinimumSelections": 14,
+    "MinBetOdds": 1.3,
+    "IgnoreLowOddSelection": true,
+    "Basis": 1,
+    "SportBonusRules": []
+   },
+   {
+    "Basis": 1,
+    "ExactLosing": 0,
+    "MinOdds": 1.3,
+    "MinBetOdds": 1.3,
+    "MinimumSelections": 15,
+    "MaximumSelections": 15,
+    "MinBetStakes": {
+     "MinStakes": [
+      {
+       "MaxBonusAmount": 10000.0,
+       "BonusId": 0,
+       "IsActive": true,
+       "$id": "1",
+       "Currency": "BGN",
+       "Amount": null
+      },
+      {
+       "IsActive": true,
+       "$id": "2",
+       "Currency": "EUR",
+       "Amount": null,
+       "MaxBonusAmount": 5000.0,
+       "BonusId": 0
+      }
+     ]
+    },
+    "AmountPercent": 100.0,
+    "IgnoreLowOddSelection": true,
+    "SportBonusRules": [],
+    "BetType": 2
+   }
+  ]
+ }
+}

@@ -1,0 +1,67 @@
+{
+ "code": 0,
+ "rid": "5eb09300",
+ "data": {
+  "result": 0,
+  "result_text": null,
+  "details": {
+   "bets": [
+    {
+     "bet_type": 2,
+     "input_method": 1,
+     "selections": [
+      {
+       "sport_id": 1,
+       "price": 1.64,
+       "selection_id": 7474303803,
+       "market_id": 2542067097,
+       "match_id": 31500243,
+       "competition_id": 541
+      },
+      {
+       "match_id": 31500242,
+       "competition_id": 541,
+       "sport_id": 1,
+       "price": 1.87,
+       "selection_id": 7474303854,
+       "market_id": 2542067116
+      },
+      {
+       "match_id": 31500254,
+       "competition_id": 541,
+       "sport_id": 1,
+       "price": 1.42,
+       "selection_id": 7474303843,
+       "market_id": 2542067113
+      },
+      {
+       "sport_id": 1,
+       "price": 2.3,
+       "selection_id": 7474303912,
+       "market_id": 2542067137,
+       "match_id": 31500257,
+       "competition_id": 541
+      },
+      {
+       "selection_id": 7474303867,
+       "market_id": 2542067121,
+       "match_id": 31500253,
+       "competition_id": 541,
+       "sport_id": 1,
+       "price": 1.65
+      }
+     ],
+     "amount": 2.0
+    }
+   ],
+   "match_ids": [
+    31500243,
+    31500242,
+    31500254,
+    31500257,
+    31500253
+   ],
+   "id": 3535002
+  }
+ }
+}
